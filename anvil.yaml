@@ -32,9 +32,9 @@ db_schema:
     - name: file_version
       admin_ui: {width: 200}
       type: string
-  local_districts:
-    title: local_districts
-    client: none
+  districts:
+    title: districts
+    client: search
     server: full
     columns:
     - name: Name
