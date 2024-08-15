@@ -12,3 +12,7 @@ components:
   properties: {}
   name: navbar_links
   layout_properties: {slot: nav-right}
+- name: label_1
+  properties: {text: ' codeblue.info ', background: 'theme:Primary Container', bold: true}
+  type: Label
+  layout_properties: {slot: title}
