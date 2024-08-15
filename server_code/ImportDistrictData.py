@@ -1,10 +1,10 @@
+import pandas as pd
 import anvil.files
 from anvil.files import data_files
 import anvil.tables as tables
-import pandas as pd
-import anvil.tables as tables
 from anvil.tables import app_tables
 
+# NOTE:  had to "pip install openpyxl" for the following to work
 def import_excel_data(file):
   with open(data_files[file], "rb") as f:
     df = pd.read_excel(f)
