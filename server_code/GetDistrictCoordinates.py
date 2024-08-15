@@ -37,7 +37,7 @@ def get_coordinate_pair_from_census_bureau(district_record):
     latitude = round(response_dict["result"]["addressMatches"][0]["coordinates"]["y"], 4)
     return longitude, latitude
   else:
-    anvil.alert(f"Census Bureau returned no coordinates for {address}")
+    anvil.alert(f"Census Bureau API returned no coordinates for {address}")
     return False
 
 
