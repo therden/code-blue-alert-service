@@ -1,6 +1,6 @@
 allow_embedding: false
-package_name: M3_App_2
-name: M3 App 2
+package_name: Code_Blue_Alert_Service
+name: Code Blue Alert Service
 startup_form: Form1
 renamed: true
 runtime_options:
@@ -9,4 +9,46 @@ runtime_options:
   server_version: python3-sandbox
   server_spec: {base: python310-standard}
 dependencies: []
-services: []
+services:
+- source: /runtime/services/tables.yml
+  client_config: {}
+  server_config: {auto_create_missing_columns: true}
+- source: /runtime/services/anvil/files.yml
+  client_config: {}
+  server_config: {file_table: files}
+metadata: {title: Code Blue Alert Service, description: Receive "Code Blue" alerts via email and/or text}
+db_schema:
+  files:
+    client: none
+    server: full
+    columns:
+    - name: path
+      admin_ui: {order: 0, width: 200}
+      type: string
+    - name: file
+      admin_ui: {order: 1, width: 243}
+      type: media
+    - name: file_version
+      admin_ui: {order: 2, width: 200}
+      type: string
+    title: Files
+  local_districts:
+    client: none
+    server: full
+    columns:
+    - name: district
+      admin_ui: {width: 200, order: 0}
+      type: string
+    - name: street_address
+      admin_ui: {order: 1, width: 200}
+      type: string
+    - name: city
+      admin_ui: {width: 200, order: 2}
+      type: string
+    - name: zip
+      admin_ui: {width: 200, order: 3}
+      type: string
+    - name: phone
+      admin_ui: {width: 200, order: 4}
+      type: string
+    title: local_districts
