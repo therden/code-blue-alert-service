@@ -37,23 +37,23 @@ db_schema:
     client: none
     server: full
     columns:
-    - name: District
-      admin_ui: {width: 200}
+    - name: Name
+      admin_ui: {order: 5, width: 157}
       type: string
-    - name: StreetAddress
-      admin_ui: {width: 200}
+    - name: StreetLocation
+      admin_ui: {order: 6, width: 200}
       type: string
     - name: City
-      admin_ui: {width: 200}
+      admin_ui: {order: 7, width: 101}
       type: string
     - name: Zip
-      admin_ui: {width: 200}
+      admin_ui: {order: 8, width: 59}
       type: number
     - name: Phone
-      admin_ui: {width: 200}
+      admin_ui: {order: 9, width: 119}
       type: string
     - name: Longitude
-      admin_ui: {width: 200}
+      admin_ui: {order: 10, width: 89}
       type: number
     - name: Latitude
       admin_ui: {width: 200}
