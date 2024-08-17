@@ -7,7 +7,11 @@ components:
   properties: {col_widths: '{}'}
   name: content_panel
   layout_properties: {slot: default}
-  components: []
+  components:
+  - name: button_1
+    properties: {text: Graph Tompkins County Forecast}
+    type: Button
+    layout_properties: {grid_position: 'OSYNGB,PQCTTD'}
 - type: FlowPanel
   properties: {}
   name: navbar_links
