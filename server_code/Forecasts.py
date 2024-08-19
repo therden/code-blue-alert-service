@@ -69,7 +69,6 @@ import numpy as np
 #   ax.xaxis.set_minor_locator(ticker.AutoMinorLocator(8))
 #   plt.xlabel('Hours')
 #   plt.ylabel('Fahrenheit')
-#   plt.xlabel('Hourly Projections')
 #   plt.title(f'Wind Chill Temperature: {days} day Forecast')
   
 #   ax.vlines(x=list(dateList)[1:], ymin=minTemp, ymax=maxTemp, colors='lightgray', ls='-')
@@ -87,11 +86,15 @@ import numpy as np
 @anvil.server.callable
 def test_plot():
     # Make a nice wiggle
-  x = [1, 2, 3]
-  y = [7.3, 2.7, 5]
+  x = [0, 1, 2, 3, 4]
+  y = [3.3, 7.3, 2.7, 5, 3.7]
   
   # Plot it in the normal Matplotlib way
-  plt.figure(1, figsize=(30,15))
+  fig, ax = plt.subplots()
+  plt.xlabel('Hours')
+  plt.ylabel('Fahrenheit')
+  plt.title(f'Wind Chill Forecast')
+  ax.vlines([.75, 1.5, 2.25, 3], ymin=min(y), ymax=max(y), colors='blue', ls='-')
   plt.plot(x, y, 'crimson')  
   
   # Return this plot as a PNG image in a Media object

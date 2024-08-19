@@ -9,12 +9,12 @@ components:
   layout_properties: {slot: default}
   components:
   - name: button_1
-    properties: {text: Graph Tompkins County Forecast, role: tonal-button}
+    properties: {text: Graph WindChill Forecast, role: tonal-button}
     type: Button
     layout_properties: {grid_position: 'OSYNGB,PQCTTD'}
     event_bindings: {click: button_1_click}
   - name: image_1
-    properties: {}
+    properties: {display_mode: original_size}
     type: Image
     layout_properties: {grid_position: 'ZVSJWK,IIPDOA'}
 - type: FlowPanel
