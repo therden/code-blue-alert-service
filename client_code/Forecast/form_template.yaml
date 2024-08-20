@@ -14,7 +14,10 @@ components:
     layout_properties: {grid_position: 'QQHUIR,SCWDAP'}
   - name: rich_text_1
     properties:
-      content: "This is a temporary placeholder page for the upcoming Code Blue Alert Service.\n\nUnder New York State's Code Blue program, whenever wind chill temperatures are projected at or below 32 degrees Fahrenheit for at least two consecutive hours, a social district must provide a range of services to all persons who present as having nowhere to shelter from the cold.  The National Weather Service's forecast for a social services district anticipates \n\nSubscribers to this Service will receive via text and/or email messages informing them whether or not the forecast will trigger provision of Code Blue services in a particular district.\n\nUser\n"
+      content: |
+        This is a temporary placeholder page for the upcoming Code Blue Alerts service.  This service will send text and/or email messages to inform subscribers whether Code Blue services should be* available within a particular social services district in New York State.
+
+        * Under State's mandatory "Code Blue" program, whenever local wind chill temperatures are projected at or below 32 degrees Fahrenheit for at least two consecutive hours, a social district must provide services to every person who represents that they have nowhere to shelter from the cold.  The State has directed social services districts use the National Weather Service's local forecast for their location to determine by 5:00 PM each day whether Code Blue will be in effect.  Once Code Blue services are triggered, they are supposed to remain available until either 7:00 AM the next day or when actual wind chill temperatures exceed 32 degrees -- whichever occurs later.
     type: RichText
     layout_properties: {grid_position: 'RQNUMX,XLZFCD'}
 - type: FlowPanel
