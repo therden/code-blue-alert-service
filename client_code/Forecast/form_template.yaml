@@ -1,0 +1,27 @@
+is_package: true
+container:
+  type: HtmlTemplate
+  properties: {html: '@theme:standard-page.html'}
+components:
+- type: ColumnPanel
+  properties: {col_widths: '{}'}
+  name: content_panel
+  layout_properties: {slot: default}
+  components:
+  - name: outlined_1
+    properties: {role: outlined, text: This is a temporary placeholder page for the upcoming Code Blue Alert Service.}
+    type: TextBox
+    layout_properties: {grid_position: 'QQHUIR,SCWDAP'}
+  - name: rich_text_1
+    properties:
+      content: "This is a temporary placeholder page for the upcoming Code Blue Alert Service.\n\nUnder New York State's Code Blue program, whenever wind chill temperatures are projected at or below 32 degrees Fahrenheit for at least two consecutive hours, a social district must provide a range of services to all persons who present as having nowhere to shelter from the cold.  The National Weather Service's forecast for a social services district anticipates \n\nSubscribers to this Service will receive via text and/or email messages informing them whether or not the forecast will trigger provision of Code Blue services in a particular district.\n\nUser\n"
+    type: RichText
+    layout_properties: {grid_position: 'RQNUMX,XLZFCD'}
+- type: FlowPanel
+  properties: {}
+  name: navbar_links
+  layout_properties: {slot: nav-right}
+- name: label_1
+  properties: {text: ' codeblue.info ', background: 'theme:Primary Container', bold: true}
+  type: Label
+  layout_properties: {slot: title}

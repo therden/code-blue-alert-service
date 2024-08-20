@@ -1,7 +1,7 @@
 allow_embedding: false
 package_name: Code_Blue_Alert_Service
 name: Code Blue Alert Service
-startup_form: Form1
+startup_form: null
 renamed: true
 runtime_options:
   version: 2
@@ -58,3 +58,4 @@ db_schema:
     - name: Latitude
       admin_ui: {width: 200}
       type: number
+startup: {type: form, module: Home}
