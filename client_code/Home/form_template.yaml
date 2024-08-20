@@ -7,16 +7,7 @@ components:
   properties: {col_widths: '{}'}
   name: content_panel
   layout_properties: {slot: default}
-  components:
-  - name: button_1
-    properties: {text: Graph a WindChill Forecast, role: tonal-button}
-    type: Button
-    layout_properties: {grid_position: 'OSYNGB,PQCTTD'}
-    event_bindings: {click: button_1_click}
-  - name: image_1
-    properties: {display_mode: original_size}
-    type: Image
-    layout_properties: {grid_position: 'ZVSJWK,IIPDOA'}
+  components: []
 - type: FlowPanel
   properties: {}
   name: navbar_links
