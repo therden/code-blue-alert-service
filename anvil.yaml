@@ -16,7 +16,7 @@ services:
 - source: /runtime/services/anvil/files.yml
   client_config: {}
   server_config: {file_table: files}
-metadata: {title: Code Blue Alert Service, description: Receive "Code Blue" alerts via email and/or text}
+metadata: {title: Code Blue Alert Service, description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codebluealertlogo.png'}
 db_schema:
   files:
     title: Files
