@@ -1,61 +1,61 @@
 allow_embedding: false
-package_name: Code_Blue_Alert_Service
+db_schema:
+  districts:
+    client: search
+    columns:
+    - admin_ui: {order: 5, width: 157}
+      name: Name
+      type: string
+    - admin_ui: {order: 6, width: 200}
+      name: StreetLocation
+      type: string
+    - admin_ui: {order: 7, width: 101}
+      name: City
+      type: string
+    - admin_ui: {order: 8, width: 59}
+      name: Zip
+      type: number
+    - admin_ui: {order: 9, width: 119}
+      name: Phone
+      type: string
+    - admin_ui: {order: 10, width: 89}
+      name: Longitude
+      type: number
+    - admin_ui: {width: 200}
+      name: Latitude
+      type: number
+    server: full
+    title: districts
+  files:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: path
+      type: string
+    - admin_ui: {width: 243}
+      name: file
+      type: media
+    - admin_ui: {width: 200}
+      name: file_version
+      type: string
+    server: full
+    title: Files
+dependencies: []
+metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codebluealertlogo.png', title: Code Blue Alert Service}
 name: Code Blue Alert Service
-startup_form: null
+package_name: Code_Blue_Alert_Service
 renamed: true
 runtime_options:
-  version: 2
   client_version: '3'
-  server_version: python3-sandbox
   server_spec: {base: python310-standard}
-dependencies: []
+  server_version: python3-sandbox
+  version: 2
 services:
-- source: /runtime/services/tables.yml
-  client_config: {}
+- client_config: {}
   server_config: {auto_create_missing_columns: true}
-- source: /runtime/services/anvil/files.yml
-  client_config: {}
+  source: /runtime/services/tables.yml
+- client_config: {}
   server_config: {file_table: files}
-metadata: {title: Code Blue Alert Service, description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codebluealertlogo.png'}
-db_schema:
-  files:
-    title: Files
-    client: none
-    server: full
-    columns:
-    - name: path
-      admin_ui: {width: 200}
-      type: string
-    - name: file
-      admin_ui: {width: 243}
-      type: media
-    - name: file_version
-      admin_ui: {width: 200}
-      type: string
-  districts:
-    title: districts
-    client: search
-    server: full
-    columns:
-    - name: Name
-      admin_ui: {order: 5, width: 157}
-      type: string
-    - name: StreetLocation
-      admin_ui: {order: 6, width: 200}
-      type: string
-    - name: City
-      admin_ui: {order: 7, width: 101}
-      type: string
-    - name: Zip
-      admin_ui: {order: 8, width: 59}
-      type: number
-    - name: Phone
-      admin_ui: {order: 9, width: 119}
-      type: string
-    - name: Longitude
-      admin_ui: {order: 10, width: 89}
-      type: number
-    - name: Latitude
-      admin_ui: {width: 200}
-      type: number
-startup: {type: form, module: Home}
+  source: /runtime/services/anvil/files.yml
+startup: {module: Home, type: form}
+startup_form: null

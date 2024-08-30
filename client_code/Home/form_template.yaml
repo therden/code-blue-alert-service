@@ -1,33 +1,33 @@
-is_package: true
-container:
-  type: HtmlTemplate
-  properties: {html: '@theme:standard-page.html'}
 components:
-- type: ColumnPanel
-  properties: {col_widths: '{}', background: 'theme:Primary'}
-  name: content_panel
-  layout_properties: {slot: default}
-  components:
-  - name: text_area_1
+- components:
+  - layout_properties: {grid_position: 'NDLJUT,MULDLV'}
+    name: text_area_1
     properties:
+      align: left
+      auto_expand: true
+      background: theme:On Primary
+      enabled: true
+      height: '335'
       text: |-
         This is a placeholder page for the forthcoming Code Blue Alert service, which will send messages via email and/or SMS text to inform subscribers whether or not a particular location should be* providing Code Blue services that night.
 
         Thank you for your interest, and please come back to this page soon.  We'll shortly have a way for persons who want to be notified when this service goes live to provide us with their email address for that purpose.
 
         * Under New York State's mandatory Code Blue program, local social services districts are supposed to determine by 5:00 PM each day whether the National Weather Service's forecast for their area predicts that wind chill temperatures will fall at or below 32 degrees Fahrenheit for at least two consecutive hours overnight.  Whenever those conditions are met, districts must provide certain sheltering services to any person who presents as having nowhere to stay until either 7:00 AM the next morning or when actual wind chill temperatures rise above 32 degrees -- whichever comes later.
-      auto_expand: true
-      height: '335'
-      background: theme:On Primary
-      enabled: true
-      align: left
     type: TextArea
-    layout_properties: {grid_position: 'NDLJUT,MULDLV'}
-- type: FlowPanel
-  properties: {}
+  layout_properties: {slot: default}
+  name: content_panel
+  properties: {background: 'theme:Primary', col_widths: '{}'}
+  type: ColumnPanel
+- layout_properties: {slot: nav-right}
   name: navbar_links
-  layout_properties: {slot: nav-right}
-- name: label_1
-  properties: {text: ' codeblue.info ', background: 'theme:Primary Container', bold: true}
+  properties: {}
+  type: FlowPanel
+- layout_properties: {slot: title}
+  name: label_1
+  properties: {background: 'theme:Primary Container', bold: true, text: ' codeblue.info '}
   type: Label
-  layout_properties: {slot: title}
+container:
+  properties: {html: '@theme:standard-page.html'}
+  type: HtmlTemplate
+is_package: true
