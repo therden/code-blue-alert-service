@@ -24,4 +24,16 @@ def hello(**p):
 @anvil.server.route("/forecast/test")
 def forecast_test(**p):
   return anvil.server.FormResponse("Forecast")
-  
+
+@anvil.server.route("/locations/list")
+def get_locations_list():
+  return [u['Name'] for location in app_tables.locations.search()]
+
+@anvil.server.route("/forecast/:name")
+def serve_location_page(name, **p):
+  location = app_tables.locations.get(Name=name)
+  if location:
+    # return anvil.server.FormResponse('Forecast', location=location)
+    return anvil.server.FormResponse('Forecast')
+  else:
+    return anvil.server.HttpResponse(404, f"Location {name} not supported")

@@ -1,9 +1,23 @@
 allow_embedding: false
 db_schema:
-  districts:
+  files:
+    client: none
+    columns:
+    - admin_ui: {width: 200}
+      name: path
+      type: string
+    - admin_ui: {width: 243}
+      name: file
+      type: media
+    - admin_ui: {width: 200}
+      name: file_version
+      type: string
+    server: full
+    title: Files
+  locations:
     client: search
     columns:
-    - admin_ui: {order: 5, width: 157}
+    - admin_ui: {order: 5, width: 198}
       name: Name
       type: string
     - admin_ui: {order: 6, width: 200}
@@ -25,21 +39,7 @@ db_schema:
       name: Latitude
       type: number
     server: full
-    title: districts
-  files:
-    client: none
-    columns:
-    - admin_ui: {width: 200}
-      name: path
-      type: string
-    - admin_ui: {width: 243}
-      name: file
-      type: media
-    - admin_ui: {width: 200}
-      name: file_version
-      type: string
-    server: full
-    title: Files
+    title: locations
 dependencies: []
 metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codebluealertlogo.png', title: Code Blue Alert Service}
 name: Code Blue Alert Service
