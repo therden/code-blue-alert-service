@@ -26,7 +26,7 @@ def locations_list(**p):
 
 @anvil.server.route("/forecast/:name")
 def serve_location_page(name, **p):
-  location = app_tables.locations.get(Name=name)
+  location = app_tables.locations.get(NormalizedName=name)
   if location:
     # return anvil.server.FormResponse('Forecast', location=location)
     return anvil.server.FormResponse('Forecast')
