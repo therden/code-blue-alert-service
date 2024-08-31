@@ -18,26 +18,32 @@ db_schema:
     client: search
     columns:
     - admin_ui: {order: 5, width: 198}
-      name: Name
+      name: LocationName
       type: string
-    - admin_ui: {order: 6, width: 200}
+    - admin_ui: {width: 200}
       name: StreetLocation
       type: string
-    - admin_ui: {order: 7, width: 101}
+    - admin_ui: {width: 101}
       name: City
       type: string
-    - admin_ui: {order: 8, width: 59}
+    - admin_ui: {order: 4, width: 200}
+      name: CountyName
+      type: string
+    - admin_ui: {width: 59}
       name: Zip
       type: number
-    - admin_ui: {order: 9, width: 119}
+    - admin_ui: {width: 119}
       name: Phone
       type: string
-    - admin_ui: {order: 10, width: 89}
-      name: Longitude
-      type: number
-    - admin_ui: {width: 200}
+    - admin_ui: {width: 97}
       name: Latitude
       type: number
+    - admin_ui: {width: 114}
+      name: Longitude
+      type: number
+    - admin_ui: {order: 4.5, width: 200}
+      name: NormalizedName
+      type: string
     server: full
     title: locations
 dependencies: []
