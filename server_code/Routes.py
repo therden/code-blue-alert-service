@@ -12,13 +12,17 @@ def forecast_test(**p):
   return anvil.server.FormResponse("Forecast")
 
 def makeLink(URLstub, linkText):
+  global APP_ORIGIN
   return f"<p><a href='{APP_ORIGIN}/forecast/{URLstub}'>{linkText}</a></p>"
 
-@anvil.server.route("/forecast/list")
+@anvil.server.callable
 def get_locations_list():
-  
   # return [location['CountyName'] for location in app_tables.locations.search()]
   return '\n'.join([makeLink(location['NormalizedName'], location['CountyName']) for location in app_tables.locations.search()])
+
+@anvil.server.route("/forecast/list")
+def locations_list(**p):
+  return anvil.server.FormResponse("listForm")
 
 @anvil.server.route("/forecast/:name")
 def serve_location_page(name, **p):
