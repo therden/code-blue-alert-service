@@ -10,3 +10,4 @@ import anvil.server
 def edit_locations():
   for location in app_tables.locations.search():
     location['NormalizedName'] = location['CountyName'].lower()
+
