@@ -26,7 +26,7 @@ db_schema:
     - admin_ui: {width: 101}
       name: City
       type: string
-    - admin_ui: {order: 4, width: 200}
+    - admin_ui: {order: 4, width: 102}
       name: CountyName
       type: string
     - admin_ui: {width: 59}
@@ -41,16 +41,16 @@ db_schema:
     - admin_ui: {width: 114}
       name: Longitude
       type: number
-    - admin_ui: {order: 4.5, width: 200}
+    - admin_ui: {order: 4.5, width: 97}
       name: NormalizedName
       type: string
-    - admin_ui: {order: 11.25, width: 200}
+    - admin_ui: {order: 4.75, width: 113}
       name: DataRequested
       type: datetime
-    - admin_ui: {order: 12.25, width: 200}
+    - admin_ui: {order: 4.875, width: 119}
       name: NOAAupdate
       type: datetime
-    - admin_ui: {order: 13.25, width: 200}
+    - admin_ui: {order: 4.9375, width: 152}
       name: RawData
       type: simpleObject
     server: full

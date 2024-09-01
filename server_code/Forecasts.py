@@ -21,17 +21,13 @@ def getRawForecastData(latitude, longitude):
 def updateForecastData():
   for row in app_tables.locations.search():
     result = getRawForecastData(row["Latitude"], row["Longitude"])
-    # resultDict = json.loads(result)
-    properties = result.get("properties")
-    if properties:
-      hourlyForecasts = properties["periods"]
-    if properties["periods"]:
-      rawData = properties["periods"]
+    rawData = result.get("properties", {}).get('periods')
+    if rawData:
       DataRequestDatetime = datetime.strptime(
-        properties["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+        result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
       )
       NOAAupdateDatetime = datetime.strptime(
-        properties["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+        result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
       )
       row.update(
         DataRequested=DataRequestDatetime,
