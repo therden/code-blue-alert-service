@@ -1,17 +1,44 @@
 from datetime import datetime
-from pprint import pprint
+import json
 import requests
-import matplotlib.pyplot as plt
-from matplotlib.dates import ConciseDateFormatter
-import matplotlib.ticker as ticker
 import anvil.files
 from anvil.files import data_files
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
-import anvil.mpl_util
-import numpy as np
+
+
+@anvil.server.callable
+def getRawForecastData(latitude, longitude):
+  forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
+  hourlyForecastURL = requests.get(forecastURL).json()["properties"]["forecastHourly"]
+  ForecastJSON = requests.get(hourlyForecastURL).json()
+  return ForecastJSON
+
+
+@anvil.server.callable
+def updateForecastData():
+  for row in app_tables.locations.search():
+    result = getRawForecastData(row["Latitude"], row["Longitude"])
+    # resultDict = json.loads(result)
+    properties = result.get("properties")
+    if properties:
+      hourlyForecasts = properties["periods"]
+    if properties["periods"]:
+      rawData = properties["periods"]
+      DataRequestDatetime = datetime.strptime(
+        properties["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+      )
+      NOAAupdateDatetime = datetime.strptime(
+        properties["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+      )
+      row.update(
+        DataRequested=DataRequestDatetime,
+        NOAAupdate=NOAAupdateDatetime,
+        RawData=rawData,
+      )
+
 
 # latitude, longitude = (42.4395, -76.5022)
 # days = 4
@@ -29,23 +56,23 @@ import numpy as np
 # def getAllForecastData(latitude, longitude):
 #   forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
 #   hourlyForecastURL = requests.get(forecastURL).json()["properties"]["forecastHourly"]
-#   hourlyForecastJSON = requests.get(hourlyForecastURL).json() 
+#   hourlyForecastJSON = requests.get(hourlyForecastURL).json()
 #   periods = hourlyForecastJSON["properties"]["periods"]
 #   return periods
 
 # def getOneHourForecastData(oneHourlyForecastDict):
 #     global lastPeriodEligible
-    
+
 #     period = oneHourlyForecastDict
 #     betterTemp = int(period['temperature']) + tempAdjustment
 #     betterWindSpeed = int(period['windSpeed'].split()[0])
-    
+
 #     newPeriod = dict()
 #     newPeriod["startTime"] = datetime.strptime(period['startTime'], '%Y-%m-%dT%H:%M:%S%z')
 #     newPeriod["temperatureF"] = betterTemp
 #     newPeriod["windSpeedMPH"] = betterWindSpeed
 #     newPeriod["windChill"] = calculateWindchill(betterTemp, betterWindSpeed)
-    
+
 #     newPeriod["consecutive"] = False
 #     if newPeriod["windChill"] <= 32:
 #         if lastPeriodEligible:
@@ -55,47 +82,30 @@ import numpy as np
 #     else:
 #         lastPeriodEligible = False
 #     return newPeriod
-  
+
 # @anvil.server.callable
 # def getForecastGraph(keyForecastData, days):
 #   graphData = {item['startTime']:item['windChill'] for item in keyForecastData}
 #   minTemp = min(graphData.values())
 #   maxTemp = max(graphData.values())
 #   dateList = set(item['startTime'].strftime('%Y-%m-%d') for item in keyForecastData)
-  
+
 #   fig, ax = plt.subplots()
 #   ax.plot(graphData.keys(), graphData.values(), color='darkgray')
-#   ax.xaxis.set_major_formatter(ConciseDateFormatter(ax.xaxis.get_major_locator())) 
+#   ax.xaxis.set_major_formatter(ConciseDateFormatter(ax.xaxis.get_major_locator()))
 #   ax.xaxis.set_minor_locator(ticker.AutoMinorLocator(8))
 #   plt.xlabel('Hours')
 #   plt.ylabel('Fahrenheit')
 #   plt.title(f'Wind Chill Temperature: {days} day Forecast')
-  
+
 #   ax.vlines(x=list(dateList)[1:], ymin=minTemp, ymax=maxTemp, colors='lightgray', ls='-')
-  
+
 #   if minTemp <= 32:
 #       plt.axhline(y=32, color='red', linestyle='-')
 #       coldDataPoints = {item['startTime']:item['windChill'] for item in keyForecastData if item['windChill'] <= 32}
 #       xs, ys = list(coldDataPoints.keys()), list(coldDataPoints.values())
 #       ax.plot(coldDataPoints.keys(), coldDataPoints.values(), color='cornflowerblue')
 #       ax.fill_between(xs, ys, 32, color='cornflowerblue', interpolate=True)
-    
+
 #   # plt.show()
 #   return anvil.mpl_util.plot_image()
-
-@anvil.server.callable
-def test_plot():
-    # Make a nice wiggle
-  x = [0, 1, 2, 3, 4]
-  y = [3.3, 7.3, 2.7, 5, 3.7]
-  
-  # Plot it in the normal Matplotlib way
-  fig, ax = plt.subplots()
-  plt.xlabel('Hours')
-  plt.ylabel('Fahrenheit')
-  plt.title(f'Wind Chill Forecast')
-  ax.vlines([.75, 1.5, 2.25, 3], ymin=min(y), ymax=max(y), colors='blue', ls='-')
-  plt.plot(x, y, 'crimson')  
-  
-  # Return this plot as a PNG image in a Media object
-  return anvil.mpl_util.plot_image()
