@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import json
 import requests
 import anvil.files
@@ -12,27 +12,34 @@ import anvil.server
 @anvil.server.callable
 def getRawForecastData(latitude, longitude):
   forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
-  hourlyForecastURL = requests.get(forecastURL).json()["properties"]["forecastHourly"]
-  ForecastJSON = requests.get(hourlyForecastURL).json()
-  return ForecastJSON
+  result = requests.get(forecastURL).json()
+  hourlyForecastURL = result.get("properties", {}).get("forecastHourly")
+  if hourlyForecastURL:
+    ForecastJSON = requests.get(hourlyForecastURL).json()
+    return ForecastJSON
+  else:
+    return None
 
 
+@anvil.server.background_task
 @anvil.server.callable
 def updateForecastData():
   for row in app_tables.locations.search():
     result = getRawForecastData(row["Latitude"], row["Longitude"])
-    rawData = result.get("properties", {}).get('periods')
-    if rawData:
+    if not result:
+      continue
+    periods = result.get("properties", {}).get("periods")
+    if periods:
       DataRequestDatetime = datetime.strptime(
         result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
-      )
+      ) + timedelta(hours=-4)
       NOAAupdateDatetime = datetime.strptime(
         result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
-      )
+      ) + timedelta(hours=-4)
       row.update(
         DataRequested=DataRequestDatetime,
         NOAAupdate=NOAAupdateDatetime,
-        RawData=rawData,
+        RawData=result,
       )
 
 

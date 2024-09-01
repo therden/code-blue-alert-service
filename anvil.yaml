@@ -44,13 +44,13 @@ db_schema:
     - admin_ui: {order: 4.5, width: 97}
       name: NormalizedName
       type: string
-    - admin_ui: {order: 4.75, width: 113}
+    - admin_ui: {order: 4.75, width: 256}
       name: DataRequested
       type: datetime
-    - admin_ui: {order: 4.875, width: 119}
+    - admin_ui: {order: 4.875, width: 244}
       name: NOAAupdate
       type: datetime
-    - admin_ui: {order: 4.9375, width: 152}
+    - admin_ui: {order: 4.9375, width: 200}
       name: RawData
       type: simpleObject
     server: full
@@ -65,6 +65,13 @@ runtime_options:
   server_spec: {base: python310-standard}
   server_version: python3-sandbox
   version: 2
+scheduled_tasks:
+- job_id: RBZZXSHU
+  task_name: updateForecastData
+  time_spec:
+    at: {hour: 20, minute: 55}
+    every: day
+    n: 1
 services:
 - client_config: {}
   server_config: {auto_create_missing_columns: true}
