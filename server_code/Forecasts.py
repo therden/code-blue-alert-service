@@ -26,18 +26,27 @@ def getRawForecastData(latitude, longitude):
 @anvil.server.callable
 def updateDailyForecasts():
   thisDate = date.today()
+  
+  # create empty records for day's forecasts
   locations = app_tables.locations.search()
   for location in locations:
-    app_tables.daily_forecasts.add_row(DateOfForecast=thisDate, locality=row)
-
-  for counter in range(5)
-    sleep(5 * counter)
-    emptyForecasts = app_tables.daily_forecasts.search(DateOfForecast=thisDate, RawData=None)
-    if not emptyForecasts:
+    app_tables.daily_forecasts.add_row(DateOfForecast=thisDate, locality=location)
+  
+  # iterate through empty records up to 5x
+  for counter in range(5):
+    # with longer pauses between each try
+    emptyForecasts = app_tables.daily_forecasts.search(
+      DateOfForecast=thisDate, RawData=None
+    )
+    emptyForecastCount = len(emptyForecasts)
+    if emptyForecastCount == 0:
       break
-    print(f'Counter: {counter}   Empty forecasts: {emptyForecasts}')
+    sleep(5 * counter)
+    print(f"Counter: {counter}   Empty forecasts: {emptyForecastCount}")
     for each in emptyForecasts:
-      result = getRawForecastData(row["Latitude"], row["Longitude"])
+      result = getRawForecastData(
+        each["locality"]["Latitude"], each["locality"]["Longitude"]
+      )
       if not result:
         continue
       periods = result.get("properties", {}).get("periods")
@@ -48,14 +57,16 @@ def updateDailyForecasts():
         NOAAupdateDatetime = datetime.strptime(
           result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
         ) + timedelta(hours=-4)
+        # update fields in 'daily_forecasts' table
         each.update(
           DataRequested=DataRequestDatetime,
           NOAAupdate=NOAAupdateDatetime,
           RawData=result,
-          locality['DataRequested']=DataRequestDatetime,
-          DataRequested['NOAAupdate']=NOAAupdateDatetime,
-          DataRequested['RawData']=result,
         )
+        # update equivalent fields in linked 'locations' table
+        each["locality"]["DataRequested"] = DataRequestDatetime
+        each["locality"]["NOAAupdate"] = NOAAupdateDatetime
+        each["locality"]["RawData"] = result
 
 
 # @anvil.server.background_task
