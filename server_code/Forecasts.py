@@ -1,4 +1,4 @@
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import json
 import requests
 from time import sleep
@@ -25,21 +25,18 @@ def getRawForecastData(latitude, longitude):
 @anvil.server.background_task
 @anvil.server.callable
 def updateDailyForecasts():
-  thisDate = datetime.today()
-  
-  rows = app_tables.locations.search()
-  resultsList = [
-    dict(name=row['NormalizedName', lat=row['Latitude'], lon=row['Longitude'])
-    for row in rows
-    )
-  ]
-  counter = 0
-  while counter < 6:
-    sleep(5 * counter)
-    counter += 1
-    for each in resultsList:
-      if not each.get('DataRequestDatetime'):
+  thisDate = date.today()
+  locations = app_tables.locations.search()
+  for location in locations:
+    app_tables.daily_forecasts.add_row(DateOfForecast=thisDate, locality=row)
 
+  for counter in range(5)
+    sleep(5 * counter)
+    emptyForecasts = app_tables.daily_forecasts.search(DateOfForecast=thisDate, RawData=None)
+    if not emptyForecasts:
+      break
+    print(f'Counter: {counter}   Empty forecasts: {emptyForecasts}')
+    for each in emptyForecasts:
       result = getRawForecastData(row["Latitude"], row["Longitude"])
       if not result:
         continue
@@ -51,10 +48,13 @@ def updateDailyForecasts():
         NOAAupdateDatetime = datetime.strptime(
           result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
         ) + timedelta(hours=-4)
-        row.update(
+        each.update(
           DataRequested=DataRequestDatetime,
           NOAAupdate=NOAAupdateDatetime,
           RawData=result,
+          locality['DataRequested']=DataRequestDatetime,
+          DataRequested['NOAAupdate']=NOAAupdateDatetime,
+          DataRequested['RawData']=result,
         )
 
 

@@ -6,9 +6,6 @@ db_schema:
     - admin_ui: {order: 0, width: 200}
       name: DateOfForecast
       type: date
-    - admin_ui: {order: 1, width: 200}
-      name: NormalizedName
-      type: string
     - admin_ui: {order: 2, width: 200}
       name: DataRequested
       type: datetime
@@ -18,6 +15,10 @@ db_schema:
     - admin_ui: {order: 4, width: 200}
       name: RawData
       type: simpleObject
+    - admin_ui: {order: 0.5, width: 200}
+      name: locality
+      target: locations
+      type: link_single
     server: full
     title: daily_forecasts
   files:
