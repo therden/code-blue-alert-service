@@ -88,7 +88,7 @@ runtime_options:
   version: 2
 scheduled_tasks:
 - job_id: RBZZXSHU
-  task_name: updateForecastData
+  task_name: updateDailyForecasts
   time_spec:
     at: {hour: 20, minute: 50}
     every: day
