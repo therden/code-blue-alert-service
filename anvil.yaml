@@ -1,5 +1,25 @@
 allow_embedding: false
 db_schema:
+  daily_forecasts:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: DateOfForecast
+      type: date
+    - admin_ui: {order: 1, width: 200}
+      name: NormalizedName
+      type: string
+    - admin_ui: {order: 2, width: 200}
+      name: DataRequested
+      type: datetime
+    - admin_ui: {order: 3, width: 200}
+      name: NOAAupdate
+      type: datetime
+    - admin_ui: {order: 4, width: 200}
+      name: RawData
+      type: simpleObject
+    server: full
+    title: daily_forecasts
   files:
     client: none
     columns:
@@ -44,10 +64,10 @@ db_schema:
     - admin_ui: {order: 4.5, width: 97}
       name: NormalizedName
       type: string
-    - admin_ui: {order: 4.75, width: 256}
+    - admin_ui: {order: 4.75, width: 142}
       name: DataRequested
       type: datetime
-    - admin_ui: {order: 4.875, width: 244}
+    - admin_ui: {order: 4.875, width: 141}
       name: NOAAupdate
       type: datetime
     - admin_ui: {order: 4.9375, width: 131}

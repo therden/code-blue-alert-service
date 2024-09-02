@@ -13,7 +13,10 @@ import numpy as np
 @anvil.server.callable
 def edit_locations():
   for location in app_tables.locations.search():
-    location['NormalizedName'] = location['CountyName'].lower()
+    # location['NormalizedName'] = location['CountyName'].lower()
+    location['DataRequested']=None
+    location['NOAAupdate']=None
+    location['RawData']=None
 
 
 @anvil.server.callable

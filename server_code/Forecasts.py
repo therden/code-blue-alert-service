@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import json
 import requests
+from time import sleep
 import anvil.files
 from anvil.files import data_files
 import anvil.tables as tables
@@ -23,25 +24,60 @@ def getRawForecastData(latitude, longitude):
 
 @anvil.server.background_task
 @anvil.server.callable
-def updateForecastData():
-  for row in app_tables.locations.search():
-    result = getRawForecastData(row["Latitude"], row["Longitude"])
-    if not result:
-      continue
-    periods = result.get("properties", {}).get("periods")
-    if periods:
-      DataRequestDatetime = datetime.strptime(
-        result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
-      ) + timedelta(hours=-4)
-      NOAAupdateDatetime = datetime.strptime(
-        result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
-      ) + timedelta(hours=-4)
-      row.update(
-        DataRequested=DataRequestDatetime,
-        NOAAupdate=NOAAupdateDatetime,
-        RawData=result,
-      )
+def updateDailyForecasts():
+  thisDate = datetime.today()
+  
+  rows = app_tables.locations.search()
+  resultsList = [
+    dict(name=row['NormalizedName', lat=row['Latitude'], lon=row['Longitude'])
+    for row in rows
+    )
+  ]
+  counter = 0
+  while counter < 6:
+    sleep(5 * counter)
+    counter += 1
+    for each in resultsList:
+      if not each.get('DataRequestDatetime'):
 
+      result = getRawForecastData(row["Latitude"], row["Longitude"])
+      if not result:
+        continue
+      periods = result.get("properties", {}).get("periods")
+      if periods:
+        DataRequestDatetime = datetime.strptime(
+          result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+        ) + timedelta(hours=-4)
+        NOAAupdateDatetime = datetime.strptime(
+          result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+        ) + timedelta(hours=-4)
+        row.update(
+          DataRequested=DataRequestDatetime,
+          NOAAupdate=NOAAupdateDatetime,
+          RawData=result,
+        )
+
+
+# @anvil.server.background_task
+# @anvil.server.callable
+# def OLDupdateForecastData():
+#   for row in app_tables.locations.search():
+#     result = getRawForecastData(row["Latitude"], row["Longitude"])
+#     if not result:
+#       continue
+#     periods = result.get("properties", {}).get("periods")
+#     if periods:
+#       DataRequestDatetime = datetime.strptime(
+#         result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+#       ) + timedelta(hours=-4)
+#       NOAAupdateDatetime = datetime.strptime(
+#         result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+#       ) + timedelta(hours=-4)
+#       row.update(
+#         DataRequested=DataRequestDatetime,
+#         NOAAupdate=NOAAupdateDatetime,
+#         RawData=result,
+#       )
 
 # latitude, longitude = (42.4395, -76.5022)
 # days = 4
