@@ -68,6 +68,13 @@ def updateDailyForecasts():
         each['locality']['NOAAupdate'] = NOAAupdateDatetime
         each['locality']['RawData'] = result
 
+def calculateWindchill(temperature=80, windspeed=0):
+    T, V = temperature, windspeed
+    windchill = 35.74 + (0.6215*T) - (35.75*(V*0.16)) + (0.4275*(T*(V*0.16)))
+    return round(windchill, 1)
+
+def graphForecast(hourlyForecastJSON, tempAdjustment=0, daysToGraph=1):
+  hours = daysToGraph * 24
 
 # @anvil.server.background_task
 # @anvil.server.callable
@@ -91,6 +98,7 @@ def updateDailyForecasts():
 #       )
 
 # latitude, longitude = (42.4395, -76.5022)
+
 # days = 4
 # tempAdjustment = -25  # used to test windchill calc with summertime data...
 # hours = 24 * days

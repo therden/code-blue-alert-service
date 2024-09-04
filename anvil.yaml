@@ -74,6 +74,9 @@ db_schema:
     - admin_ui: {order: 4.9375, width: 131}
       name: RawData
       type: simpleObject
+    - admin_ui: {order: 4.96875, width: 200}
+      name: LastGraph
+      type: media
     server: full
     title: locations
 dependencies: []
