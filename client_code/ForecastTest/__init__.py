@@ -15,5 +15,6 @@ class ForecastTest(ForecastTestTemplate):
 
   def button_1_click(self, **event_args):
     """This method is called when the button is clicked"""
-    # self.image_1.source = anvil.server.call('getForecastGraph')
-    self.image_1.source = anvil.server.call("test_plot")
+    record = app_tables.locations.get(NormalizedName="tompkins")
+    self.image_1.source = record["LastGraph"]
+    # self.image_1.source = anvil.server.call("test_plot")
