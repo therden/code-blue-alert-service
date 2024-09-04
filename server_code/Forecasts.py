@@ -12,9 +12,9 @@ import anvil.server
 
 @anvil.server.callable
 def getRawForecastData(latitude, longitude):
-  forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
+  forecastURL = f'https://api.weather.gov/points/{latitude},{longitude}'
   result = requests.get(forecastURL).json()
-  hourlyForecastURL = result.get("properties", {}).get("forecastHourly")
+  hourlyForecastURL = result.get('properties', {}).get('forecastHourly')
   if hourlyForecastURL:
     ForecastJSON = requests.get(hourlyForecastURL).json()
     return ForecastJSON
@@ -42,20 +42,20 @@ def updateDailyForecasts():
     if emptyForecastCount == 0:
       break
     sleep(5 * counter)
-    print(f"Counter: {counter}   Empty forecasts: {emptyForecastCount}")
+    print(f'Counter: {counter}   Empty forecasts: {emptyForecastCount}')
     for each in emptyForecasts:
       result = getRawForecastData(
-        each["locality"]["Latitude"], each["locality"]["Longitude"]
+        each['locality']['Latitude'], each['locality']['Longitude']
       )
       if not result:
         continue
-      periods = result.get("properties", {}).get("periods")
+      periods = result.get('properties', {}).get('periods')
       if periods:
         DataRequestDatetime = datetime.strptime(
-          result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+          result['properties']['generatedAt'], '%Y-%m-%dT%H:%M:%S%z'
         ) + timedelta(hours=-4)
         NOAAupdateDatetime = datetime.strptime(
-          result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+          result['properties']['updateTime'], '%Y-%m-%dT%H:%M:%S%z'
         ) + timedelta(hours=-4)
         # update fields in 'daily_forecasts' table
         each.update(
@@ -64,25 +64,25 @@ def updateDailyForecasts():
           RawData=result,
         )
         # update equivalent fields in linked 'locations' table
-        each["locality"]["DataRequested"] = DataRequestDatetime
-        each["locality"]["NOAAupdate"] = NOAAupdateDatetime
-        each["locality"]["RawData"] = result
+        each['locality']['DataRequested'] = DataRequestDatetime
+        each['locality']['NOAAupdate'] = NOAAupdateDatetime
+        each['locality']['RawData'] = result
 
 
 # @anvil.server.background_task
 # @anvil.server.callable
 # def OLDupdateForecastData():
 #   for row in app_tables.locations.search():
-#     result = getRawForecastData(row["Latitude"], row["Longitude"])
+#     result = getRawForecastData(row['Latitude'], row['Longitude'])
 #     if not result:
 #       continue
-#     periods = result.get("properties", {}).get("periods")
+#     periods = result.get('properties', {}).get('periods')
 #     if periods:
 #       DataRequestDatetime = datetime.strptime(
-#         result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+#         result['properties']['generatedAt'], '%Y-%m-%dT%H:%M:%S%z'
 #       ) + timedelta(hours=-4)
 #       NOAAupdateDatetime = datetime.strptime(
-#         result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+#         result['properties']['updateTime'], '%Y-%m-%dT%H:%M:%S%z'
 #       ) + timedelta(hours=-4)
 #       row.update(
 #         DataRequested=DataRequestDatetime,
@@ -104,10 +104,10 @@ def updateDailyForecasts():
 #     return round(windchill, 1)
 
 # def getAllForecastData(latitude, longitude):
-#   forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
-#   hourlyForecastURL = requests.get(forecastURL).json()["properties"]["forecastHourly"]
+#   forecastURL = f'https://api.weather.gov/points/{latitude},{longitude}'
+#   hourlyForecastURL = requests.get(forecastURL).json()['properties']['forecastHourly']
 #   hourlyForecastJSON = requests.get(hourlyForecastURL).json()
-#   periods = hourlyForecastJSON["properties"]["periods"]
+#   periods = hourlyForecastJSON['properties']['periods']
 #   return periods
 
 # def getOneHourForecastData(oneHourlyForecastDict):
@@ -118,15 +118,15 @@ def updateDailyForecasts():
 #     betterWindSpeed = int(period['windSpeed'].split()[0])
 
 #     newPeriod = dict()
-#     newPeriod["startTime"] = datetime.strptime(period['startTime'], '%Y-%m-%dT%H:%M:%S%z')
-#     newPeriod["temperatureF"] = betterTemp
-#     newPeriod["windSpeedMPH"] = betterWindSpeed
-#     newPeriod["windChill"] = calculateWindchill(betterTemp, betterWindSpeed)
+#     newPeriod['startTime'] = datetime.strptime(period['startTime'], '%Y-%m-%dT%H:%M:%S%z')
+#     newPeriod['temperatureF'] = betterTemp
+#     newPeriod['windSpeedMPH'] = betterWindSpeed
+#     newPeriod['windChill'] = calculateWindchill(betterTemp, betterWindSpeed)
 
-#     newPeriod["consecutive"] = False
-#     if newPeriod["windChill"] <= 32:
+#     newPeriod['consecutive'] = False
+#     if newPeriod['windChill'] <= 32:
 #         if lastPeriodEligible:
-#             newPeriod["consecutive"] = True
+#             newPeriod['consecutive'] = True
 #         else:
 #             lastPeriodEligible = True
 #     else:
