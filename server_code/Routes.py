@@ -39,8 +39,6 @@ def serve_location_page(location_name, **p):
   print(location_name)
   location_record = app_tables.locations.get(NormalizedName=location_name)
   if location_record:
-    # return anvil.server.FormResponse('Forecast', location_record=location_record)
     return anvil.server.FormResponse("Forecast", location_record=location_record)
-    # return anvil.server.FormResponse("Forecast")
   else:
     return anvil.server.HttpResponse(404, f'Location "{location_name}" not supported')
