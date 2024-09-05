@@ -134,15 +134,21 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
 
 @anvil.server.callable
 @anvil.server.background_task
-def makeGraphFromLocation_Row(location_row, daysToGraph=1, tempAdjustment=0):
+def updateGraphFromLocation_Row(location_row, daysToGraph=1, tempAdjustment=0):
   location['LastGraph'] = anvil.server.call('graphForecast', location['RawData'], daysToGraph, tempAdjustment)
 
 @anvil.server.callable
 @anvil.server.background_task
-def makeGraphFromNormalizedName(location_normalized_name, daysToGraph=1, tempAdjustment=0):
+def updateGraphFromNormalizedName(location_normalized_name, daysToGraph=1, tempAdjustment=0):
   location = app_tables.locations.get(NormalizedName=location_normalized_name)
   location['LastGraph'] = anvil.server.call('graphForecast', location['RawData'], daysToGraph, tempAdjustment)
-  
+
+
+@anvil.server.callable
+@anvil.server.background_task
+def updateAllGraphs(daysToGraph=1, tempAdjustment=0):
+  for row in app_tables.locations.search():
+    anvil.server.call('updateGraphFromLocation_Row', row)
 
 # @anvil.server.background_task
 # @anvil.server.callable
