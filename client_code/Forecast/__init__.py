@@ -27,5 +27,6 @@ class Forecast(ForecastTemplate):
     """This method is called when the button is clicked"""
     record = self.record
     anvil.server.call("updateForecast", record)
-    anvil.server.call("updateGraphFromLocation_Row", record)
+    anvil.server.call("updateForecastGraph", record)
+    # anvil.server.call("updateForecast", record)
     self.updateForm()
