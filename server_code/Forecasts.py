@@ -49,7 +49,7 @@ def updateDailyForecasts():
     sleep(5 * counter)
     # print(f"Counter: {counter}   Empty forecasts: {emptyForecastCount}")
     for each in emptyForecasts:
-      result = updateForecast(each['locality'])
+      result = updateForecast(each["locality"])
       # result = anvil.server.call("updateForecast", each)
       #   result = getRawForecastData(
       #     each["locality"]["Latitude"], each["locality"]["Longitude"]
@@ -198,20 +198,29 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
     set(item["startTime"].strftime("%Y-%m-%d") for item in keyForecastData)
   )
   dateSet.sort()
+  local_tz = ZoneInfo("America/New_York")
 
   fig, ax = plt.subplots()
 
   ax.plot(graphData.keys(), graphData.values(), color="darkgray", ls="--")
-  plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=ZoneInfo('America/New_York')))
-  plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=ZoneInfo('America/New_York')))
-  ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
-  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H"))
+  # plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=ZoneInfo('America/New_York')))
+  # plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=ZoneInfo('America/New_York')))
+  # ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
+  # ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H"))
+  # plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz="America/New_York"))
+  # plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz="America/New_York"))
+  # ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz="America/New_York"))
+  # ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H", tz="America/New_York"))
+  plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
+  plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
+  ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
+  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H", tz=local_tz))
   # ax.tick_params(axis="x", which="major", labeltop=True, labelbottom=False)
   ax.tick_params(axis="x", which="major", labelrotation=90, labelsize=7)
   ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=8)
 
   # ax.vlines(x=dateSet[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
-  ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
+  ax.vlines(x=dateSet[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
   if minTemp <= 32:
     # add a red horizontal line at 32 degrees and color line below that blue
@@ -232,14 +241,16 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
   ax.set_ylabel("Fahrenheit")
   # ax.set_xlabel("Date | Hour")
-  
+
   return anvil.mpl_util.plot_image()
 
 
 @anvil.server.callable
 @anvil.server.background_task
 def updateForecastGraph(location_row, daysToGraph=1, tempAdjustment=0):
-  location_row["LastGraph"] = graphForecast(location_row["RawData"], daysToGraph, tempAdjustment)
+  location_row["LastGraph"] = graphForecast(
+    location_row["RawData"], daysToGraph, tempAdjustment
+  )
 
 
 @anvil.server.callable
@@ -255,4 +266,3 @@ def updateAllGraphs(daysToGraph=1, tempAdjustment=0):
   for row in app_tables.locations.search():
     # anvil.server.call("updateForecastGraph", row, daysToGraph, tempAdjustment)
     updateForecastGraph(row, daysToGraph, tempAdjustment)
-
