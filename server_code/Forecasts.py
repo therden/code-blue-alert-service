@@ -46,31 +46,66 @@ def updateDailyForecasts():
     if emptyForecastCount == 0:
       break
     sleep(5 * counter)
-    print(f"Counter: {counter}   Empty forecasts: {emptyForecastCount}")
+    # print(f"Counter: {counter}   Empty forecasts: {emptyForecastCount}")
     for each in emptyForecasts:
-      result = getRawForecastData(
-        each["locality"]["Latitude"], each["locality"]["Longitude"]
-      )
+      result = anvil.server.call("updateForecast")
+      #   result = getRawForecastData(
+      #     each["locality"]["Latitude"], each["locality"]["Longitude"]
+      #   )
       if not result:
         continue
-      periods = result.get("properties", {}).get("periods")
-      if periods:
-        DataRequestDatetime = datetime.strptime(
-          result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
-        ) + timedelta(hours=-4)
-        NOAAupdateDatetime = datetime.strptime(
-          result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
-        ) + timedelta(hours=-4)
+        # periods = result.get("properties", {}).get("periods")
+        # if periods:
+        #   DataRequestDatetime = datetime.strptime(
+        #     result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+        #   ) + timedelta(hours=-4)
+        #   NOAAupdateDatetime = datetime.strptime(
+        #     result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+        #   ) + timedelta(hours=-4)
         # update fields in 'daily_forecasts' table
         each.update(
-          DataRequested=DataRequestDatetime,
-          NOAAupdate=NOAAupdateDatetime,
-          RawData=result,
+          DataRequested=each["locality"]["DataRequested"],
+          NOAAupdate=each["locality"]["NOAAupdate"],
+          RawData=each["locality"]["RawData"],
         )
-        # update equivalent fields in linked 'locations' table
-        each["locality"]["DataRequested"] = DataRequestDatetime
-        each["locality"]["NOAAupdate"] = NOAAupdateDatetime
-        each["locality"]["RawData"] = result
+        # # update equivalent fields in linked 'locations' table
+        # each["locality"]["DataRequested"] = DataRequestDatetime
+        # each["locality"]["NOAAupdate"] = NOAAupdateDatetime
+        # each["locality"]["RawData"] = result
+
+
+@anvil.server.callable
+@anvil.server.background_task
+def updateForecast(location_row):
+  result = updateForecastData(location_row)
+  if result:
+    updateForecastGraph(location_row)
+    return True
+  else:
+    return False
+
+
+@anvil.server.callable
+@anvil.server.background_task
+def updateForecastData(location_row):
+  lat, long = location_row["Latitude"], location_row["Longitude"]
+  result = getRawForecastData(lat, long)
+  if not result:
+    return False
+  periods = result.get("properties", {}).get("periods")
+  if periods:
+    DataRequestDatetime = datetime.strptime(
+      result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
+    ) + timedelta(hours=-4)
+    NOAAupdateDatetime = datetime.strptime(
+      result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
+    ) + timedelta(hours=-4)
+    location_row.update(
+      DataRequested=DataRequestDatetime,
+      NOAAupdate=NOAAupdateDatetime,
+      RawData=result,
+    )
+    return True
 
 
 @anvil.server.callable
@@ -102,47 +137,6 @@ def getOneHourForecastData(oneHourlyForecastDict, tempAdjustment):
   else:
     lastPeriodEligible = False
   return newPeriod
-
-
-@anvil.server.callable
-@anvil.server.background_task
-def OLDgraphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
-  hours = daysToGraph * 24
-  lastPeriodEligible = False
-  periods = hourlyForecastJSON["properties"]["periods"]
-  keyForecastData = [
-    getOneHourForecastData(period, tempAdjustment) for period in periods[:hours]
-  ]
-  graphData = {item["startTime"]: item["windChill"] for item in keyForecastData}
-  minTemp = min(graphData.values())
-  maxTemp = max(graphData.values())
-  dateList = set(item["startTime"].strftime("%Y-%m-%d") for item in keyForecastData)
-
-  fig, ax = plt.subplots()
-  ax.plot(graphData.keys(), graphData.values(), color="darkgray")
-  ax.xaxis.set_major_formatter(ConciseDateFormatter(ax.xaxis.get_major_locator()))
-  ax.xaxis.set_minor_locator(ticker.AutoMinorLocator(8))
-  plt.xlabel("Hours")
-  plt.ylabel("Fahrenheit")
-  plt.title(f"Wind Chill Temperature: {daysToGraph} day Forecast")
-
-  ax.vlines(
-    x=list(dateList)[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-"
-  )
-
-  if minTemp <= 32:
-    plt.axhline(y=32, color="red", linestyle="-")
-    coldDataPoints = {
-      item["startTime"]: item["windChill"]
-      for item in keyForecastData
-      if item["windChill"] <= 32
-    }
-    xs, ys = list(coldDataPoints.keys()), list(coldDataPoints.values())
-    ax.plot(coldDataPoints.keys(), coldDataPoints.values(), color="cornflowerblue")
-    ax.fill_between(xs, ys, 32, color="cornflowerblue", interpolate=True)
-
-  # plt.show()
-  return anvil.mpl_util.plot_image()
 
 
 def tempModifier(temp):
@@ -181,8 +175,10 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
       lastPeriodEligible = False
     return newPeriod
 
-  forecastRequestdDatetime = hourlyForecastJSON["properties"]["generatedAt"]
-  forecastUpdatedDatetime = hourlyForecastJSON["properties"]["updateTime"]
+  # "2024-09-06T17:40:12+00:00"
+  # NOAAforecastUpdated = datetime.strptime(
+  #   hourlyForecastJSON["properties"]["updateTime"][:16], "%Y-%m-%dT%H:%M"
+  # ) + timedelta(hours=-4)
   periods = hourlyForecastJSON["properties"]["periods"]
   keyForecastData = [getKeyForecastData(period) for period in periods[:HOURS]]
   graphData = {item["startTime"]: item["windChill"] for item in keyForecastData}
@@ -198,12 +194,11 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   ax.plot(graphData.keys(), graphData.values(), color="darkgray", ls="--")
   plt.gca().xaxis.set_major_locator(mdates.DayLocator())
   plt.gca().xaxis.set_minor_locator(mdates.HourLocator())
-  # ax.tick_params(axis='x', which='major', labeltop=True, labelbottom=False)
-  ax.tick_params(axis="x", which="major", labelrotation=90, labelsize=11)
-  ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=9)
   ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
-  # ax.xaxis.set_minor_formatter(mdates.DateFormatter('%I %p'))
   ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H"))
+  # ax.tick_params(axis="x", which="major", labeltop=True, labelbottom=False)
+  ax.tick_params(axis="x", which="major", labelrotation=90, labelsize=7)
+  ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=8)
 
   ax.vlines(x=dateSet[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
@@ -223,19 +218,17 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
     ax.axhline(y=32, color="red", linestyle="-", linewidth=2)
 
   # plt.figure(figsize=(10,6))
-  ax.set_xlabel("Hours")
+  ax.set_xlabel("Date | Hour")
   ax.set_ylabel("Fahrenheit")
   ax.set_xlabel("Hourly Projections")
-  ax.set_title(
-    f"Wind Chill Temperatures: {DAYS} day Forecast\nDownloaded {forecastRequestdDatetime}\nNOAA Update {forecastUpdatedDatetime}"
-  )
+  ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
 
   return anvil.mpl_util.plot_image()
 
 
 @anvil.server.callable
 @anvil.server.background_task
-def updateGraphFromLocation_Row(location_row, daysToGraph=1, tempAdjustment=0):
+def updateForecastGraph(location_row, daysToGraph=1, tempAdjustment=0):
   location_row["LastGraph"] = anvil.server.call(
     "graphForecast", location_row["RawData"], daysToGraph, tempAdjustment
   )
@@ -243,18 +236,16 @@ def updateGraphFromLocation_Row(location_row, daysToGraph=1, tempAdjustment=0):
 
 @anvil.server.callable
 @anvil.server.background_task
-def updateGraphFromNormalizedName(
-  location_normalized_name, daysToGraph=1, tempAdjustment=0
-):
-  location = app_tables.locations.get(NormalizedName=location_normalized_name)
-  updateGraphFromLocation_Row(location, daysToGraph, tempAdjustment)
+def updateGraphFromNormalizedName(normalized_name, daysToGraph=1, tempAdjustment=0):
+  location = app_tables.locations.get(NormalizedName=normalized_name)
+  updateForecastGraph(location, daysToGraph, tempAdjustment)
 
 
 @anvil.server.callable
 @anvil.server.background_task
 def updateAllGraphs(daysToGraph=1, tempAdjustment=0):
   for row in app_tables.locations.search():
-    anvil.server.call("updateGraphFromLocation_Row", row, daysToGraph, tempAdjustment)
+    anvil.server.call("updateForecastGraph", row, daysToGraph, tempAdjustment)
 
 
 # @anvil.server.background_task

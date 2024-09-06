@@ -1,21 +1,21 @@
 components:
 - components:
-  - layout_properties: {grid_position: 'QQHUIR,SCWDAP'}
-    name: outlined_1
-    properties: {role: outlined, text: This is a temporary placeholder page}
-    type: TextBox
-  - event_bindings: {click: button_1_click}
-    layout_properties: {grid_position: 'QQHUIR,SCKTVW'}
-    name: button_1
-    properties: {text: See test graph}
-    type: Button
-  - layout_properties: {grid_position: 'LBIYHQ,OWQDPX'}
+  - layout_properties: {grid_position: 'RLOPUR,HXLNVN'}
     name: image_1
-    properties: {display_mode: shrink_to_fit, height: 358.39996337890625}
+    properties: {display_mode: original_size, height: '600', horizontal_align: left}
     type: Image
+  - layout_properties: {grid_position: 'WMGNPA,KFUXXK'}
+    name: label_2
+    properties: {}
+    type: Label
+  - event_bindings: {click: button_1_click}
+    layout_properties: {grid_position: 'WMGNPA,ZOWAZZ'}
+    name: button_1
+    properties: {role: outlined-button, text: Get an updated forecast}
+    type: Button
   layout_properties: {slot: default}
   name: content_panel
-  properties: {col_widths: '{"SCWDAP":45,"SCKTVW":15}'}
+  properties: {col_widths: '{}'}
   type: ColumnPanel
 - layout_properties: {slot: nav-right}
   name: navbar_links

@@ -10,7 +10,7 @@ APP_ORIGIN = anvil.server.get_app_origin()
 
 def makeLink(URLstub, linkText):
   global APP_ORIGIN
-  return f'<p><a href="{APP_ORIGIN}/forecast/{URLstub}">{linkText}</a></p>'
+  return f'<p><a href="{APP_ORIGIN}/for/{URLstub}">{linkText}</a></p>'
 
 
 @anvil.server.callable
@@ -24,17 +24,17 @@ def get_locations_list():
   )
 
 
-@anvil.server.route("/forecast/list")
+@anvil.server.route("/locations")
 def locations_list(**p):
   return anvil.server.FormResponse("LocationsLinks")
 
 
-@anvil.server.route("/forecast/test")
+@anvil.server.route("/for/test")
 def forecast_test(**p):
   return anvil.server.FormResponse("ForecastTest")
 
 
-@anvil.server.route("/forecast/:location_name")
+@anvil.server.route("/for/:location_name")
 def serve_location_page(location_name, **p):
   print(location_name)
   location_record = app_tables.locations.get(NormalizedName=location_name)
