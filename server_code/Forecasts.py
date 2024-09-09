@@ -195,41 +195,28 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   graphData = {item["startTime"]: item["windChill"] for item in keyForecastData}
   minTemp = min(graphData.values())
   maxTemp = max(graphData.values())
-  dateSet = list(
-    # set(item["startTime"].strftime("%Y-%m-%d") for item in keyForecastData)
-    # )
-    set(item["startTime"] for item in keyForecastData if item["startTime"].hour == 0)
-  )
-  dateSet.sort()
-  # midnights = [
-  #   item["startTime"].strftime("%Y-%m-%dT%H")
-  #   for item in keyForecastData
-  #   if item["startTime"].hour == 0
-  # ]
-  # dateSet = sorted(midnights)
+  dateSet = [
+    item["startTime"] for item in keyForecastData if item["startTime"].hour == 0
+  ]
 
   local_tz = ZoneInfo("America/New_York")
 
   fig, ax = plt.subplots()
 
   ax.plot(graphData.keys(), graphData.values(), color="darkgray", ls="--")
-  # plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=ZoneInfo('America/New_York')))
-  # plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=ZoneInfo('America/New_York')))
-  # ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d"))
-  # ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H"))
-  # plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz="America/New_York"))
-  # plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz="America/New_York"))
-  # ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz="America/New_York"))
-  # ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H", tz="America/New_York"))
   plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
   plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
   ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
   ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H", tz=local_tz))
-  # ax.tick_params(axis="x", which="major", labeltop=True, labelbottom=False)
-  ax.tick_params(axis="x", which="major", labelrotation=90, labelsize=7)
+  ax.tick_params(
+    axis="x",
+    which="major",
+    labelrotation=90,
+    labelsize=7,
+    color="red",
+    labelcolor="blue",
+  )
   ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=8)
-
-  # ax.vlines(x=dateSet[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
   ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
   if minTemp <= 32:
@@ -244,7 +231,8 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
       color="cornflowerblue",
       linewidth=0.5,
     )
-    ax.fill_between(xs, ys, 32, color="cornflowerblue", interpolate=False)
+    # ax.fill_between(xs, ys, 32, color="cornflowerblue", interpolate=False)
+    ax.fill_between(xs, ys, 32, color="paleturquoise", interpolate=False)
     ax.axhline(y=32, color="red", linestyle="-", linewidth=2)
 
   # plt.figure(figsize=(10,6))
