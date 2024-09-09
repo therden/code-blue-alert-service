@@ -189,15 +189,25 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   # NOAAforecastUpdated = datetime.strptime(
   #   hourlyForecastJSON["properties"]["updateTime"][:16], "%Y-%m-%dT%H:%M"
   # ) + timedelta(hours=-4)
+
   periods = hourlyForecastJSON["properties"]["periods"]
   keyForecastData = [getKeyForecastData(period) for period in periods[:HOURS]]
   graphData = {item["startTime"]: item["windChill"] for item in keyForecastData}
   minTemp = min(graphData.values())
   maxTemp = max(graphData.values())
   dateSet = list(
-    set(item["startTime"].strftime("%Y-%m-%d") for item in keyForecastData)
+    # set(item["startTime"].strftime("%Y-%m-%d") for item in keyForecastData)
+    # )
+    set(item["startTime"] for item in keyForecastData if item["startTime"].hour == 0)
   )
   dateSet.sort()
+  # midnights = [
+  #   item["startTime"].strftime("%Y-%m-%dT%H")
+  #   for item in keyForecastData
+  #   if item["startTime"].hour == 0
+  # ]
+  # dateSet = sorted(midnights)
+
   local_tz = ZoneInfo("America/New_York")
 
   fig, ax = plt.subplots()
@@ -220,7 +230,7 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=8)
 
   # ax.vlines(x=dateSet[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
-  ax.vlines(x=dateSet[1:], ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
+  ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
   if minTemp <= 32:
     # add a red horizontal line at 32 degrees and color line below that blue

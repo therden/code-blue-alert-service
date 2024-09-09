@@ -17,7 +17,7 @@ class Forecast(ForecastTemplate):
   def updateForm(self):
     location = self.location
     record = self.record
-    self.label_1.text = f"codeblueinfo/for/{location}"
+    self.label_1.text = f"codeblue.info/for/{location}"
     self.image_1.source = record["LastGraph"]
     lastDownload = record["DataRequested"].strftime("%Y-%m-%d %I:%M %p")
     lastNOAAupdate = record["NOAAupdate"].strftime("%I:%M %p")
