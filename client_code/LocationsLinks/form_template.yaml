@@ -1,10 +1,7 @@
 components:
 - components:
   - components:
-    - components:
-      - name: link_1
-        properties: {}
-        type: Link
+    - components: []
       name: flow_panel_1
       properties: {}
       type: FlowPanel

@@ -36,9 +36,10 @@ def get_locations_links_list():
 @anvil.server.callable
 def get_locations_tuples():
   # return [location['CountyName'] for location in app_tables.locations.search()]
-  return [
+  locations = app_tables.locations.search()
+    return [
     (f'{APP_ORIGIN}/for/{location["NormalizedName"]}', location["CountyName"])
-    for location in app_tables.locations.search()
+    for location in locations
   ]
 
 
