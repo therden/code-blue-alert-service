@@ -24,7 +24,7 @@ def get_locations_list():
   )
 
 
-@anvil.server.route("/locations")
+@anvil.server.route("/for")
 def locations_list(**p):
   return anvil.server.FormResponse("LocationsLinks")
 
