@@ -14,14 +14,32 @@ def makeLink(URLstub, linkText):
 
 
 @anvil.server.callable
-def get_locations_list():
-  # return [location['CountyName'] for location in app_tables.locations.search()]
+def get_locations_list_links_string():
   return "\n".join(
-    [
-      makeLink(location["NormalizedName"], location["CountyName"])
-      for location in app_tables.locations.search()
-    ]
+    get_locations_links_list()
+    # [
+    #   makeLink(location["NormalizedName"], location["CountyName"])
+    #   for location in app_tables.locations.search()
+    # ]
   )
+
+
+@anvil.server.callable
+def get_locations_links_list():
+  # return [location['CountyName'] for location in app_tables.locations.search()]
+  return [
+    makeLink(location["NormalizedName"], location["CountyName"])
+    for location in app_tables.locations.search()
+  ]
+
+
+@anvil.server.callable
+def get_locations_tuples():
+  # return [location['CountyName'] for location in app_tables.locations.search()]
+  return [
+    (f'{APP_ORIGIN}/for/{location["NormalizedName"]}', location["CountyName"])
+    for location in app_tables.locations.search()
+  ]
 
 
 @anvil.server.route("/for")
