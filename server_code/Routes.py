@@ -37,7 +37,7 @@ def get_locations_links_list():
 def get_locations_tuples():
   # return [location['CountyName'] for location in app_tables.locations.search()]
   locations = app_tables.locations.search()
-    return [
+  return [
     (f'{APP_ORIGIN}/for/{location["NormalizedName"]}', location["CountyName"])
     for location in locations
   ]
