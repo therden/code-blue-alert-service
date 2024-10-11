@@ -42,3 +42,7 @@ def serve_location_page(location_name, **p):
     return anvil.server.FormResponse("Forecast", location_record=location_record)
   else:
     return anvil.server.HttpResponse(404, f'Location "{location_name}" not supported')
+
+  @anvil.server.route("/for")
+  def forecast_test(**p):
+    return anvil.server.FormResponse("LocationsLinks")
