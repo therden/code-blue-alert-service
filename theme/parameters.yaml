@@ -1,7 +1,7 @@
 color_scheme:
   colors:
   - {color: '#006874', name: Primary}
-  - {color: '#96F0FF', name: Primary Container}
+  - {color: '#72B7F2', name: Primary Container}
   - {color: '#FFFFFF', name: On Primary}
   - {color: '#001F24', name: On Primary Container}
   - {color: '#486367', name: Secondary}

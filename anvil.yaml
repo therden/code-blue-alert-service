@@ -80,7 +80,7 @@ db_schema:
     server: full
     title: locations
 dependencies: []
-metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codebluealertlogo.png', title: Code Blue Alert Service}
+metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codeblueinfo_squarespace.png', title: Code Blue Alert Service}
 name: Code Blue Alert Service
 package_name: Code_Blue_Alert_Service
 renamed: true
