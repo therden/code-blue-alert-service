@@ -26,7 +26,7 @@ def get_locations_list():
 
 @anvil.server.route("/locations")
 def locations_list(**p):
-  return anvil.server.FormResponse("LocationsLinks")
+  return anvil.server.FormResponse("LocationsLinksList")
 
 
 @anvil.server.route("/for/test")
@@ -43,6 +43,16 @@ def serve_location_page(location_name, **p):
   else:
     return anvil.server.HttpResponse(404, f'Location "{location_name}" not supported')
 
-  @anvil.server.route("/for")
-  def forecast_test(**p):
-    return anvil.server.FormResponse("LocationsLinks")
+@anvil.server.callable
+def get_locations():
+  # return [location['CountyName'] for location in app_tables.locations.search()]
+  return "   ".join(
+    [
+      makeLink(location["NormalizedName"], location["CountyName"])
+      for location in app_tables.locations.search()
+    ]
+  )
+
+@anvil.server.route("/for")
+def forecast_test(**p):
+  return anvil.server.FormResponse("LocationsLinksList")
