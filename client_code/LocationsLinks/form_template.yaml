@@ -3,9 +3,9 @@ components:
   - components:
     - components:
       - components: []
-        layout_properties: {grid_position: 'JEOKSC,BCJWIX'}
+        layout_properties: {grid_position: 'BDDRQT,FOPRMP'}
         name: rich_text_1
-        properties: {foreground: '', format: markdown}
+        properties: {content: '', foreground: '', format: markdown}
         type: RichText
       name: link_1
       properties: {}
