@@ -4,6 +4,8 @@ import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+from datetime import timedelta
+from datetime import datetime
 
 
 class Forecast(ForecastTemplate):
@@ -12,7 +14,30 @@ class Forecast(ForecastTemplate):
     self.init_components(**properties)
     self.record = properties["location_record"]
     self.location = self.record["NormalizedName"]
+    self.build_headline()
     self.updateForm()
+
+  def build_headline(self):
+    if not self.record["CodeBlueQualified"]:
+      in_effect = " NOT"
+    else:
+      in_effect = ""
+    forecast_start = self.record["NOAAupdate"]
+    forecast_end = self.record["NOAAupdate"] + timedelta(days=1)
+    forecast_for = f"{forecast_start:%b %d, %Y} - {forecast_end:%b %d, %Y}"
+    noaa_forecast_datetime = self.record["NOAAupdate"]
+    forecast_time = f"{noaa_forecast_datetime:%I:%M %p}"
+    if datetime.today().day == noaa_forecast_datetime.day:
+      forecast_time += " today."
+    elif datetime.today().day == noaa_forecast_datetime.day + 1:
+      forecast_time += " yesterday."
+    # else:
+    #   forecast_time += f' on '
+    self.rt_headline.data = {
+      "in_effect": in_effect,
+      "forecast_for_date": forecast_for,
+      "forecast_datetime": f'{self.record["NOAAupdate"]:%I:%M %p}',
+    }
 
   def updateForm(self):
     location = self.location
