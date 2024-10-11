@@ -8,8 +8,9 @@ from anvil.tables import app_tables
 
 class LocationsLinks(LocationsLinksTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.rich_text_1.content = anvil.server.call('get_locations_list')
-
-    # Any code you write here will run before the form opens.
+    for thisLink in anvil.server.call("get_locations_links"):
+      t, u = thisLink
+      self.flow_panel_1.add_component(
+        Link(text=thisLink[0], url=thisLink[1], foreground="white")
+      )
