@@ -27,6 +27,10 @@ components:
   name: label_1
   properties: {background: 'theme:Primary Container', bold: true, text: ' codeblue.info '}
   type: Label
+- layout_properties: {slot: top-left-btn}
+  name: image_1
+  properties: {height: 44, source: _/theme/codeblueinfo_squarespace.png}
+  type: Image
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
