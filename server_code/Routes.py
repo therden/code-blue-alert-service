@@ -15,7 +15,7 @@ def makeLink(URLstub, linkText):
 
 def makeMarkdownLink(linkText, URLstub):
   global APP_ORIGIN
-  return f"[{linkText}]({APP_ORIGIN}/for/{URLstub})"
+  return f"[{linkText}]({APP_ORIGIN}/for/{URLstub})<br>"
 
 
 @anvil.server.callable
