@@ -14,8 +14,13 @@ class Forecast(ForecastTemplate):
     self.init_components(**properties)
     self.record = properties["location_record"]
     self.location = self.record["NormalizedName"]
-    self.build_headline()
     self.updateForm()
+
+  def set_background(self):
+    if not self.record["CodeBlueQualified"]:
+      self.rt_headline.background = "lemonchiffon"
+    else:
+      self.rt_headline.background = "theme:Primary Container"
 
   def build_headline(self):
     if not self.record["CodeBlueQualified"]:
@@ -43,10 +48,14 @@ class Forecast(ForecastTemplate):
     location = self.location
     record = self.record
     self.label_1.text = f"codeblue.info/for/{location}"
+    self.set_background()
+    self.build_headline()
     self.image_1.source = record["LastGraph"]
     lastDownload = record["DataRequested"].strftime("%Y-%m-%d %I:%M %p")
     lastNOAAupdate = record["NOAAupdate"].strftime("%I:%M %p")
-    self.label_2.text = f"Updated {lastDownload} (from {lastNOAAupdate} NOAA update.)"
+    self.label_2.text = (
+      f"Updated {lastDownload} (from NOAA's {lastNOAAupdate} forecast.)"
+    )
 
   def button_1_click(self, **event_args):
     """This method is called when the button is clicked"""

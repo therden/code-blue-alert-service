@@ -2,23 +2,24 @@ components:
 - components:
   - layout_properties: {grid_position: 'VHHBFR,JYPOQI'}
     name: rt_headline
-    properties:
-      content: |-
-        #### Based on **NOAA**'s forecast for this location as of {forecast_datetime}
-        # Code Blue **WILL{in_effect}** be in effect during the {forecast_for_date} overnight.
+    properties: {content: '## Wind Chill temps **ARE {in_effect}** forecast to reach **Code Blue**-triggering levels during the {forecast_for_date} overnight.'}
     type: RichText
   - layout_properties: {grid_position: 'RLOPUR,HXLNVN'}
     name: image_1
     properties: {display_mode: original_size, height: '600', horizontal_align: left}
     type: Image
+  - layout_properties: {grid_position: 'SVKCMP,AEWOVR'}
+    name: rich_text_1
+    properties: {content: '#### Based on **NOAA**''s forecast for this location as of {forecast_datetime}'}
+    type: RichText
   - layout_properties: {grid_position: 'WMGNPA,KFUXXK'}
     name: label_2
-    properties: {}
+    properties: {visible: false}
     type: Label
   - event_bindings: {click: button_1_click}
     layout_properties: {grid_position: 'WMGNPA,ZOWAZZ'}
     name: button_1
-    properties: {role: outlined-button, text: Get an updated forecast}
+    properties: {enabled: false, role: outlined-button, text: Get an updated forecast, visible: false}
     type: Button
   layout_properties: {slot: default}
   name: content_panel
@@ -34,7 +35,7 @@ components:
   type: Label
 - layout_properties: {slot: top-left-btn}
   name: image_2
-  properties: {height: 43.199981689453125, source: _/theme/codeblueinfo_squarespace.png}
+  properties: {height: 45.19996643066406, source: _/theme/codeblueinfo_512x512.png}
   type: Image
 container:
   properties: {html: '@theme:standard-page.html'}
