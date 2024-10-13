@@ -19,6 +19,9 @@ db_schema:
       name: locality
       target: locations
       type: link_single
+    - admin_ui: {order: 3.5, width: 200}
+      name: CodeBlueQualified
+      type: bool
     server: full
     title: daily_forecasts
   files:
