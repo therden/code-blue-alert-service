@@ -6,7 +6,7 @@ db_schema:
     - admin_ui: {order: 0, width: 200}
       name: DateOfForecast
       type: date
-    - admin_ui: {order: 2, width: 144}
+    - admin_ui: {order: 2, width: 180}
       name: DataRequested
       type: datetime
     - admin_ui: {order: 3, width: 142}

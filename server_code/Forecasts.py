@@ -38,8 +38,8 @@ def updateDailyForecasts():
     app_tables.daily_forecasts.add_row(DateOfForecast=thisDate, locality=location)
 
   # iterate through empty records up to 5x
+  # with longer pauses between each try
   for counter in range(5):
-    # with longer pauses between each try
     emptyForecasts = app_tables.daily_forecasts.search(
       DateOfForecast=thisDate, RawData=None
     )
@@ -47,33 +47,15 @@ def updateDailyForecasts():
     if emptyForecastCount == 0:
       break
     sleep(5 * counter)
-    # print(f"Counter: {counter}   Empty forecasts: {emptyForecastCount}")
     for each in emptyForecasts:
       result = updateForecast(each["locality"])
-      # result = anvil.server.call("updateForecast", each)
-      #   result = getRawForecastData(
-      #     each["locality"]["Latitude"], each["locality"]["Longitude"]
-      #   )
       if not result:
         continue
-        # periods = result.get("properties", {}).get("periods")
-        # if periods:
-        #   DataRequestDatetime = datetime.strptime(
-        #     result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
-        #   ) + timedelta(hours=-4)
-        #   NOAAupdateDatetime = datetime.strptime(
-        #     result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
-        #   ) + timedelta(hours=-4)
-        # update fields in 'daily_forecasts' table
-        each.update(
-          DataRequested=each["locality"]["DataRequested"],
-          NOAAupdate=each["locality"]["NOAAupdate"],
-          RawData=each["locality"]["RawData"],
-        )
-        # # update equivalent fields in linked 'locations' table
-        # each["locality"]["DataRequested"] = DataRequestDatetime
-        # each["locality"]["NOAAupdate"] = NOAAupdateDatetime
-        # each["locality"]["RawData"] = result
+      each.update(
+        DataRequested=each["locality"]["DataRequested"],
+        NOAAupdate=each["locality"]["NOAAupdate"],
+        RawData=each["locality"]["RawData"],
+      )
 
 
 @anvil.server.callable

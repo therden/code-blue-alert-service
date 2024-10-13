@@ -18,6 +18,20 @@ def updateFields(rowObject, tupleList):
 
 
 @anvil.server.callable
+def copyCurrentLocationsDataToDaily():
+  location_rows = app_tables.locations.search()
+  # each = location_rows[1]
+  for each in location_rows:
+    app_tables.daily_forecasts.add_row(
+      NOAAupdate=each["NOAAupdate"],
+      RawData=each["RawData"],
+      DataRequested=each["DataRequested"],
+      locality=each,
+      DateOfForecast=each["DataRequested"].date(),
+    )
+
+
+@anvil.server.callable
 def edit_locations():
   listOfFieldValueTuples = [
     ("DataRequested", None),
