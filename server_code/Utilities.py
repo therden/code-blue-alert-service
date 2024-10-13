@@ -9,7 +9,7 @@ from matplotlib.dates import ConciseDateFormatter
 import matplotlib.ticker as ticker
 import anvil.mpl_util
 import numpy as np
-import Forecasts
+from Forecasts import *
 
 
 @anvil.server.callable
@@ -53,7 +53,7 @@ def test_plot():
   fig, ax = plt.subplots()
   plt.xlabel("Hours")
   plt.ylabel("Fahrenheit")
-  plt.title(f"Wind Chill Forecast")
+  plt.title("Wind Chill Forecast")
   ax.vlines([0.75, 1.5, 2.25, 3], ymin=min(y), ymax=max(y), colors="blue", ls="-")
   plt.plot(x, y, "crimson")
 
@@ -66,4 +66,5 @@ def get_sample_graph():
   row = app_tables.locations.search()[0]
   row = app_tables.locations.search(CountyName="Tompkins")
   # Forecasts.graphForecast(row["RawData"], 1, 0)
-  return anvil.server.call("graphForecast", row["RawData"], 1, 0)
+  # return anvil.server.call("graphForecast", row["RawData"], 1, 0)
+  return graphForecast(row["RawData"], 1, 0)
