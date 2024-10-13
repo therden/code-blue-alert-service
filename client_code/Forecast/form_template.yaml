@@ -1,8 +1,8 @@
 components:
 - components:
   - layout_properties: {grid_position: 'VHHBFR,JYPOQI'}
-    name: rt_headline
-    properties: {content: '### A Code Blue Alert **{in_effect}** in effect for the {forecast_for_date} overnight.  ', spacing_above: none, spacing_below: none}
+    name: rt_header
+    properties: {content: '## Code Blue **{in_effect}** in effect for the {for_date} overnight.', spacing_above: none, spacing_below: none}
     type: RichText
   - layout_properties: {grid_position: 'RLOPUR,HXLNVN'}
     name: image_1
@@ -12,9 +12,7 @@ components:
     name: rt_footer
     properties:
       content: |
-        #### Source: **NOAA**'s forecast of {forecast_datetime}.
-
-        ### The Alert will remain in effect until **either** 7 AM on {forecast_until} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.
+        #### Source: **NOAA**'s forecast of Oct 12 04:46 PM.
     type: RichText
   - layout_properties: {grid_position: 'WMGNPA,KFUXXK'}
     name: label_2
