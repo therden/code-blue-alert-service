@@ -189,7 +189,7 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
   plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
   ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
-  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%H", tz=local_tz))
+  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p    ", tz=local_tz))
   ax.tick_params(
     axis="x",
     which="major",
@@ -199,28 +199,31 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
     labelcolor="blue",
   )
   ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=8)
+  # add a vertical line at midnight(s)
   ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
+  DataPoints = {
+    item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
+  }
+  xs, ys = list(DataPoints.keys()), list(DataPoints.values())
+  ax.plot(
+    DataPoints.keys(),
+    DataPoints.values(),
+    color="#72B7F2",
+    linewidth=0.5,
+  )
+  # ax.fill_between(xs, ys, color="lemonchiffon", interpolate=False)
+  # d = [32 for x in ys]
+  # ax.fill_between(xs, ys, d, color="lemonchiffon", interpolate=False)
+  # ax.fill_between(xs, d, ys, color="lemonchiffon", interpolate=False)
   if minTemp <= 32:
+    ax.fill_between(xs, ys, 32, color="#72B7F2", interpolate=False)
     # add a red horizontal line at 32 degrees and color line below that blue
-    coldDataPoints = {
-      item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
-    }
-    xs, ys = list(coldDataPoints.keys()), list(coldDataPoints.values())
-    ax.plot(
-      coldDataPoints.keys(),
-      coldDataPoints.values(),
-      color="cornflowerblue",
-      linewidth=0.5,
-    )
-    # ax.fill_between(xs, ys, 32, color="cornflowerblue", interpolate=False)
-    ax.fill_between(xs, ys, 32, color="paleturquoise", interpolate=False)
     ax.axhline(y=32, color="red", linestyle="-", linewidth=2)
-
-  # plt.figure(figsize=(10,6))
   ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
   ax.set_ylabel("Fahrenheit")
   # ax.set_xlabel("Date | Hour")
+  # plt.figure(figsize=(10,6))
 
   return anvil.mpl_util.plot_image()
 
