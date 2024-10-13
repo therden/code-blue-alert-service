@@ -19,8 +19,10 @@ class Forecast(ForecastTemplate):
   def set_background(self):
     if not self.record["CodeBlueQualified"]:
       self.rt_headline.background = "lemonchiffon"
+      self.rt_footer.background = "lemonchiffon"
     else:
       self.rt_headline.background = "theme:Primary Container"
+      self.rt_footer.background = "theme:Primary Container"
 
   def build_headline(self):
     if not self.record["CodeBlueQualified"]:
@@ -41,6 +43,9 @@ class Forecast(ForecastTemplate):
     self.rt_headline.data = {
       "in_effect": in_effect,
       "forecast_for_date": forecast_for,
+      # "forecast_datetime": f'{self.record["NOAAupdate"]:%I:%M %p}',
+    }
+    self.rt_footer.data = {
       "forecast_datetime": f'{self.record["NOAAupdate"]:%I:%M %p}',
     }
 
