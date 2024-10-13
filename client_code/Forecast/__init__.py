@@ -16,14 +16,13 @@ class Forecast(ForecastTemplate):
     self.location = self.record["NormalizedName"]
     self.updateForm()
 
-  def set_background(self):
+  def set_rt_background(self):
     if not self.record["CodeBlueQualified"]:
       rt_background = "lemonchiffon"
     else:
       rt_background = "theme:Primary Container"
     self.rt_headline.background = rt_background
     self.rt_footer.background = rt_background
-      
 
   def build_headline(self):
     if not self.record["CodeBlueQualified"]:
@@ -42,21 +41,24 @@ class Forecast(ForecastTemplate):
     }
     self.rt_footer.data = {
       "forecast_datetime": f'{self.record["NOAAupdate"]:%b %d %I:%M %p}',
-      "forecast_until": forecast_end
+      "forecast_until": forecast_end,
     }
+  
+  def set_rt_text(self):
+    
 
   def updateForm(self):
     location = self.location
     record = self.record
     self.label_1.text = f"codeblue.info/for/{location}"
-    self.set_background()
+    self.set_rt_background()
     self.build_headline()
     self.image_1.source = record["LastGraph"]
-    lastDownload = record["DataRequested"].strftime("%Y-%m-%d %I:%M %p")
-    lastNOAAupdate = record["NOAAupdate"].strftime("%I:%M %p")
-    self.label_2.text = (
-      f"Updated {lastDownload} (from NOAA's {lastNOAAupdate} forecast.)"
-    )
+    # lastDownload = record["DataRequested"].strftime("%Y-%m-%d %I:%M %p")
+    # lastNOAAupdate = record["NOAAupdate"].strftime("%I:%M %p")
+    # self.label_2.text = (
+    #   f"Updated {lastDownload} (from NOAA's {lastNOAAupdate} forecast.)"
+    # )
 
   def button_1_click(self, **event_args):
     """This method is called when the button is clicked"""
