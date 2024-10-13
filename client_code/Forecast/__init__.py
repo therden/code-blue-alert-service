@@ -43,9 +43,13 @@ class Forecast(ForecastTemplate):
       "forecast_datetime": f'{self.record["NOAAupdate"]:%b %d %I:%M %p}',
       "forecast_until": forecast_end,
     }
-  
-  def set_rt_text(self):
-    
+
+  # def set_and_style_alert(self):
+  #   if self.record["CodeBlueQualified"]:
+  #     in_effect = "IS"
+  #   else:
+  #     in_effect = "IS NOT"
+  #   top_text = f'## A Code Blue Alert **{in_effect}** in effect for the {forecast_for_date} overnight.'
 
   def updateForm(self):
     location = self.location
