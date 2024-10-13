@@ -64,5 +64,6 @@ def test_plot():
 @anvil.server.callable
 def get_sample_graph():
   row = app_tables.locations.search()[0]
+  row = app_tables.locations.search(CountyName="Tompkins")
   # Forecasts.graphForecast(row["RawData"], 1, 0)
-  anvil.server.call("graphForecast", row["RawData"], 1, 0)
+  return anvil.server.call("graphForecast", row["RawData"], 1, 0)

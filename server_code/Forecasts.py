@@ -204,8 +204,6 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
     item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
   }
   xs, ys = list(coldDataPoints.keys()), list(coldDataPoints.values())
-  ax.fill_between(xs, ys, 200, color="lemonchiffon", interpolate=False)
-
   if minTemp <= 32:
     ax.plot(
       coldDataPoints.keys(),
@@ -219,6 +217,8 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
     ax.fill_between(xs, ys, 32, color="theme:Primary Container", interpolate=False)
     # add a red horizontal line at 32 degrees and color line below that blue
     ax.axhline(y=32, color="red", linestyle="-", linewidth=2)
+  # else:
+  #   ax.fill_between(xs, ys, 32, color="lemonchiffon", interpolate=False)
 
   # plt.figure(figsize=(10,6))
   ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
