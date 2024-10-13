@@ -18,35 +18,31 @@ class Forecast(ForecastTemplate):
 
   def set_background(self):
     if not self.record["CodeBlueQualified"]:
-      self.rt_headline.background = "lemonchiffon"
-      self.rt_footer.background = "lemonchiffon"
+      rt_background = "lemonchiffon"
     else:
-      self.rt_headline.background = "theme:Primary Container"
-      self.rt_footer.background = "theme:Primary Container"
+      rt_background = "theme:Primary Container"
+    self.rt_headline.background = rt_background
+    self.rt_footer.background = rt_background
+      
 
   def build_headline(self):
     if not self.record["CodeBlueQualified"]:
-      in_effect = " NOT"
+      in_effect = "IS NOT"
     else:
-      in_effect = ""
-    forecast_start = self.record["NOAAupdate"]
-    forecast_end = self.record["NOAAupdate"] + timedelta(days=1)
-    forecast_for = f"{forecast_start:%b %d, %Y} - {forecast_end:%b %d, %Y}"
+      in_effect = "IS"
+    forecast_start = f'{self.record["NOAAupdate"]:%b %d}'
+    forecast_end = f'{(self.record["NOAAupdate"] + timedelta(days=1)):%b %d}'
+    # forecast_for = f"{forecast_start:%b %d} - {forecast_end:%b %d}"
     noaa_forecast_datetime = self.record["NOAAupdate"]
     forecast_time = f"{noaa_forecast_datetime:%I:%M %p}"
-    if datetime.today().day == noaa_forecast_datetime.day:
-      forecast_time += " today."
-    elif datetime.today().day == noaa_forecast_datetime.day + 1:
-      forecast_time += " yesterday."
-    # else:
-    #   forecast_time += f' on '
     self.rt_headline.data = {
       "in_effect": in_effect,
-      "forecast_for_date": forecast_for,
-      # "forecast_datetime": f'{self.record["NOAAupdate"]:%I:%M %p}',
+      # "forecast_for_date": forecast_for,
+      "forecast_for_date": forecast_start,
     }
     self.rt_footer.data = {
-      "forecast_datetime": f'{self.record["NOAAupdate"]:%I:%M %p}',
+      "forecast_datetime": f'{self.record["NOAAupdate"]:%b %d %I:%M %p}',
+      "forecast_until": forecast_end
     }
 
   def updateForm(self):

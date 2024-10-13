@@ -2,7 +2,7 @@ components:
 - components:
   - layout_properties: {grid_position: 'VHHBFR,JYPOQI'}
     name: rt_headline
-    properties: {content: '## Wind Chill temps **ARE {in_effect}** forecast to reach **Code Blue**-triggering levels during the {forecast_for_date} overnight.'}
+    properties: {content: '## A Code Blue Alert **{in_effect}** in effect for the {forecast_for_date} overnight.  ', spacing_above: none, spacing_below: none}
     type: RichText
   - layout_properties: {grid_position: 'RLOPUR,HXLNVN'}
     name: image_1
@@ -10,7 +10,11 @@ components:
     type: Image
   - layout_properties: {grid_position: 'SVKCMP,AEWOVR'}
     name: rt_footer
-    properties: {content: '#### (Based on **NOAA**''s forecast for this location as of {forecast_datetime}.)'}
+    properties:
+      content: |
+        #### (Source: **NOAA**'s forecast of {forecast_datetime}.)
+
+        ## The Alert will remain in effect until **either** 7 AM on {forecast_until} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.
     type: RichText
   - layout_properties: {grid_position: 'WMGNPA,KFUXXK'}
     name: label_2
