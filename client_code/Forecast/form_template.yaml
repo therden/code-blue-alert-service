@@ -12,7 +12,7 @@ components:
     name: rt_footer
     properties:
       content: |
-        #### Source: **NOAA**'s forecast of Oct 12 04:46 PM.
+        #### Source: **NOAA**'s forecast of {forecast_datetime}.
     type: RichText
   - layout_properties: {grid_position: 'WMGNPA,KFUXXK'}
     name: label_2

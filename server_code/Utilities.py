@@ -9,6 +9,7 @@ from matplotlib.dates import ConciseDateFormatter
 import matplotlib.ticker as ticker
 import anvil.mpl_util
 import numpy as np
+import Forecasts
 
 
 @anvil.server.callable
@@ -58,3 +59,10 @@ def test_plot():
 
   # Return this plot as a PNG image in a Media object
   return anvil.mpl_util.plot_image()
+
+
+@anvil.server.callable
+def get_sample_graph():
+  row = app_tables.locations.search()[0]
+  # Forecasts.graphForecast(row["RawData"], 1, 0)
+  anvil.server.call("graphForecast", row["RawData"], 1, 0)
