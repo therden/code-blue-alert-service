@@ -33,7 +33,7 @@ def get_locations_links_list():
 @anvil.server.route("/about/fourfiftyeight")
 @anvil.server.route("/about/FOURFIFTYEIGHT")
 @anvil.server.route("/about/FourFiftyEight")
-def about_code_blue_form(**p):
+def about_fourfiftyeight_form(**p):
   return anvil.server.FormResponse("About_fourfiftyeight")
 
 

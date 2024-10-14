@@ -14,6 +14,8 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 
+lastPeriodEligible = False
+
 
 @anvil.server.callable
 def getRawForecastData(latitude, longitude):

@@ -3,23 +3,23 @@ db_schema:
   daily_forecasts:
     client: none
     columns:
-    - admin_ui: {order: 0, width: 200}
+    - admin_ui: {order: 0, width: 145}
       name: DateOfForecast
       type: date
-    - admin_ui: {order: 2, width: 180}
+    - admin_ui: {order: 2, width: 140}
       name: DataRequested
       type: datetime
     - admin_ui: {order: 3, width: 142}
       name: NOAAupdate
       type: datetime
-    - admin_ui: {order: 4, width: 200}
+    - admin_ui: {order: 4, width: 136}
       name: RawData
       type: simpleObject
-    - admin_ui: {order: 0.5, width: 200}
+    - admin_ui: {order: 0.5, width: 151}
       name: locality
       target: locations
       type: link_single
-    - admin_ui: {order: 3.5, width: 200}
+    - admin_ui: {order: 3.5, width: 168}
       name: CodeBlueQualified
       type: bool
     server: full
