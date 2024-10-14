@@ -189,39 +189,51 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
   plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
   ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
-  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p   ", tz=local_tz))
+  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p", tz=local_tz))
   ax.tick_params(
     axis="x",
     which="major",
-    labelrotation=90,
+    labelrotation=45,
     labelsize=7,
-    color="red",
-    labelcolor="blue",
+    color="black",
+    labelcolor="black",
   )
-  ax.tick_params(axis="x", which="minor", labelrotation=90, labelsize=8)
+  ax.tick_params(
+    axis="x",
+    which="minor",
+    color="gray",
+    labelcolor="gray",
+    labelrotation=45,
+    labelsize=8,
+  )
   # add a vertical line at midnight(s)
   ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
-  DataPoints = {
-    item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
-  }
-  xs, ys = list(DataPoints.keys()), list(DataPoints.values())
+  DataPoints1 = {item["startTime"]: item["windChill"] for item in keyForecastData}
+  xs, ys = list(DataPoints1.keys()), list(DataPoints1.values())
   ax.plot(
-    DataPoints.keys(),
-    DataPoints.values(),
+    DataPoints1.keys(),
+    DataPoints1.values(),
     color="#72B7F2",
     linewidth=0.5,
   )
-  # ax.fill_between(xs, ys, color="lemonchiffon", interpolate=False)
-  # d = [32 for x in ys]
-  # ax.fill_between(xs, ys, d, color="lemonchiffon", interpolate=False)
-  # ax.fill_between(xs, d, ys, color="lemonchiffon", interpolate=False)
+  ax.fill_between(xs, ys, max(32, minTemp), interpolate=False, color="lemonchiffon")
   if minTemp <= 32:
-    ax.fill_between(xs, ys, 32, color="#72B7F2", interpolate=False)
-    # add a red horizontal line at 32 degrees and color line below that blue
-    ax.axhline(y=32, color="red", linestyle="-", linewidth=2)
+    DataPoints2 = {
+      item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
+    }
+    xs, ys = list(DataPoints2.keys()), list(DataPoints2.values())
+    ax.fill_between(
+      xs,
+      ys,
+      32,
+      interpolate=False,
+      color="#72B7F2",
+    )
+    # add a blue horizontal line at 32 degrees and color line below that blue
+    ax.axhline(y=32, color="dodgerblue", linestyle="-", linewidth=2)
   ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
-  ax.set_ylabel("Fahrenheit")
+  ax.set_ylabel("°Fahrenheit")
   # ax.set_xlabel("Date | Hour")
   # plt.figure(figsize=(10,6))
 
