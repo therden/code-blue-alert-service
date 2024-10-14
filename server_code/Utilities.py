@@ -63,6 +63,6 @@ def test_plot():
 
 @anvil.server.callable
 def get_sample_graph():
-  row = app_tables.locations.get(CountyName="Suffolk")
-  # row = app_tables.locations.get(CountyName="Tompkins")
+  # row = app_tables.locations.get(CountyName="Suffolk")
+  row = app_tables.locations.get(CountyName="Tompkins")
   return graphForecast(row["RawData"], 1, 0)

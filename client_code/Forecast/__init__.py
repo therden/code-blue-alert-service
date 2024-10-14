@@ -19,14 +19,15 @@ class Forecast(ForecastTemplate):
   def set_alert_text_and_style(self):
     if self.record["CodeBlueQualified"]:
       in_effect = "IS"
-      self.rt_footer.content += f'\n### Code Blue will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
+      # self.rt_footer.content += f'\n### This Alert will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
+      self.rt_header.content += f'\n### This Alert will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
       rt_background = "theme:Primary Container"
     else:
       in_effect = "IS NOT"
       rt_background = "lemonchiffon"
     self.rt_footer.data = {
-      "forecast_datetime": f'{self.record["NOAAupdate"]:%b %d %I:%M %p}',
-      "until_date": f'{(self.record["NOAAupdate"] + timedelta(days=1)):%b %d}',
+      "forecast_datetime": f'{self.record["NOAAupdate"]:%I:%M %p on %b %d}',
+      # "until_date": f'{(self.record["NOAAupdate"] + timedelta(days=1)):%b %d}',
     }
     self.rt_header.data = {
       "in_effect": in_effect,
