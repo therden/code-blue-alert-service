@@ -189,7 +189,7 @@ def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
   plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
   plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
   ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
-  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p    ", tz=local_tz))
+  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p   ", tz=local_tz))
   ax.tick_params(
     axis="x",
     which="major",
