@@ -1,0 +1,19 @@
+components:
+- layout_properties: {grid_position: 'OYKFDT,LHKHWJ'}
+  name: rich_text_1
+  properties:
+    content: |-
+      # About 'Code Blue'
+
+      ### [New York State law](https://www.law.cornell.edu/regulations/new-york/18-NYCRR-304.1) requires that each county's social services district must provide shelter to all persons who present as homeless -- without regard to their eligibility for other Federal- or State-funded programs -- whenever the National Weather Services forecasts wind chill temperatures will fall to 32° Fahrenheit or lower.
+
+      ### The state's [Office of Temporary and Disability Assistance](https://otda.ny.gov/) oversees this program, and periodically issues directives about it to the local districts that administer it.  The [most recent of these](https://otda.ny.gov/policy/directives/2024/LCM/24-LCM-13.pdf) was released on October 11, 2024.
+
+      ### This latest directive states that from October 1st through June 30th, every district must determine by 5:00 p.m. each day whether to declare a **Code Blue Alert**.
+
+      ### Once an Alert has been declared, the district must provide shelter from inclement weather until *either* 7:00 a.m. the next morning *or* actual wind chill temperatures rise above 32˚F -- whichever comes **later**.
+
+      ### The State provides 100% reimbursement for qualified Code Blue costs, but only up to a district-specific maximum.  Costs that exceed that cap are become 100% locally funded.  Both the number of persons who need to be sheltered under the program and the resources available to serve them vary at different points in time and across districts.  As a consequence of this variation, as well as other factors, Code Blue shelter may take various forms:  from a warming station, to a supervised congregate sleeping space, or even a motel room.
+  type: RichText
+container: {type: ColumnPanel}
+is_package: true

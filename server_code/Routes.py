@@ -12,6 +12,7 @@ def makeLink(URLstub, linkText):
   global APP_ORIGIN
   return f'<p><a href="{APP_ORIGIN}/for/{URLstub}">{linkText}</a></p>'
 
+
 @anvil.server.callable
 def makeMarkdownLink(linkText, URLstub):
   global APP_ORIGIN
@@ -27,6 +28,18 @@ def get_locations_links_list():
       for location in app_tables.locations.search()
     ]
   )
+
+
+@anvil.server.route("/about/codeblue")
+@anvil.server.route("/about/code_blue")
+def about_code_blue_form(**p):
+  return anvil.server.FormResponse("About_Code_Blue")
+
+
+@anvil.server.route("/about/thissite")
+@anvil.server.route("/about/this_site")
+def about_this_site_form(**p):
+  return anvil.server.FormResponse("About_this_site")
 
 
 @anvil.server.route("/locations")
