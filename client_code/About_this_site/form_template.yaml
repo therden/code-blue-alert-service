@@ -1,0 +1,11 @@
+components:
+- layout_properties: {grid_position: 'OYKFDT,LHKHWJ'}
+  name: rich_text_1
+  properties:
+    content: |-
+      # About this Site
+
+      ### As a public service, [codeblue.info](https://codeblue.info/) serves New York county-specific web pages showing whether the National Weather Services' forecasts call anticipate sustained wind chill temperatures low enough to trigger the availability of [**Code Blue** services]() required by New York State.
+  type: RichText
+container: {type: ColumnPanel}
+is_package: true
