@@ -16,10 +16,6 @@ components:
   name: image_1
   properties: {height: 44, source: _/theme/codeblueinfo_512x512.png}
   type: Image
-- layout_properties: {slot: left-nav}
-  name: check_box_1
-  properties: {text: check_box_1, visible: false}
-  type: CheckBox
 container:
   properties: {html: '@theme:standard-page.html'}
   type: HtmlTemplate
