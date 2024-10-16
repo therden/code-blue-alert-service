@@ -4,11 +4,10 @@ components:
   properties:
     background: theme:On Primary
     content: |-
-      This is a placeholder page for the forthcoming **Code Blue Alert** service, which will send messages via email and/or SMS text to inform subscribers whether or not a particular location should\* provide Code Blue services that night.
+      ### This is a placeholder page for the upcoming **Code Blue Alert** service.
 
-      Thank you for your interest, and please come back to this page soon.  We'll shortly have a way for persons who want to be notified when this service goes live to provide us with their email address for that purpose.
-
-      \* Under New York State's mandatory Code Blue program, local social services districts are supposed to determine by 5:00 PM each day whether the National Weather Service's forecast for their area predicts that wind chill temperatures will fall at or below 32 degrees Fahrenheit for at least two consecutive hours overnight.  Whenever those conditions are met, districts must provide certain sheltering services to any person who presents as having nowhere to stay until either 7:00 AM the next morning or when actual wind chill temperatures rise above 32 degrees -- whichever comes later.
+      ### Thank you for your interest - and please come back soon!
+    format: markdown
   type: RichText
 container: {type: ColumnPanel}
 is_package: true

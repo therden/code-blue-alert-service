@@ -5,6 +5,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from ..PlaceholderText import PlaceholderText
+from ..Footer import Footer
 
 
 class Home(HomeTemplate):
@@ -12,6 +13,13 @@ class Home(HomeTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
     self.content_panel.add_component(PlaceholderText())
+    self.content_panel.add_component(Footer())
+
+    # populate locations dropdown
+    item_list = []
+    for row in app_tables.locations.search():
+      item_list.append((row["CountyName"], row))
+    self.drop_down_1.items = item_list
 
     # Any code you write here will run before the form opens.
 

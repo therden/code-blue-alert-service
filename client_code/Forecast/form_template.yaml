@@ -27,7 +27,8 @@ components:
   name: content_panel
   properties: {col_widths: '{}', spacing_above: none, spacing_below: none}
   type: ColumnPanel
-- layout_properties: {slot: nav-right}
+- components: []
+  layout_properties: {slot: nav-right}
   name: navbar_links
   properties: {spacing_below: none}
   type: FlowPanel
