@@ -43,6 +43,12 @@ def about_code_blue_form(**p):
   return anvil.server.FormResponse("About_Code_Blue")
 
 
+@anvil.server.route("/about/windchill")
+@anvil.server.route("/about/wind_chill")
+def about_wind_chill_form(**p):
+  return anvil.server.FormResponse("About_wind_chill")
+
+
 @anvil.server.route("/about/thissite")
 @anvil.server.route("/about/this_site")
 def about_this_site_form(**p):

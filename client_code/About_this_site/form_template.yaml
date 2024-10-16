@@ -3,14 +3,16 @@ components:
   name: rich_text_1
   properties:
     content: |-
-      # About this Site
+      # About the **codeblue.info** website
 
-      ### As a free public service, [codeblue.info](https://codeblue.info/) hosts New York county-specific web pages that show whether the National Weather Services' forecasts anticipate sustained wind chill temperatures low enough to trigger the [**Code Blue** services](codeblue.info/about/codeblue) as mandated by New York State.
+      ### As a free service to New York State residents, [codeblue.info](https://codeblue.info/) hosts a separate web page for each County showing whether the [National Weather Service](https://www.weather.gov/)'s afternoon forecast calls for sustained wind chill temperatures low enough to trigger provision of State-mandated [**Code Blue**](codeblue.info/about/codeblue) shelter services.
 
-      ### We plan soon to offer a *paid subscription service* to allow individuals to receive daily notifications (via email, text, or both) regarding whether the forecast for a given district will trigger a Code Blue Alert.
-      [Alternatively, a district will be able to pay a small amount -- equivalent to to allow an unlimited number of individuals to subscribe to those notices.]: #
+      ### We plan soon to offer a *paid subscription service* that will send daily notifications (via email, text, or both) indicating whether the forecast for a particular district should trigger a Code Blue Alert.  Both individual and group subscriptions will be available.
 
-      ### Other related services may be added.  Please reach out if you have any ideas!
+      [Alternatively, a district will be able to pay a small amount -- equivalent to XX individual subscriptions -- to allow an unlimited number of individuals to subscribe to those notices.]: #
+
+      ### Other, related services may be added to this site later.
+      [Please use the following links to email us with [inquiries]() or [ideas]()!]: #
   type: RichText
 container: {type: ColumnPanel}
 is_package: true

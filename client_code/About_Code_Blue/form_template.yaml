@@ -3,17 +3,17 @@ components:
   name: rich_text_1
   properties:
     content: |-
-      # About 'Code Blue'
+      # About the **'Code Blue'** social services program
 
-      ### [New York State law](https://www.law.cornell.edu/regulations/new-york/18-NYCRR-304.1) requires that each county's Department of Social Services must provide shelter to _all_ persons who present as homeless -- without regard to their eligibility for other Federal- or State-funded programs -- whenever the National Weather Services forecasts wind chill temperatures will fall to 32° Fahrenheit or lower.
+      ### [New York State law](https://www.law.cornell.edu/regulations/new-york/18-NYCRR-304.1) requires that county Departments of Social Services provide shelter to _all_ persons who present as homeless -- without regard to their eligibility for other Federal- or State-funded programs -- whenever the [National Weather Service](https://www.weather.gov/) forecasts wind chill temperatures of 32° Fahrenheit or lower.
 
-      ### This program is overseen by the State's [Office of Temporary and Disability Assistance](https://otda.ny.gov/), which periodically issues directives on the subject to the local districts who administer it.  The [most recent of these](https://otda.ny.gov/policy/directives/2024/LCM/24-LCM-13.pdf) was released on October 11, 2024.
+      ### This program is overseen by the State's [Office of Temporary and Disability Assistance](https://otda.ny.gov/), which periodically issues directives on the subject to the local districts who administer it.  [The most recent](https://otda.ny.gov/policy/directives/2024/LCM/24-LCM-13.pdf) was released on October 11, 2024.
 
-      ### This directive states that, from October 1st through June 30th, every district must determine by 5:00 p.m. each day whether to declare a **Code Blue Alert** for the overnight to come.
+      ### This directive states that, by 5:00 p.m. each day from October 1st through June 30th, each district must declare a **Code Blue Alert** for the overnight to come if the [National Weather Service](https://www.weather.gov/) forecast for their location anticipates wind chill temperatures at or below freezing for two or more consecutive hours.
 
-      ### Once an Alert has been declared, the district must provide shelter from inclement weather until *either* 7:00 a.m. the next morning *or* actual wind chill temperatures rise above 32˚F -- whichever comes **later**.
+      ### Once an **Alert** has been declared, the district must provide shelter from inclement weather until _either_ 7:00 a.m. the next morning _or_ actual wind chill temperatures rise above 32˚F -- whichever comes **_later_**.
 
-      ### The State reimburses counties for qualified Code Blue costs at a rate of 100%, but only up to a district-specific maximum.  Costs that exceed that cap remain 100% locally-funded.  Both the number of persons who need to be sheltered under the program and the resources available to serve them vary at different points in time and across districts.  As a consequence of this differences, as well as other factors, Code Blue shelter may take a variety of forms, ranging from a warming station, to a supervised congregate sleeping space, to a motel room.
+      ### New York State reimburses counties for their qualified Code Blue expenses at a rate of 100%, but only up to a district-specific capped amount -- costs that exceed that cap are entirely locally funded.  Both the number of persons who are sheltered under the program and the resources available to serve them vary at different points in time and across districts.  As a consequence of these differences, as well as other factors, Code Blue shelter may take a variety of forms, ranging from warming stations, to supervised congregate sleeping spaces, to motel rooms.
   type: RichText
 container: {type: ColumnPanel}
 is_package: true
