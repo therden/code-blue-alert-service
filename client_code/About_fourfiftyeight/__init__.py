@@ -10,5 +10,6 @@ class About_fourfiftyeight(About_fourfiftyeightTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
+    # rt_data = {'logo': Image(source=BlobMedia("image/png", "_/theme/458-final-grayscale.png"))}
+    # self.rich_text_1.content = rt_data
     # Any code you write here will run before the form opens.
