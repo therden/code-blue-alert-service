@@ -4,10 +4,13 @@ components:
   properties: {height: 32}
   type: Spacer
 - layout_properties: {grid_position: 'OYKFDT,CYPPTF VPQBWD,WJLGGA'}
-  name: rt_sidepanel
+  name: rt_sidepanel_logo
+  properties: {align: center, content: '{458_logo}  '}
+  type: RichText
+- layout_properties: {grid_position: 'OYKFDT,CYPPTF GAYJGT,VLKWFX'}
+  name: rt_sidepanel_infoblock
   properties:
-    align: right
-    content: "{458_logo}  \n> **fourfiftyeight LLC**\n> 418 Broadway\n> Ste R\n> Albany, NY  12207\n> \n>  EIN: 33-1310291"
+    content: "> **fourfiftyeight LLC**\n> 418 Broadway\n> Ste R\n> Albany, NY  12207\n> \n>  EIN: 33-1310291"
   type: RichText
 - components: []
   layout_properties: {grid_position: 'OYKFDT,LHKHWJ'}

@@ -10,7 +10,7 @@ class About_fourfiftyeight(About_fourfiftyeightTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
-    self.rt_sidepanel.data = {
+    self.rt_sidepanel_logo.data = {
       "458_logo": Image(source="_/theme/458-final-grayscale.png", height=150)
     }
     # Image(source=img, height=50), slot='slot0', width=50
