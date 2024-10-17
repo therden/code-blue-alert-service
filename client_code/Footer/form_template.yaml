@@ -10,7 +10,7 @@ components:
   type: Link
 - layout_properties: {grid_position: 'AOBALA,QLAWEL'}
   name: image_1
-  properties: {height: 34.25, source: _/theme/458-final-grayscale.png}
+  properties: {height: 36.59999084472656, source: _/theme/458-final-grayscale.png}
   type: Image
 container:
   properties: {col_widths: '{"VEKTRB":20,"QTSYHD":38,"QLAWEL":2}'}
