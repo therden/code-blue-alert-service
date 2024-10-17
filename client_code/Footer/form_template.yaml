@@ -6,7 +6,13 @@ components:
   type: RichText
 - layout_properties: {grid_position: 'AOBALA,QTSYHD'}
   name: link_1
-  properties: {align: right, italic: true, text: fourfiftyeight, url: fourfiftyeight.org}
+  properties: {align: right, italic: true, text: fourfiftyeight, url: about/fourfiftyeight}
   type: Link
-container: {type: ColumnPanel}
+- layout_properties: {grid_position: 'AOBALA,QLAWEL'}
+  name: image_1
+  properties: {height: 34.25, source: _/theme/458-final-grayscale.png}
+  type: Image
+container:
+  properties: {col_widths: '{"VEKTRB":20,"QTSYHD":38,"QLAWEL":2}'}
+  type: ColumnPanel
 is_package: true
