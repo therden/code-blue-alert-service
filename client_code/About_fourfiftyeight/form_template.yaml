@@ -16,7 +16,7 @@ components:
   layout_properties: {grid_position: 'OYKFDT,LHKHWJ'}
   name: rt_body
   properties:
-    content: "# About FOURFIFTYEIGHT LLC  \n\n### Our business purpose is to help public organizations to more effectively serve their constituents through the use of internet-based services.\n\n### We can create websites, create both internal- and public-facing web-based applications, automate data conversion and processing workflows, \n\n### Although the company was formed in the fall of 2024, our two principal members have more than 50 years of experience in public service administration between them.\n\n### We're registered in Albany, New York, our home base is located in the beautiful Finger Lakes region.\n\n### Our *Operating Agreement* reflects the purpose of our business: to offer services geared toward making the world -- or, at least, our corner of it -- a better place, .  We'd be pleased to have the chance to discuss how we might work with you toward that end!\n"
+    content: "# About FOURFIFTYEIGHT LLC  \n\n### Registered in Albany, New York, but based in the beautiful Finger Lakes region, our business purpose is to help organizations to more effectively serve their constituents through the use of internet-based services.\n\n### We can create websites, create both internal- and public-facing web-based applications, and automate data conversion and processing workflows.\n\n### Although the company was just formed in the fall of 2024, our two principal members have more than 50 years of experience in public service administration between us.\n\n### Pleased get in touch to explore how we might help!\n"
   type: RichText
 container:
   properties: {col_widths: '{"LHKHWJ":90}'}
