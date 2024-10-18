@@ -22,6 +22,12 @@ db_schema:
     - admin_ui: {order: 3.5, width: 168}
       name: CodeBlueQualified
       type: bool
+    - admin_ui: {order: 3.25, width: 200}
+      name: Overnight
+      type: bool
+    - admin_ui: {order: 3.375, width: 200}
+      name: NextDay
+      type: bool
     server: full
     title: daily_forecasts
   files:
@@ -82,6 +88,12 @@ db_schema:
       type: media
     - admin_ui: {order: 4.90625, width: 200}
       name: CodeBlueQualified
+      type: bool
+    - admin_ui: {order: 4.890625, width: 200}
+      name: Overnight
+      type: bool
+    - admin_ui: {order: 4.8984375, width: 200}
+      name: NextDay
       type: bool
     server: full
     title: locations
