@@ -1,13 +1,5 @@
 components:
-- components:
-  - components:
-    - name: image_1
-      properties: {height: 44, source: _/theme/codeblueinfo_512x512.png}
-      type: Image
-    layout_properties: {grid_position: 'MGLUCC,BUGKRC'}
-    name: rich_text_1
-    properties: {content: codeblue.info}
-    type: RichText
+- components: []
   layout_properties: {slot: default}
   name: content_panel
   properties: {background: 'theme:Primary', col_widths: '{}', spacing_above: none, spacing_below: none}
@@ -15,7 +7,7 @@ components:
 - components: []
   layout_properties: {slot: nav-right}
   name: navbar_links
-  properties: {}
+  properties: {align: right}
   type: FlowPanel
 - components:
   - layout_properties: {grid_position: 'LGPFDI,VGQPPI'}
@@ -40,6 +32,11 @@ components:
   name: column_panel_1
   properties: {col_widths: '{}'}
   type: ColumnPanel
+- components: []
+  layout_properties: {slot: title}
+  name: rt_title
+  properties: {content: '{site_logo}{site_title}', spacing_above: none, spacing_below: none}
+  type: RichText
 container:
   properties: {background: '', html: '@theme:standard-page.html'}
   type: HtmlTemplate

@@ -11,8 +11,19 @@ class Layout(LayoutTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
+    logo = Image(
+      source="_/theme/codeblueinfo_512x512.png",
+      height=44,
+      spacing_above="None",
+      spacing_below="None",
+    )
+    # title = "# codeblue.info"
+    rt_title = RichText(
+      content="# codeblue.info", spacing_above="None", spacing_below="None"
+    )
+    # self.rt_title.data = {"site_logo": logo}
+    # self.rt_title.data = {"site_title": title_text}
+    self.rt_title.data = {"site_logo": logo, "site_title": rt_title}
     # self.content_panel.add_component(PlaceholderText())
     self.content_panel.add_component(Footer())
-
-
     # Any code you write here will run before the form opens.
