@@ -331,3 +331,5 @@ roles:
   name: outlined-error
 - components: [TextBox, TextArea, DatePicker, DropDown]
   name: input-error
+- {name: right-pad-5px}
+- {name: left-pad-5px}
