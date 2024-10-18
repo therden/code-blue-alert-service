@@ -1,6 +1,6 @@
 color_scheme:
   colors:
-  - {color: '#006874', name: Primary}
+  - {color: '#EFF7FD', name: Primary}
   - {color: '#72B7F2', name: Primary Container}
   - {color: '#FFFFFF', name: On Primary}
   - {color: '#001F24', name: On Primary Container}
@@ -14,7 +14,7 @@ color_scheme:
   - {color: '#0C1A39', name: On Tertiary Container}
   - {color: '#BA1A1A', name: Error}
   - {color: '#FAFDFD', name: Background}
-  - {color: '#FAFDFD', name: Surface}
+  - {color: '#73B6F2', name: Surface}
   - {color: '#191C1D', name: On Background}
   - {color: '#191C1D', name: On Surface}
   - {color: '#DBE4E6', name: Surface Variant}
@@ -26,7 +26,7 @@ color_scheme:
   - {color: 'rgba(255, 255, 255, 0.12)', name: Light Overlay 2}
   - {color: 'rgba(3, 31, 35, 0.08)', name: Dark Overlay 1}
   - {color: 'rgba(3, 31, 35, 0.12)', name: Dark Overlay 2}
-  - {color: 'rgba(0, 104, 116, 0.05)', name: Primary Overlay 1}
+  - {color: '#DFEFFB', name: Primary Overlay 1}
   - {color: 'rgba(0, 104, 116, 0.08)', name: Primary Overlay 2}
   - {color: 'rgba(0, 104, 116, 0.11)', name: Primary Overlay 3}
   preset_groups:

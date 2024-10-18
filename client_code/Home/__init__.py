@@ -11,4 +11,10 @@ class Home(HomeTemplate):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
 
-    # Any code you write here will run before the form opens.
+    # # Any code you write here will run before the form opens.
+    # populate locations dropdown
+    # item_list = []
+    # for row in app_tables.locations.search():
+    #   item_list.append((row["CountyName"], row))
+    # item_list = [(row["CountyName"], row) for row in app_tables.locations.search()]
+    # self.drop_down_1.items = item_list

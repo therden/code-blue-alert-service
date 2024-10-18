@@ -12,8 +12,8 @@ class Footer(FooterTemplate):
     # Set Form properties and Data Bindings.
     current_year = datetime.datetime.today().year
     self.rt_footer_left.data = {"current_year": current_year}
-    self.rt_footer_left.foreground = "white"
-    self.link_1.foreground = "white"
+    # self.rt_footer_left.foreground = "white"
+    # self.link_1.foreground = "white"
     self.init_components(**properties)
 
   # Any code you write here will run before the form opens.

@@ -1,2 +1,12 @@
+components_by_slot:
+  content_slot:
+  - layout_properties: {}
+    name: rich_text_1
+    properties:
+      content: |-
+        ### This is a temporary placeholder page for our forthcoming Code Blue Alerts website.
+
+        ### Please come back soon to check it out!
+    type: RichText
 is_package: true
 layout: {type: 'form:Layout'}
