@@ -93,7 +93,7 @@ def updateForecastData(location_row):
     DataRequestDatetime = datetime.strptime(generated, formatStr)
     DataRequestDatetime = DataRequestDatetime.astimezone(timezone)
     NOAAupdateDatetime = datetime.strptime(updated, formatStr)
-    NOAAupdateDatetime = DataRequestDatetime.astimezone(timezone)
+    NOAAupdateDatetime = NOAAupdateDatetime.astimezone(timezone)
     location_row.update(
       DataRequested=DataRequestDatetime,
       NOAAupdate=NOAAupdateDatetime,
