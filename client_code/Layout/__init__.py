@@ -5,6 +5,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from .Footer import Footer
+import anvil.js
 
 
 class Layout(LayoutTemplate):
@@ -17,13 +18,12 @@ class Layout(LayoutTemplate):
       spacing_above="None",
       spacing_below="None",
     )
-    # title = "# codeblue.info"
     rt_title = RichText(
-      content="# codeblue.info", spacing_above="None", spacing_below="None"
+      content="# codeblue.info",
+      spacing_above="None",
+      spacing_below="None",
     )
-    # self.rt_title.data = {"site_logo": logo}
-    # self.rt_title.data = {"site_title": title_text}
     self.rt_title.data = {"site_logo": logo, "site_title": rt_title}
-    # self.content_panel.add_component(PlaceholderText())
+    # self.content_panel.add_component(Footer)
     self.content_panel.add_component(Footer())
     # Any code you write here will run before the form opens.

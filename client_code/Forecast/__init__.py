@@ -6,7 +6,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 from datetime import timedelta
 from datetime import datetime
-from ..Footer import Footer
+# from ..Footer import Footer
 
 
 class Forecast(ForecastTemplate):
@@ -15,7 +15,7 @@ class Forecast(ForecastTemplate):
     self.init_components(**properties)
     self.record = properties["location_record"]
     self.location = self.record["NormalizedName"]
-    self.content_panel.add_component(Footer())
+    # self.content_panel.add_component(Footer())
     self.updateForm()
 
   def set_alert_text_and_style(self):

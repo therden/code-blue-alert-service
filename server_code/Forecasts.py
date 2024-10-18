@@ -90,10 +90,10 @@ def updateForecastData(location_row):
     updated = result["properties"]["updateTime"]
     formatStr = "%Y-%m-%dT%H:%M:%S%z"
     timezone = ZoneInfo("America/New_York")
-    DataRequestDatetime = datetime.strptime(generated, formatStr)
-    DataRequestDatetime = DataRequestDatetime.astimezone(timezone)
-    NOAAupdateDatetime = datetime.strptime(updated, formatStr)
-    NOAAupdateDatetime = NOAAupdateDatetime.astimezone(timezone)
+    DataRequestDatetime = datetime.strptime(generated, formatStr).astimezone(timezone)
+    # DataRequestDatetime = DataRequestDatetime.astimezone(timezone)
+    NOAAupdateDatetime = datetime.strptime(updated, formatStr).astimezone(timezone)
+    # NOAAupdateDatetime = NOAAupdateDatetime.astimezone(timezone)
     location_row.update(
       DataRequested=DataRequestDatetime,
       NOAAupdate=NOAAupdateDatetime,

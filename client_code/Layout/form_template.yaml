@@ -35,7 +35,7 @@ components:
 - components: []
   layout_properties: {slot: title}
   name: rt_title
-  properties: {content: '{site_logo}{site_title}', spacing_above: none, spacing_below: none}
+  properties: {content: '{site_logo}{site_title}', font_size: 40, spacing_above: none, spacing_below: none}
   type: RichText
 container:
   properties: {background: '', html: '@theme:standard-page.html'}
