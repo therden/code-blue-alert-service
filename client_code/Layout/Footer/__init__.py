@@ -14,9 +14,6 @@ class Footer(FooterTemplate):
     self.rt_footer_left.data = {"current_year": current_year}
     self.rt_footer_left.foreground = "white"
     self.link_1.foreground = "white"
-    # self.link_1.add_component(
-    #   Image(source="_/theme/458-final-grayscale.png", height=15)
-    # )
     self.init_components(**properties)
 
   # Any code you write here will run before the form opens.

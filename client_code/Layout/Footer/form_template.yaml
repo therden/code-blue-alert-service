@@ -1,6 +1,6 @@
 components:
 - components:
-  - event_bindings: {show: rich_text_1_show}
+  - event_bindings: {}
     name: rt_footer_left
     properties: {content: 'Copyright {current_year}', spacing_below: none}
     type: RichText

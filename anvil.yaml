@@ -88,13 +88,15 @@ db_schema:
 dependencies: []
 metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codeblueinfo_512x512.png', title: Code Blue Alert Service}
 name: Code Blue Alert Service
+native_deps: null
 package_name: Code_Blue_Alert_Service
 renamed: true
 runtime_options:
   client_version: '3'
+  legacy_features: {__dict__: true, bootstrap3: true, class_names: true, root_container: true}
   server_spec: {base: python310-standard}
   server_version: python3-sandbox
-  version: 2
+  version: 3
 scheduled_tasks:
 - job_id: RBZZXSHU
   task_name: updateDailyForecasts
