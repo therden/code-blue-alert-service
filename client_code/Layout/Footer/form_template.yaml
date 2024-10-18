@@ -4,19 +4,20 @@ components:
     event_bindings: {}
     layout_properties: {}
     name: rt_footer_left
-    properties: {align: left, content: '  Copyright {current_year}', foreground: '', spacing_below: none}
+    properties: {align: left, content: '  Copyright {current_year}', foreground: dimgray, spacing_below: none}
     type: RichText
   - components:
     - components: []
+      layout_properties: {}
       name: link_1
-      properties: {align: right, icon: _/theme/458-final-grayscale.png, icon_align: left, italic: true, spacing_above: small, spacing_below: none, text: 'fourfiftyeight  ', url: about/fourfiftyeight}
+      properties: {align: right, foreground: dimgray, icon: _/theme/458-final-grayscale.png, icon_align: left, italic: true, spacing_above: small, spacing_below: none, text: 'fourfiftyeight  ', url: about/fourfiftyeight}
       type: Link
     name: rt_footer_rt
     properties: {align: right, spacing_below: none}
     type: RichText
   layout_properties: {grid_position: 'JAAPVI,SNENEB'}
   name: flow_panel_1
-  properties: {align: justify, background: 'theme:Primary Container', foreground: dimgray, spacing_below: none}
+  properties: {align: justify, background: 'theme:Primary Container', foreground: '', spacing_below: none}
   type: FlowPanel
 container:
   properties: {col_widths: '{}', spacing_below: small}
