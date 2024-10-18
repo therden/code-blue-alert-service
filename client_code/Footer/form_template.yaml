@@ -5,12 +5,13 @@ components:
     properties: {content: 'Copyright {current_year}', spacing_below: none}
     type: RichText
   - components: []
+    layout_properties: {}
     name: link_1
-    properties: {align: right, icon: _/theme/458-final-grayscale.png, icon_align: right, italic: true, text: fourfiftyeight, url: about/fourfiftyeight}
+    properties: {align: right, icon: _/theme/458-final-grayscale.png, icon_align: right, italic: true, spacing_below: none, text: fourfiftyeight, url: about/fourfiftyeight}
     type: Link
   layout_properties: {grid_position: 'JAAPVI,SNENEB'}
   name: flow_panel_1
-  properties: {align: justify}
+  properties: {align: justify, spacing_below: none}
   type: FlowPanel
 container:
   properties: {col_widths: '{}'}
