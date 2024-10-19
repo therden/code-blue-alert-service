@@ -12,7 +12,7 @@ class Footer(FooterTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     current_year = datetime.datetime.today().year
-    self.rt_footer_left.data = {"current_year": current_year}
+    self.rt_footer_left.data = {"current_year": current_year, "spaces": "   "}
     self.init_components(**properties)
     dom_node = anvil.js.get_dom_node(self.link_1)
     dom_node.addEventListener("mouseover", self.mouseover_event)

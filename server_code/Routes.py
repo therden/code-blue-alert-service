@@ -36,13 +36,15 @@ def get_locations_links_list():
 def about_fourfiftyeight_form(**p):
   return anvil.server.FormResponse("About_fourfiftyeight")
 
-
+@anvil.server.route("/aboutcodeblue")
+@anvil.server.route("/about_code_blue")
 @anvil.server.route("/about/codeblue")
 @anvil.server.route("/about/code_blue")
 def about_code_blue_form(**p):
   return anvil.server.FormResponse("About_Code_Blue")
 
-
+@anvil.server.route("/aboutwindchill")
+@anvil.server.route("/about_wind_chill")
 @anvil.server.route("/about/windchill")
 @anvil.server.route("/about/wind_chill")
 def about_wind_chill_form(**p):
