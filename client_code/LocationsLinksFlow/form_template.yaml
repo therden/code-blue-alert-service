@@ -1,0 +1,8 @@
+components_by_slot:
+  content_slot:
+  - layout_properties: {}
+    name: flow_panel_1
+    properties: {}
+    type: FlowPanel
+is_package: true
+layout: {type: 'form:Layout'}

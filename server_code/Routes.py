@@ -81,7 +81,7 @@ def serve_location_page(location_name, **p):
     HTMLerrorText = "'Not Found'"
     additionalText = f'Location "{location_name}" not supported.'
     additionalText += "\nValid locations are listed at the following link."
-    suggestedURL = f"{APP_ORIGIN}/for/"
+    suggestedURL = f"{APP_ORIGIN}/locations"
     # return anvil.server.HttpResponse(responseCode, responseText)
     return anvil.server.FormResponse(
       "ErrorPage",
@@ -91,17 +91,8 @@ def serve_location_page(location_name, **p):
       suggestedURL=suggestedURL,  # optional
     )
 
-
+@anvil.server.route("/locations")
 @anvil.server.route("/for")
 def locations_links_form(**p):
-  return anvil.server.FormResponse("LocationsLinks")
+  return anvil.server.FormResponse("LocationsLinksFlow")
 
-
-@anvil.server.callable
-def get_locations_links(**p):
-  return [
-    # makeMarkdownLink(location["CountyName"], location["NormalizedName"])
-    # f'({location["CountyName"]}, {APP_ORIGIN}/for/{location["NormalizedName"]})'
-    (f'{location["CountyName"]}', f'{APP_ORIGIN}/for/{location["NormalizedName"]}')
-    for location in app_tables.locations.search()
-  ]

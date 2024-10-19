@@ -15,7 +15,7 @@ components:
     name: rt_footer_rt
     properties: {align: right, spacing_below: none}
     type: RichText
-  layout_properties: {full_width_row: true, grid_position: 'JAAPVI,SNENEB'}
+  layout_properties: {full_width_row: true, grid_position: 'JAAPVI,SNENEB', row_background: ''}
   name: flow_panel_1
   properties:
     align: justify
@@ -23,6 +23,7 @@ components:
     foreground: ''
     gap: none
     role: [left-pad-5px, right-pad-5px]
+    spacing_above: none
     spacing_below: none
     vertical_align: middle
   type: FlowPanel

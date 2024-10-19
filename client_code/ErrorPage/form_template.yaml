@@ -1,13 +1,20 @@
 components_by_slot:
   content_slot:
-  - layout_properties: {}
+  - components:
+    - event_bindings: {click: link_1_click}
+      layout_properties: {slot: suggested_url}
+      name: link_1
+      properties: {foreground: dimgray}
+      type: Link
+    layout_properties: {}
     name: rt_content
     properties:
-      content: |-
+      content: |+
         # HTML Error {html_error_code}: {html_error_message}
 
         ### {additional_text}
         #### {suggested_url}
+
     type: RichText
 is_package: true
 layout: {type: 'form:Layout'}

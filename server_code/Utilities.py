@@ -11,6 +11,8 @@ import anvil.mpl_util
 import numpy as np
 from .Forecasts import graphForecast
 
+APP_ORIGIN = anvil.server.get_app_origin()
+
 
 @anvil.server.callable
 def updateFields(rowObject, tupleList):
@@ -66,3 +68,11 @@ def get_sample_graph():
   # row = app_tables.locations.get(CountyName="Suffolk")
   row = app_tables.locations.get(CountyName="Tompkins")
   return graphForecast(row["RawData"], 1, 0)
+
+
+@anvil.server.callable
+def get_locations_links(**p):
+  return [
+    (f'{location["CountyName"]}', f'{APP_ORIGIN}/for/{location["NormalizedName"]}')
+    for location in app_tables.locations.search()
+  ]
