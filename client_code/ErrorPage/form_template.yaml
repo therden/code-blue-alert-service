@@ -1,0 +1,12 @@
+components_by_slot:
+  content_slot:
+  - layout_properties: {}
+    name: rt_content
+    properties:
+      content: |-
+        # {html_error_code} {html_error_message}
+
+        ### {additional_text}
+    type: RichText
+is_package: true
+layout: {type: 'form:Layout'}

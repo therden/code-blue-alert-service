@@ -30,11 +30,11 @@ def get_locations_links_list():
   )
 
 
+@anvil.server.route("/aboutfourfiftyeight")
 @anvil.server.route("/about/fourfiftyeight")
-@anvil.server.route("/about/FOURFIFTYEIGHT")
-@anvil.server.route("/about/FourFiftyEight")
 def about_fourfiftyeight_form(**p):
   return anvil.server.FormResponse("About_fourfiftyeight")
+
 
 @anvil.server.route("/aboutcodeblue")
 @anvil.server.route("/about_code_blue")
@@ -42,6 +42,7 @@ def about_fourfiftyeight_form(**p):
 @anvil.server.route("/about/code_blue")
 def about_code_blue_form(**p):
   return anvil.server.FormResponse("About_Code_Blue")
+
 
 @anvil.server.route("/aboutwindchill")
 @anvil.server.route("/about_wind_chill")
@@ -51,6 +52,8 @@ def about_wind_chill_form(**p):
   return anvil.server.FormResponse("About_wind_chill")
 
 
+@anvil.server.route("/aboutthissite")
+@anvil.server.route("/about_this_site")
 @anvil.server.route("/about/thissite")
 @anvil.server.route("/about/this_site")
 def about_this_site_form(**p):
@@ -74,8 +77,13 @@ def serve_location_page(location_name, **p):
   if location_record:
     return anvil.server.FormResponse("Forecast", location_record=location_record)
   else:
-    return anvil.server.HttpResponse(404, f'Location "{location_name}" not supported')
-
+    errorCode = 404
+    errorText = "HTTP 404: 'Not Found'"
+    responseText = f'Location "{location_name}" not supported.'
+    responseText += '\nValid locations are listed at {location_list_link}.'
+    location_list_link = 
+    # return anvil.server.HttpResponse(responseCode, responseText)
+    return anvil.server.FormResponse('ErrorPage', errorcode=errorCode, errorText=errorText, responseText=responseText, )
 
 @anvil.server.route("/for")
 def locations_links_form(**p):
