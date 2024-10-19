@@ -77,13 +77,20 @@ def serve_location_page(location_name, **p):
   if location_record:
     return anvil.server.FormResponse("Forecast", location_record=location_record)
   else:
-    errorCode = 404
-    errorText = "HTTP 404: 'Not Found'"
-    responseText = f'Location "{location_name}" not supported.'
-    responseText += '\nValid locations are listed at {location_list_link}.'
-    location_list_link = 
+    HTMLerrorCode = 404
+    HTMLerrorText = "'Not Found'"
+    additionalText = f'Location "{location_name}" not supported.'
+    additionalText += "\nValid locations are listed at the following link."
+    suggestedURL = f"{APP_ORIGIN}/for/"
     # return anvil.server.HttpResponse(responseCode, responseText)
-    return anvil.server.FormResponse('ErrorPage', errorcode=errorCode, errorText=errorText, responseText=responseText, )
+    return anvil.server.FormResponse(
+      "ErrorPage",
+      HTMLerrorCode=HTMLerrorCode,  # required
+      HTMLerrorText=HTMLerrorText,  # required
+      additionalText=additionalText,  # optional
+      suggestedURL=suggestedURL,  # optional
+    )
+
 
 @anvil.server.route("/for")
 def locations_links_form(**p):

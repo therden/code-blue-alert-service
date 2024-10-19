@@ -4,9 +4,10 @@ components_by_slot:
     name: rt_content
     properties:
       content: |-
-        # {html_error_code} {html_error_message}
+        # HTML Error {html_error_code}: {html_error_message}
 
         ### {additional_text}
+        #### {suggested_url}
     type: RichText
 is_package: true
 layout: {type: 'form:Layout'}
