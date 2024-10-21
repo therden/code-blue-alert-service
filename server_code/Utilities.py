@@ -198,3 +198,31 @@ def calculateWindchill(temperature=80, windspeed=0):
   T, V = temperature, windspeed
   windchill = 35.74 + (0.6215 * T) - (35.75 * (V * 0.16)) + (0.4275 * (T * (V * 0.16)))
   return round(windchill, 1)
+
+
+@anvil.server.callable
+def getDailies(prefix="START: "):
+  dailies = app_tables.daily_forecasts.search()
+  print(f"{prefix} daily forecast records: {len(dailies)}")
+  return dailies
+
+
+def getLocations_and_ForecastDates():
+  dailies = getDailies()
+  locationrows = set()
+  forecastdates = set()
+  for daily in dailies:
+    locationrows.add(daily["locality"])
+    forecastdates.add(daily["DateOfForecast"])
+  return locationrows, forecastdates
+
+@anvil.server.background_task
+@anvil.server.callable
+def findDuplicates():
+  locations, dates = getLocations_and_ForecastDates()
+  for adate in dates:
+    for aloc in locations:
+      found = app_tables.daily_forecasts.search(DateOfForecast=adate, locality=aloc)
+      if len(found) > 1:
+        found[0].delete()
+  getDailies(prefix="END:")

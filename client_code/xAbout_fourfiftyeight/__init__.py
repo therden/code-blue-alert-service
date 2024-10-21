@@ -1,4 +1,4 @@
-from ._anvil_designer import About_fourfiftyeightTemplate
+from ._anvil_designer import xAbout_fourfiftyeightTemplate
 from anvil import *
 import anvil.server
 import anvil.tables as tables
@@ -6,7 +6,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 
 
-class About_fourfiftyeight(About_fourfiftyeightTemplate):
+class xAbout_fourfiftyeight(xAbout_fourfiftyeightTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
