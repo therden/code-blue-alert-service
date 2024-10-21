@@ -51,7 +51,7 @@ def updateHourlyForecastURLs():
 
 @anvil.server.callable
 def getRawForecastData(locations_row):
-  hourlyForecastURL = locations_row["hourlyForecastURL"]
+  hourlyForecastURL = locations_row["HourlyForecastURL"]
   try:
     ForecastJSON = requests.get(hourlyForecastURL).json()
     return ForecastJSON

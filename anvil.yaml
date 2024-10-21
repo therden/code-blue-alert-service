@@ -100,10 +100,10 @@ db_schema:
     - admin_ui: {order: 4.90625, width: 200}
       name: CodeBlueQualified
       type: bool
-    - admin_ui: {order: 4.890625, width: 200}
+    - admin_ui: {order: 4.890625, width: 102}
       name: Overnight
       type: bool
-    - admin_ui: {order: 4.8984375, width: 200}
+    - admin_ui: {order: 4.8984375, width: 89}
       name: NextDay
       type: bool
     - admin_ui: {order: 4.625, width: 135}
