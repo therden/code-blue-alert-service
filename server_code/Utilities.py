@@ -79,3 +79,8 @@ def get_locations_links(**p):
     (f'{location["CountyName"]}', f'{APP_ORIGIN}/for/{location["NormalizedName"]}')
     for location in app_tables.locations.search()
   ]
+
+
+@anvil.server.callable
+def log_event(description='"log_event" called without a "Description"'):
+  app_tables.event_log.add_row(event_datetime=datetime.now(), description=description)

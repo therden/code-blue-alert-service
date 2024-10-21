@@ -13,19 +13,46 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
+from .Utilities import log_event
 
 lastPeriodEligible = False
 
 
 @anvil.server.callable
-def getRawForecastData(latitude, longitude):
-  forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
-  result = requests.get(forecastURL).json()
-  hourlyForecastURL = result.get("properties", {}).get("forecastHourly")
-  if hourlyForecastURL:
+def getHourlyForecastURL(locationRow):
+  latitude = locationRow["Latitude"]
+  longitude = locationRow["Longitude"]
+  pointsURL = f"https://api.weather.gov/points/{latitude},{longitude}"
+  pointsURLresult = requests.get(pointsURL).json()
+  try:
+    hourlyForecastURL = pointsURLresult.get("properties", {}).get("forecastHourly")
+    return hourlyForecastURL
+  except:
+    graphForecast()
+
+
+@anvil.server.callable
+def updateHourlyForecastURLs():
+  location_rows = app_tables.locations.search()
+  for row in location_rows:
+    currentForecastURL = getHourlyForecastURL(row)
+    if row["HourlyForecastURL"] != currentForecastURL:
+      description = f"Hourly Forecast URL for {row['LocationName']} updated from {row['HourlyForecastURL']} to {currentForecastURL}."
+      log_event(description)
+      row["HourlyForecastURL"] = currentForecastURL
+
+
+@anvil.server.callable
+def getRawForecastData(locations_row):
+  hourlyForecastURL = locations_row["hourlyForecastURL"]
+  try:
     ForecastJSON = requests.get(hourlyForecastURL).json()
     return ForecastJSON
-  else:
+  except:
+    description = (
+      f"Raw forecast data not retrieved for {locations_row['LocationName']}."
+    )
+    log_event(description)
     return None
 
 
@@ -74,8 +101,8 @@ def updateForecast(location_row):
 @anvil.server.callable
 @anvil.server.background_task
 def updateForecastData(location_row):
-  lat, long = location_row["Latitude"], location_row["Longitude"]
-  result = getRawForecastData(lat, long)
+  # lat, long = location_row["Latitude"], location_row["Longitude"]
+  result = getRawForecastData(location_row)
   if not result:
     return False
   periods = result.get("properties", {}).get("periods")

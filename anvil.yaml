@@ -30,6 +30,17 @@ db_schema:
       type: bool
     server: full
     title: daily_forecasts
+  event_log:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 155}
+      name: event_datetime
+      type: datetime
+    - admin_ui: {order: 1, width: 982}
+      name: description
+      type: string
+    server: full
+    title: event_log
   files:
     client: none
     columns:
@@ -102,7 +113,7 @@ db_schema:
       name: StrongForecastConsent
       type: bool
     - admin_ui: {order: 11.25, width: 200}
-      name: URLforAPIforecast
+      name: HourlyForecastURL
       type: string
     server: full
     title: locations
