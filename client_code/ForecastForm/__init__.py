@@ -1,4 +1,4 @@
-from ._anvil_designer import ForecastTemplate
+from ._anvil_designer import ForecastFormTemplate
 from anvil import *
 import anvil.server
 import anvil.tables as tables
@@ -8,7 +8,7 @@ from datetime import datetime
 from datetime import timedelta
 
 
-class Forecast(ForecastTemplate):
+class ForecastForm(ForecastFormTemplate):
   def __init__(self, **properties):
     # Set Form properties and Data Bindings.
     self.init_components(**properties)
