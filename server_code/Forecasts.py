@@ -1,9 +1,10 @@
 from datetime import date, datetime, timedelta
 import json
-import matplotlib.pyplot as plt
-from matplotlib.dates import ConciseDateFormatter
-import matplotlib.ticker as ticker
-import matplotlib.dates as mdates
+
+# import matplotlib.pyplot as plt
+# from matplotlib.dates import ConciseDateFormatter
+# import matplotlib.ticker as ticker
+# import matplotlib.dates as mdates
 import requests
 from time import sleep
 from zoneinfo import ZoneInfo
@@ -13,19 +14,48 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
+from .Utilities import log_event
+from .Utilities import graphForecast
+from .Utilities import calculateWindchill
 
 lastPeriodEligible = False
 
 
 @anvil.server.callable
-def getRawForecastData(latitude, longitude):
-  forecastURL = f"https://api.weather.gov/points/{latitude},{longitude}"
-  result = requests.get(forecastURL).json()
-  hourlyForecastURL = result.get("properties", {}).get("forecastHourly")
-  if hourlyForecastURL:
+def getHourlyForecastURL(locationRow):
+  latitude = locationRow["Latitude"]
+  longitude = locationRow["Longitude"]
+  pointsURL = f"https://api.weather.gov/points/{latitude},{longitude}"
+  pointsURLresult = requests.get(pointsURL).json()
+  try:
+    hourlyForecastURL = pointsURLresult.get("properties", {}).get("forecastHourly")
+    return hourlyForecastURL
+  except:
+    graphForecast()
+
+
+@anvil.server.callable
+def updateHourlyForecastURLs():
+  location_rows = app_tables.locations.search()
+  for row in location_rows:
+    currentForecastURL = getHourlyForecastURL(row)
+    if row["HourlyForecastURL"] != currentForecastURL:
+      description = f"Hourly Forecast URL for {row['LocationName']} updated from {row['HourlyForecastURL']} to {currentForecastURL}."
+      log_event(description)
+      row["HourlyForecastURL"] = currentForecastURL
+
+
+@anvil.server.callable
+def getRawForecastData(locations_row):
+  hourlyForecastURL = locations_row["hourlyForecastURL"]
+  try:
     ForecastJSON = requests.get(hourlyForecastURL).json()
     return ForecastJSON
-  else:
+  except:
+    description = (
+      f"Raw forecast data not retrieved for {locations_row['LocationName']}."
+    )
+    log_event(description)
     return None
 
 
@@ -74,8 +104,8 @@ def updateForecast(location_row):
 @anvil.server.callable
 @anvil.server.background_task
 def updateForecastData(location_row):
-  lat, long = location_row["Latitude"], location_row["Longitude"]
-  result = getRawForecastData(lat, long)
+  # lat, long = location_row["Latitude"], location_row["Longitude"]
+  result = getRawForecastData(location_row)
   if not result:
     return False
   periods = result.get("properties", {}).get("periods")
@@ -100,13 +130,6 @@ def updateForecastData(location_row):
       RawData=result,
     )
     return True
-
-
-@anvil.server.callable
-def calculateWindchill(temperature=80, windspeed=0):
-  T, V = temperature, windspeed
-  windchill = 35.74 + (0.6215 * T) - (35.75 * (V * 0.16)) + (0.4275 * (T * (V * 0.16)))
-  return round(windchill, 1)
 
 
 def getOneHourForecastData(oneHourlyForecastDict, tempAdjustment):
@@ -139,107 +162,107 @@ def tempModifier(temp):
   return temp
 
 
-@anvil.server.callable
-@anvil.server.background_task
-def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
-  DAYS = daysToGraph
-  HOURS = 24 * daysToGraph
+# @anvil.server.callable
+# @anvil.server.background_task
+# def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
+#   DAYS = daysToGraph
+#   HOURS = 24 * daysToGraph
 
-  def getKeyForecastData(oneHourForecastDict):
-    global lastPeriodEligible
+#   def getKeyForecastData(oneHourForecastDict):
+#     global lastPeriodEligible
 
-    period = oneHourForecastDict
-    betterTemp = int(period["temperature"]) + tempAdjustment
-    betterWindSpeed = int(period["windSpeed"].split()[0])
+#     period = oneHourForecastDict
+#     betterTemp = int(period["temperature"]) + tempAdjustment
+#     betterWindSpeed = int(period["windSpeed"].split()[0])
 
-    newPeriod = dict()
-    newPeriod["startTime"] = datetime.strptime(
-      period["startTime"], "%Y-%m-%dT%H:%M:%S%z"
-    )
-    newPeriod["temperatureF"] = betterTemp
-    newPeriod["windSpeedMPH"] = betterWindSpeed
-    newPeriod["windChill"] = calculateWindchill(betterTemp, betterWindSpeed)
-    newPeriod["consecutive"] = False
-    if newPeriod["windChill"] <= 32:
-      if lastPeriodEligible:
-        newPeriod["consecutive"] = True
-      else:
-        lastPeriodEligible = True
-    else:
-      lastPeriodEligible = False
-    return newPeriod
+#     newPeriod = dict()
+#     newPeriod["startTime"] = datetime.strptime(
+#       period["startTime"], "%Y-%m-%dT%H:%M:%S%z"
+#     )
+#     newPeriod["temperatureF"] = betterTemp
+#     newPeriod["windSpeedMPH"] = betterWindSpeed
+#     newPeriod["windChill"] = calculateWindchill(betterTemp, betterWindSpeed)
+#     newPeriod["consecutive"] = False
+#     if newPeriod["windChill"] <= 32:
+#       if lastPeriodEligible:
+#         newPeriod["consecutive"] = True
+#       else:
+#         lastPeriodEligible = True
+#     else:
+#       lastPeriodEligible = False
+#     return newPeriod
 
-  # "2024-09-06T17:40:12+00:00"
-  # NOAAforecastUpdated = datetime.strptime(
-  #   hourlyForecastJSON["properties"]["updateTime"][:16], "%Y-%m-%dT%H:%M"
-  # ) + timedelta(hours=-4)
+#   # "2024-09-06T17:40:12+00:00"
+#   # NOAAforecastUpdated = datetime.strptime(
+#   #   hourlyForecastJSON["properties"]["updateTime"][:16], "%Y-%m-%dT%H:%M"
+#   # ) + timedelta(hours=-4)
 
-  periods = hourlyForecastJSON["properties"]["periods"]
-  keyForecastData = [getKeyForecastData(period) for period in periods[:HOURS]]
-  graphData = {item["startTime"]: item["windChill"] for item in keyForecastData}
-  minTemp = min(graphData.values())
-  maxTemp = max(graphData.values())
-  dateSet = [
-    item["startTime"] for item in keyForecastData if item["startTime"].hour == 0
-  ]
+#   periods = hourlyForecastJSON["properties"]["periods"]
+#   keyForecastData = [getKeyForecastData(period) for period in periods[:HOURS]]
+#   graphData = {item["startTime"]: item["windChill"] for item in keyForecastData}
+#   minTemp = min(graphData.values())
+#   maxTemp = max(graphData.values())
+#   dateSet = [
+#     item["startTime"] for item in keyForecastData if item["startTime"].hour == 0
+#   ]
 
-  local_tz = ZoneInfo("America/New_York")
+#   local_tz = ZoneInfo("America/New_York")
 
-  fig, ax = plt.subplots()
+#   fig, ax = plt.subplots()
 
-  ax.plot(graphData.keys(), graphData.values(), color="darkgray", ls="--")
-  plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
-  plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
-  ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
-  ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p", tz=local_tz))
-  ax.tick_params(
-    axis="x",
-    which="major",
-    labelrotation=45,
-    labelsize=7,
-    color="black",
-    labelcolor="black",
-  )
-  ax.tick_params(
-    axis="x",
-    which="minor",
-    color="gray",
-    labelcolor="gray",
-    labelrotation=45,
-    labelsize=8,
-  )
-  # add a vertical line at midnight(s)
-  ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
+#   ax.plot(graphData.keys(), graphData.values(), color="darkgray", ls="--")
+#   plt.gca().xaxis.set_major_locator(mdates.DayLocator(tz=local_tz))
+#   plt.gca().xaxis.set_minor_locator(mdates.HourLocator(tz=local_tz))
+#   ax.xaxis.set_major_formatter(mdates.DateFormatter("%b %d", tz=local_tz))
+#   ax.xaxis.set_minor_formatter(mdates.DateFormatter("%I %p", tz=local_tz))
+#   ax.tick_params(
+#     axis="x",
+#     which="major",
+#     labelrotation=45,
+#     labelsize=7,
+#     color="black",
+#     labelcolor="black",
+#   )
+#   ax.tick_params(
+#     axis="x",
+#     which="minor",
+#     color="gray",
+#     labelcolor="gray",
+#     labelrotation=45,
+#     labelsize=8,
+#   )
+#   # add a vertical line at midnight(s)
+#   ax.vlines(x=dateSet, ymin=minTemp, ymax=maxTemp, colors="lightgray", ls="-")
 
-  DataPoints1 = {item["startTime"]: item["windChill"] for item in keyForecastData}
-  xs, ys = list(DataPoints1.keys()), list(DataPoints1.values())
-  ax.plot(
-    DataPoints1.keys(),
-    DataPoints1.values(),
-    color="#72B7F2",
-    linewidth=0.5,
-  )
-  ax.fill_between(xs, ys, max(32, minTemp), interpolate=False, color="lemonchiffon")
-  if minTemp <= 32:
-    DataPoints2 = {
-      item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
-    }
-    xs, ys = list(DataPoints2.keys()), list(DataPoints2.values())
-    ax.fill_between(
-      xs,
-      ys,
-      32,
-      interpolate=False,
-      color="#72B7F2",
-    )
-    # add a blue horizontal line at 32 degrees and color line below that blue
-    ax.axhline(y=32, color="dodgerblue", linestyle="-", linewidth=2)
-  ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
-  ax.set_ylabel("°Fahrenheit")
-  # ax.set_xlabel("Date | Hour")
-  # plt.figure(figsize=(10,6))
+#   DataPoints1 = {item["startTime"]: item["windChill"] for item in keyForecastData}
+#   xs, ys = list(DataPoints1.keys()), list(DataPoints1.values())
+#   ax.plot(
+#     DataPoints1.keys(),
+#     DataPoints1.values(),
+#     color="#72B7F2",
+#     linewidth=0.5,
+#   )
+#   ax.fill_between(xs, ys, max(32, minTemp), interpolate=False, color="lemonchiffon")
+#   if minTemp <= 32:
+#     DataPoints2 = {
+#       item["startTime"]: tempModifier(item["windChill"]) for item in keyForecastData
+#     }
+#     xs, ys = list(DataPoints2.keys()), list(DataPoints2.values())
+#     ax.fill_between(
+#       xs,
+#       ys,
+#       32,
+#       interpolate=False,
+#       color="#72B7F2",
+#     )
+#     # add a blue horizontal line at 32 degrees and color line below that blue
+#     ax.axhline(y=32, color="dodgerblue", linestyle="-", linewidth=2)
+#   ax.set_title(f"Wind Chill Temperatures: {DAYS} day Forecast")
+#   ax.set_ylabel("°Fahrenheit")
+#   # ax.set_xlabel("Date | Hour")
+#   # plt.figure(figsize=(10,6))
 
-  return anvil.mpl_util.plot_image()
+#   return anvil.mpl_util.plot_image()
 
 
 @anvil.server.callable
