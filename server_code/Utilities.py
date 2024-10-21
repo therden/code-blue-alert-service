@@ -15,7 +15,6 @@ from zoneinfo import ZoneInfo
 
 APP_ORIGIN = anvil.server.get_app_origin()
 
-
 @anvil.server.callable
 def updateFields(rowObject, tupleList):
   for each in tupleList:
