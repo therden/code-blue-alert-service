@@ -30,10 +30,14 @@ def getHourlyForecastURL(locationRow):
   try:
     hourlyForecastURL = pointsURLresult.get("properties", {}).get("forecastHourly")
     return hourlyForecastURL
-  except:
-    graphForecast()
+  except Exception:
+    description = (
+      f"Failed to retrieve Hourly Forecast URL for {locationRow['LocationName']}."
+    )
+    log_event(description)
 
 
+@anvil.server.background_task
 @anvil.server.callable
 def updateHourlyForecastURLs():
   location_rows = app_tables.locations.search()
@@ -61,24 +65,22 @@ def getRawForecastData(locations_row):
 
 @anvil.server.background_task
 @anvil.server.callable
-def updateDailyForecasts():
-  thisDate = date.today()
-
+def updateDailyForecasts(max_tries=10):
   # create empty records for day's forecasts
+  thisDate = date.today()
   locations = app_tables.locations.search()
   for location in locations:
     app_tables.daily_forecasts.add_row(DateOfForecast=thisDate, locality=location)
 
-  # iterate through empty records up to 5x
-  # with longer pauses between each try
-  for counter in range(5):
+  # iterate through empty records, with longer pauses between each try
+  for counter in range(max_tries):
     emptyForecasts = app_tables.daily_forecasts.search(
       DateOfForecast=thisDate, RawData=None
     )
     emptyForecastCount = len(emptyForecasts)
     if emptyForecastCount == 0:
       break
-    sleep(5 * counter)
+    sleep(3 * counter)
     for each in emptyForecasts:
       result = updateForecast(each["locality"])
       if not result:
@@ -87,6 +89,8 @@ def updateDailyForecasts():
         DataRequested=each["locality"]["DataRequested"],
         NOAAupdate=each["locality"]["NOAAupdate"],
         RawData=each["locality"]["RawData"],
+        Overnight=each["locality"]["Overnight"],
+        NextDay=each["locality"]["NextDay"],
       )
 
 
@@ -110,20 +114,14 @@ def updateForecastData(location_row):
     return False
   periods = result.get("properties", {}).get("periods")
   if periods:
-    # DataRequestDatetime = datetime.strptime(
-    #   result["properties"]["generatedAt"], "%Y-%m-%dT%H:%M:%S%z"
-    # ) + timedelta(hours=-4)
-    # NOAAupdateDatetime = datetime.strptime(
-    #   result["properties"]["updateTime"], "%Y-%m-%dT%H:%M:%S%z"
-    # ) + timedelta(hours=-4)
-    generated = result["properties"]["generatedAt"]
-    updated = result["properties"]["updateTime"]
     formatStr = "%Y-%m-%dT%H:%M:%S%z"
     timezone = ZoneInfo("America/New_York")
-    DataRequestDatetime = datetime.strptime(generated, formatStr).astimezone(timezone)
-    # DataRequestDatetime = DataRequestDatetime.astimezone(timezone)
-    NOAAupdateDatetime = datetime.strptime(updated, formatStr).astimezone(timezone)
-    # NOAAupdateDatetime = NOAAupdateDatetime.astimezone(timezone)
+    DataRequestDatetime = datetime.strptime(
+      result["properties"]["generatedAt"], formatStr
+    ).astimezone(timezone)
+    NOAAupdateDatetime = datetime.strptime(
+      result["properties"]["updateTime"], formatStr
+    ).astimezone(timezone)
     location_row.update(
       DataRequested=DataRequestDatetime,
       NOAAupdate=NOAAupdateDatetime,
@@ -154,9 +152,6 @@ def getOneHourForecastData(oneHourlyForecastDict, tempAdjustment):
   else:
     lastPeriodEligible = False
   return newPeriod
-
-
-
 
 
 @anvil.server.callable
