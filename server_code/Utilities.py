@@ -9,6 +9,7 @@ from matplotlib.dates import ConciseDateFormatter
 import matplotlib.ticker as ticker
 import anvil.mpl_util
 import numpy as np
+from datetime import datetime
 from .Forecasts import graphForecast
 
 APP_ORIGIN = anvil.server.get_app_origin()
@@ -36,10 +37,12 @@ def copyCurrentLocationsDataToDaily():
 
 @anvil.server.callable
 def edit_locations():
+  nextForecast = datetime.strptime("Oct 21 2024  5:00PM", "%b %d %Y %I:%M%p")
   listOfFieldValueTuples = [
-    ("DataRequested", None),
-    ("NOAAupdate", None),
-    ("RawData", None),
+    ("NextPMforecast", nextForecast),
+    ("StrongForecastConsent", False),
+    # ("Overnight", None),
+    # ("NextDay", None),
   ]
   for location in app_tables.locations.search():
     updateFields(location, listOfFieldValueTuples)

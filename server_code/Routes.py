@@ -60,9 +60,9 @@ def about_this_site_form(**p):
   return anvil.server.FormResponse("About_this_site")
 
 
-@anvil.server.route("/locations")
-def locations_list_form(**p):
-  return anvil.server.FormResponse("LocationsLinksList")
+# @anvil.server.route("/locations")
+# def locations_list_form(**p):
+#   return anvil.server.FormResponse("LocationsLinksList")
 
 
 @anvil.server.route("/for/test")
