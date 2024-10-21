@@ -75,7 +75,7 @@ def serve_location_page(location_name, **p):
   print(location_name)
   location_record = app_tables.locations.get(NormalizedName=location_name)
   if location_record:
-    return anvil.server.FormResponse("Forecast", location_record=location_record)
+    return anvil.server.FormResponse("ForecastForm", location_record=location_record)
   else:
     HTMLerrorCode = 404
     HTMLerrorText = "'Not Found'"
