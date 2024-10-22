@@ -1,4 +1,4 @@
-allow_embedding: true
+allow_embedding: false
 db_schema:
   daily_forecasts:
     client: none
