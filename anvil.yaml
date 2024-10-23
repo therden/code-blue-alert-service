@@ -107,7 +107,7 @@ db_schema:
       name: NextDay
       type: bool
     - admin_ui: {order: 4.625, width: 135}
-      name: NextPMforecast
+      name: NextForecastDue
       type: datetime
     - admin_ui: {order: 4.6875, width: 200}
       name: StrongForecastConsent
@@ -117,6 +117,14 @@ db_schema:
       type: string
     server: full
     title: locations
+  test:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Column1
+      type: string
+    server: full
+    title: test
 dependencies: []
 metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codeblueinfo_512x512.png', title: Code Blue Alert Service}
 name: Code Blue Alert Service
@@ -143,7 +151,7 @@ scheduled_tasks:
     every: day
     n: 1
 services:
-- client_config: {}
+- client_config: {enable_v2: true}
   server_config: {auto_create_missing_columns: true}
   source: /runtime/services/tables.yml
 - client_config: {}
