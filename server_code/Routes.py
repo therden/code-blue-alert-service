@@ -91,8 +91,13 @@ def serve_location_page(location_name, **p):
       suggestedURL=suggestedURL,  # optional
     )
 
+
 @anvil.server.route("/locations")
 @anvil.server.route("/for")
 def locations_links_form(**p):
   return anvil.server.FormResponse("LocationsLinksFlow")
 
+
+@anvil.server.route("/embed_test")
+def embed_test(**p):
+  return anvil.server.FormResponse("test_embed_form")
