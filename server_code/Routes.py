@@ -98,6 +98,6 @@ def locations_links_form(**p):
   return anvil.server.FormResponse("LocationsLinksFlow")
 
 
-@anvil.server.route("/embed_test")
+@anvil.server.route("/embed_test", cross_site_session=True)
 def embed_test(**p):
   return anvil.server.FormResponse("test_embed_form")
