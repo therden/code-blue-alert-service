@@ -134,7 +134,13 @@ renamed: true
 runtime_options:
   client_version: '3'
   legacy_features: {__dict__: true, bootstrap3: true, class_names: true, root_container: true}
-  server_spec: {base: python310-standard}
+  server_spec: {base: python310-minimal}
+  server_spec_disabled:
+    base: python310-standard
+    requirements: |-
+      xlrd
+      openpyxl==3.1.5
+      matplotlib
   server_version: python3-sandbox
   version: 3
 scheduled_tasks:
