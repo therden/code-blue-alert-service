@@ -193,7 +193,15 @@ services:
   server_config: {file_table: files}
   source: /runtime/services/anvil/files.yml
 - client_config: {allow_remember_me: true, allow_signup: true, confirm_email: true, enable_automatically: true, remember_me_days: 30, use_email: true, use_token: true}
-  server_config: {user_table: users}
+  server_config:
+    email_content:
+      confirm_address: {html: '<p>Hello,</p><p><br></p><p>Your email address was been used to start creating a new account on our <a href="https://anvil.works/codeblue.info" rel="noopener noreferrer" target="_blank" style="background-color: rgb(255, 255, 255);">codeblue.info</a> website.</p><p><br></p><p>If you wish to <strong>complete</strong> the process, please click the following link to confirm:  {{confirm_link}}</p><p><br></p><p>Thank you,</p><p>The <a href="codeblue.info" rel="noopener noreferrer" target="_blank">codeblue.info</a> team</p><p><br></p>', subject: Confirm email address to complete codeblue.info registration}
+      reset_password: {html: '<p>Hello,</p><p><br></p><p>A password reset was requested for the <a href="https://anvil.works/codeblue.info" rel="noopener noreferrer" target="_blank" style="background-color: rgb(255, 255, 255);">codeblue.info</a> account associated with {{email}}. </p><p><br></p><p>To reset your password, click the link below within the next 10 minutes:</p><p>{{reset_link}}</p><p><br></p><p>Thank you,</p><p>The <a href="https://anvil.works/codeblue.info" rel="noopener noreferrer" target="_blank">codeblue.info</a> team</p><p><br></p>', subject: codeblue.info password reset link}
+      token_login: {html: '<p>Hello,</p><p><br></p><p><a href="https://anvil.works/codeblue.info" rel="noopener noreferrer" target="_blank" style="background-color: rgb(255, 255, 255);">codeblue.info</a>  received a login request for the your account ({{email}}). </p><p><br></p><p>To log in, click the link below within the next 10 minutes:</p><p>{{login_link}}</p><p><br></p><p>Thank you,</p><p>The <a href="https://anvil.works/codeblue.info" rel="noopener noreferrer" target="_blank">codeblue.info</a> team</p><p><br></p>', subject: codeblue.info Login Link}
+    user_table: users
   source: /runtime/services/anvil/users.yml
+- client_config: {}
+  server_config: {test_mode: true}
+  source: /runtime/services/anvil/email.yml
 startup: {module: Home, type: form}
 startup_form: null

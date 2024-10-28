@@ -1,3 +1,4 @@
+import anvil.email
 import anvil.users
 import pandas as pd
 import anvil.files
