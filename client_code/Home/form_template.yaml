@@ -4,7 +4,7 @@ components_by_slot:
     name: rich_text_1
     properties:
       content: |-
-        ### This is a temporary placeholder page for our forthcoming Code Blue Alerts website.
+        ### This is the placeholder page for our upcoming *Code Blue* website.
 
         ### Please come back soon to check it out!
     type: RichText

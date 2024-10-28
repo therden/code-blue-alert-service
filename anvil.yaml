@@ -125,6 +125,35 @@ db_schema:
       type: string
     server: full
     title: test
+  users:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: email
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: enabled
+      type: bool
+    - admin_ui: {order: 2, width: 200}
+      name: last_login
+      type: datetime
+    - admin_ui: {order: 3, width: 200}
+      name: password_hash
+      type: string
+    - admin_ui: {order: 4, width: 200}
+      name: n_password_failures
+      type: number
+    - admin_ui: {order: 5, width: 200}
+      name: confirmed_email
+      type: bool
+    - admin_ui: {order: 6, width: 200}
+      name: remembered_logins
+      type: simpleObject
+    - admin_ui: {order: 7, width: 200}
+      name: signed_up
+      type: datetime
+    server: full
+    title: Users
 dependencies: []
 metadata: {description: Receive "Code Blue" alerts via email and/or text, logo_img: 'asset:codeblueinfo_512x512.png', title: Code Blue Alert Service}
 name: Code Blue Alert Service
@@ -163,5 +192,8 @@ services:
 - client_config: {}
   server_config: {file_table: files}
   source: /runtime/services/anvil/files.yml
+- client_config: {allow_remember_me: true, allow_signup: true, confirm_email: true, enable_automatically: true, remember_me_days: 30, use_email: true, use_token: true}
+  server_config: {user_table: users}
+  source: /runtime/services/anvil/users.yml
 startup: {module: Home, type: form}
 startup_form: null
