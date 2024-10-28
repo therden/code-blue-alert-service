@@ -22,12 +22,18 @@ class ForecastForm(ForecastFormTemplate):
 
   def set_alert_text_and_style(self):
     if self.record["CodeBlueQualified"]:
-      self.rt_header.content = f"### A Code Blue Alert **IS** in effect for the {self.forecast_for_date} overnight."
-      self.rt_header.content += f'\n### This Alert will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
+      if self.record["StrongForecastConsent"]:
+        self.rt_header.content = f"### Windchill temps for the {self.forecast_for_date} overnight WILL be low enough to trigger a Code Blue alert."
+      else:
+        self.rt_header.content = f"### A Code Blue Alert **IS** in effect for the {self.forecast_for_date} overnight."
+        self.rt_header.content += f'\n### This Alert will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
       rt_background = "theme:Primary Container"
     else:
       rt_background = "lemonchiffon"
-      self.rt_header.content = f"### A Code Blue Alert is **NOT** in effect for the {self.forecast_for_date} overnight."
+      if self.record["StrongForecastConsent"]:
+        self.rt_header.content = f"### A Code Blue Alert is **NOT** in effect for the {self.forecast_for_date} overnight."
+      else:
+        self.rt_header.content = f"### Windchill temps for the {self.forecast_for_date} overnight will **NOT** be sufficient to trigger a Code Blue alert."
     self.rt_footer.content = f"Generated: {self.generated_datetime}\n  Source: {self.forecast_time} forecast, National Weather Service"
     self.rt_header.background = rt_background
     self.rt_footer.background = rt_background
