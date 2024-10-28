@@ -22,16 +22,12 @@ class ForecastForm(ForecastFormTemplate):
 
   def set_alert_text_and_style(self):
     if self.record["CodeBlueQualified"]:
-      in_effect = "IS"
+      self.rt_header.content = f"### A Code Blue Alert **IS** in effect for the {self.forecast_for_date} overnight."
       self.rt_header.content += f'\n### This Alert will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
       rt_background = "theme:Primary Container"
     else:
-      in_effect = "IS NOT"
       rt_background = "lemonchiffon"
-    self.rt_header.data = {
-      "in_effect": in_effect,
-      "for_date": self.forecast_for_date,
-    }
+      self.rt_header.content = f"### A Code Blue Alert is **NOT** in effect for the {self.forecast_for_date} overnight."
     self.rt_footer.content = f"Generated: {self.generated_datetime}\n  Source: {self.forecast_time} forecast, National Weather Service"
     self.rt_header.background = rt_background
     self.rt_footer.background = rt_background
