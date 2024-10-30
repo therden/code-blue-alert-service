@@ -8,6 +8,8 @@ from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime, timedelta
 import requests
+import sys
+from zoneinfo import ZoneInfo
 from .Utilities import log_event
 
 
@@ -23,7 +25,6 @@ def checkForForecastsDue():
     for location in forecasts_due:
       # launch background task for location
       anvil.server.launch_background_task("make_new_daily_forecast", location)
-      # get rawdata from noaa's api
       # evaluate rawdata's suitability
       # transform rawdata for our purposes
       # generate forecast graph
@@ -32,13 +33,22 @@ def checkForForecastsDue():
 
 
 def make_new_daily_forecast(location_row):
+  dailyForecastDict = dict(RawData=None, DataRequested=None, NOAAupdate=None)
+  locationName = location_row["LocationName"]
   raw_data = get_raw_data(location_row)
   if not raw_data:
-    # log failure  #todo
+    description = f"Raw forecast data for {locationName} was not retrieved."
+    log_event(description)
     return False
-  if not raw_data_usable(raw_data):
-    # log failure  #todo
+  if not raw_data_contains_hourly_forecasts(raw_data):
+    description = f"Raw data for {locationName} missing forecast data (periods)."
+    log_event(description)
     return False
+  dailyForecastDict["RawData"] = raw_data
+  forecastMetadata = get_forecast_metadata(raw_data)
+  dailyForecastDict["DataRequested"]=forecastMetadata[0]
+  dailyForecastDict["NOAAupdate"]=forecastMetadata[1]
+  
   transformed_data = transform_data(raw_data)
   graph_image = generate_forecast_graph(transformed_data)
   api_request_dt, noaa_forecast_dt, overnight_status, morrow_status = extract_values(
@@ -52,34 +62,37 @@ def make_new_daily_forecast(location_row):
     # log failure  #todo
 
 
-# @anvil.server.callable
-# @anvil.tables.in_transaction
-# def test_transactions():
-#   for count in range(5):
-#     app_tables.test.add_row(Column1=f"test entry #{count}")
-
-
 def get_raw_data(location_row):
   hourlyForecastURL = location_row["HourlyForecastURL"]
   try:
     ForecastJSON = requests.get(hourlyForecastURL).json()
   except:
-    description = f"Raw forecast data not retrieved for {location_row['LocationName']}."
-    log_event(description)
     ForecastJSON = None
   return ForecastJSON
 
 
-def raw_data_usable(raw_data):
-  raise Exception("Not yet implemented")
+def raw_data_contains_hourly_forecasts(raw_data, locationName):
+  try:
+    result = raw_data.get("properties", {}).get("periods")
+  except:
+    result = None
+  return result
+
+
+def get_forecast_metadata(raw_data):
+  formatStr = "%Y-%m-%dT%H:%M:%S%z"
+  UpdateRequestDT = datetime.strptime(raw_data["properties"]["generatedAt"], formatStr)
+  NOAAforecastDT = datetime.strptime(raw_data["properties"]["updateTime"], formatStr)
+  timezone = ZoneInfo("America/New_York")
+  return UpdateRequestDT.astimezone(timezone), NOAAforecastDT.astimezone(timezone)
 
 
 def transform_data(raw_data):
-  raise Exception("Not yet implemented")
+  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
 
 
 def generate_forecast_graph(transformed_data):
-  raise Exception("Not yet implemented")
+  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
 
 
 def extract_values(transformed_data):
@@ -87,7 +100,7 @@ def extract_values(transformed_data):
   # noaa_forecast_dt
   # overnight_status
   # morrow_status
-  raise Exception("Not yet implemented")
+  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
 
 
 def calculate_next_forecast_dt(this_forecast_dt):
@@ -98,7 +111,7 @@ def calculate_next_forecast_dt(this_forecast_dt):
 @anvil.server.callable
 @anvil.tables.in_transaction
 def update_tables_with_daily_forecast_info():
-  raise Exception("Not yet implemented")
+  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
 
 
 #     name = location["CountyName"]
@@ -109,3 +122,10 @@ def update_tables_with_daily_forecast_info():
 #     )
 # else:
 #   print(f"No forecasts due at {now_dt}")
+
+
+# @anvil.server.callable
+# @anvil.tables.in_transaction
+# def test_transactions():
+#   for count in range(5):
+#     app_tables.test.add_row(Column1=f"test entry #{count}")

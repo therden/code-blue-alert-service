@@ -228,3 +228,11 @@ def findDuplicates():
       if len(found) > 1:
         found[0].delete()
   getDailies(prefix="END:")
+
+def getFunctionName():
+  import sys
+  return sys._getframe().f_code.co_name
+
+def RaiseExceptionNotYetImplemented():
+  raise Exception(f"{}")
+  
