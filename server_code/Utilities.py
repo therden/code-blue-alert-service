@@ -233,6 +233,6 @@ def getFunctionName():
   import sys
   return sys._getframe().f_code.co_name
 
-def RaiseExceptionNotYetImplemented():
-  raise Exception(f"{}")
+# def RaiseExceptionNotYetImplemented():
+#   raise Exception(f"{}")
   
