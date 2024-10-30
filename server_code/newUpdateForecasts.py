@@ -7,6 +7,8 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 from datetime import datetime, timedelta
+import requests
+from .Utilities import log_event
 
 
 # background task to check Locations["NextForecastDue"] once each minute
@@ -58,19 +60,26 @@ def make_new_daily_forecast(location_row):
 
 
 def get_raw_data(location_row):
-  pass
+  hourlyForecastURL = location_row["HourlyForecastURL"]
+  try:
+    ForecastJSON = requests.get(hourlyForecastURL).json()
+  except:
+    description = f"Raw forecast data not retrieved for {location_row['LocationName']}."
+    log_event(description)
+    ForecastJSON = None
+  return ForecastJSON
 
 
 def raw_data_usable(raw_data):
-  pass
+  raise Exception("Not yet implemented")
 
 
 def transform_data(raw_data):
-  pass
+  raise Exception("Not yet implemented")
 
 
 def generate_forecast_graph(transformed_data):
-  pass
+  raise Exception("Not yet implemented")
 
 
 def extract_values(transformed_data):
@@ -78,17 +87,18 @@ def extract_values(transformed_data):
   # noaa_forecast_dt
   # overnight_status
   # morrow_status
-  pass
+  raise Exception("Not yet implemented")
 
 
 def calculate_next_forecast_dt(this_forecast_dt):
-  return this_forecast_dt.replace(day=(now_dt.day + 1))
+  next_forecast = this_forecast_dt.replace(day=(datetime.now().day + 1))
+  return next_forecast
 
 
 @anvil.server.callable
 @anvil.tables.in_transaction
 def update_tables_with_daily_forecast_info():
-  pass
+  raise Exception("Not yet implemented")
 
 
 #     name = location["CountyName"]
