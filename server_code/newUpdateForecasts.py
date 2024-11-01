@@ -10,8 +10,10 @@ from datetime import datetime, timedelta
 import requests
 import sys
 from zoneinfo import ZoneInfo
+from .Utilities import calculateWindchill
 from .Utilities import log_event
 from .Utilities import getCallingFunctionName as func_name
+from .Utilities import graphForecast
 
 
 # background task to check Locations["NextForecastDue"] once each minute
@@ -32,7 +34,7 @@ def checkForForecastsDue():
       # save new forecast data to daily_forecasts
       # update location["NextForecastDue"]
 
-
+@anvil.server.callable
 def make_new_daily_forecast(location_row):
   dailyForecastDict = dict(RawData=None, DataRequested=None, NOAAupdate=None)
   locationName = location_row["LocationName"]
@@ -40,22 +42,23 @@ def make_new_daily_forecast(location_row):
   if not raw_data:
     log_event(f"Raw forecast data for {locationName} was not retrieved.")
     return False
-  if not raw_data_contains_hourly_forecasts(raw_data):
+  if not raw_data_contains_hourly_forecasts(raw_data, locationName):
     log_event(f"Raw data for {locationName} missing forecast data (periods).")
     return False
-  dailyForecastDict["RawData"] = raw_data
+  # dailyForecastDict["RawData"] = raw_data  # todo:  un-comment this!!!
+  # dailyForecastDict["Graph"] = graphForecast(raw_data)   # todo:  un-comment this!!!
   forecastDates = get_forecast_dates(raw_data)
   dailyForecastDict["DataRequested"] = forecastDates[0]
   dailyForecastDict["NOAAupdate"] = forecastDates[1]
-
-  transformed_data = transform_data(raw_data)
-  dailyForecastDict["Graph"] = generate_forecast_graph(transformed_data)
-  api_request_dt, noaa_forecast_dt, overnight_status, morrow_status = extract_values(
-    transformed_data
-  )
-  next_forecast_dt = calculate_next_forecast_dt(location["NextForecastDue"])
+  transformedDataDict = transform_data(raw_data)
+  overnight_status, morrow_status = extract_statuses(transformedDataDict)
+  dailyForecastDict["Overnight"] = overnight_status
+  dailyForecastDict["NextDay"] = morrow_status
+  next_forecast_dt = calculate_next_forecast_dt(location_row["NextForecastDue"])
   try:
-    update_tables_with_daily_forecast_info(next_forecast_dt, dailyForecastDict)
+    update_tables_with_daily_forecast_info(
+      location_row, dailyForecastDict, next_forecast_dt
+    )
   except Exception:
     log_event(f"Table updates for {locationName} forecast unsuccessful.")
 
@@ -66,7 +69,8 @@ def get_raw_data(location_row):
     ForecastJSON = requests.get(hourlyForecastURL).json()
   except:
     ForecastJSON = None
-  return ForecastJSON
+  finally:
+    return ForecastJSON
 
 
 def raw_data_contains_hourly_forecasts(raw_data, locationName):
@@ -91,20 +95,56 @@ def getDatetimeObj(datetime_str):
   return datetime_obj
 
 
+def extract_statuses(raw_data):
+  transformedData = transform_data(raw_data)
+  oneDay = timedelta(days=1)
+  thisDate = datetime.combine(datetime.today(), datetime.min.time())
+  tomorrow = thisDate + oneDay
+  overnightStart = thisDate.replace(hour=17)
+  overnightEnd = tomorrow.replace(hour=7)
+  morrowStart = overnightEnd
+  morrowEnd = overnightStart + oneDay
+  qualfication_test = test_for_consecutive_hourly_windchill_forecasts
+  overnight_status = qualfication_test(transformedData, overnightStart, overnightEnd)
+  morrow_status = qualfication_test(transformedData, morrowStart, morrowEnd)
+  return overnight_status, morrow_status
+  # raise Exception(f"Function {func_name()} not yet implemented")
+
+
 def transform_data(raw_data):
-  raise Exception(f"Function {func_name()} not yet implemented")
+  periods = raw_data["properties"]["periods"]
+  return [transform_period(period) for period in periods]
 
 
-def generate_forecast_graph(transformed_data):
-  raise Exception(f"Function {func_name()} not yet implemented")
+def test_for_consecutive_hourly_windchill_forecasts(transformed_data, start_dt, end_dt):
+  test_data = [
+    dict
+    for dict in transformed_data
+    if dict["startTime"] >= start_dt and dict["startTime"] <= end_dt
+  ]
+  consecutive = False
+  last_hour = False
+  for each_hour in test_data:
+    if each_hour["windChillF"] <= 32:
+      if last_hour:
+        consecutive = True
+        break
+      else:
+        last_hour = True
+    else:
+      last_hour = False
+  return consecutive
+  # raise Exception(f"Function {func_name()} not yet implemented")
 
 
-def extract_values(transformed_data):
-  # api_request_dt
-  # noaa_forecast_dt
-  # overnight_status
-  # morrow_status
-  raise Exception(f"Function {func_name()} not yet implemented")
+def transform_period(period):
+  newPeriod = dict()
+  newPeriod["startTime"] = datetime.strptime(period["startTime"], "%Y-%m-%dT%H:%M:%S%z")
+  betterTemp = int(period["temperature"])
+  betterWindSpeed = int(period["windSpeed"].split()[0])
+  newPeriod["temperatureF"] = betterTemp
+  newPeriod["windSpeedMPH"] = betterWindSpeed
+  newPeriod["windChillF"] = calculateWindchill(betterTemp, betterWindSpeed)
 
 
 def calculate_next_forecast_dt(this_forecast_dt):
@@ -112,10 +152,14 @@ def calculate_next_forecast_dt(this_forecast_dt):
   return next_forecast
 
 
-@anvil.server.callable
-@anvil.tables.in_transaction
-def update_tables_with_daily_forecast_info():
-  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
+def update_tables_with_daily_forecast_info(
+  location_row, dailyForecastDict, next_forecast_dt
+):
+  print(f'For {location_row["CountyName"]}...')
+  print(f"  Next forecast datetime (to update Locations): {next_forecast_dt}")
+  print("   Here's the dict that'll update 'daily_forecasts'")
+  print(dailyForecastDict)
+  # raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
 
 
 #     name = location["CountyName"]
