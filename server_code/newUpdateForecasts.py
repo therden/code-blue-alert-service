@@ -6,7 +6,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 import requests
 import sys
 from zoneinfo import ZoneInfo
@@ -48,24 +48,23 @@ def make_new_daily_forecast(location_row, raw_data=False):
   if not raw_data_contains_hourly_forecasts(raw_data):
     log_event(f"Raw data for {locationName} missing forecast data (periods).")
     return False
-  # dailyForecastDict["RawData"] = raw_data  # todo:  un-comment this!!!
-  # dailyForecastDict["Graph"] = graphForecast(raw_data)   # todo:  un-comment this!!!
   forecastDates = get_forecast_dates(raw_data)
+  overnight_status, morrow_status = extract_statuses(raw_data)
+  dailyForecastDict["DateOfForecast"] = forecastDates[0].date()
+  dailyForecastDict["locality"] = location_row
   dailyForecastDict["DataRequested"] = forecastDates[0]
   dailyForecastDict["NOAAupdate"] = forecastDates[1]
-  transformedDataDict = transform_data(raw_data)
-  overnight_status, morrow_status = extract_statuses(transformedDataDict)
+  dailyForecastDict["Graph"] = graphForecast(raw_data)
   dailyForecastDict["Overnight"] = overnight_status
   dailyForecastDict["NextDay"] = morrow_status
-  next_forecast_dt = calculate_next_forecast_dt(location_row["NextForecastDue"])
+  dailyForecastDict["RawData"] = raw_data
   try:
-    update_tables_with_daily_forecast_info(
-      location_row, next_forecast_dt, dailyForecastDict
-    )
+    update_tables_with_daily_forecast_info(dailyForecastDict)
   except Exception:
     log_event(f"Table updates for {locationName} forecast unsuccessful.")
 
 
+@anvil.server.callable
 def get_raw_data(location_row):
   hourlyForecastURL = location_row["HourlyForecastURL"]
   try:
@@ -84,27 +83,29 @@ def raw_data_contains_hourly_forecasts(raw_data):
   return result
 
 
+@anvil.server.callable
 def get_forecast_dates(raw_data):
   UpdateRequestDT = getDatetimeObj(raw_data["properties"]["generatedAt"])
   NOAAforecastDT = getDatetimeObj(raw_data["properties"]["updateTime"])
   return UpdateRequestDT, NOAAforecastDT
 
 
+@anvil.server.callable
 def getDatetimeObj(datetime_str):
   formatStr = "%Y-%m-%dT%H:%M:%S%z"
   datetime_obj = datetime.strptime(datetime_str, formatStr)
-  timezone = ZoneInfo("America/New_York")
-  datetime_obj = datetime_obj.astimezone(timezone)
+  datetime_obj = make_date_offset_aware(datetime_obj)
   return datetime_obj
 
 
+@anvil.server.callable
 def extract_statuses(raw_data):
   transformedData = transform_data(raw_data)
   oneDay = timedelta(days=1)
   thisDate = datetime.combine(datetime.today(), datetime.min.time())
   tomorrow = thisDate + oneDay
-  overnightStart = thisDate.replace(hour=17)
-  overnightEnd = tomorrow.replace(hour=7)
+  overnightStart = make_date_offset_aware(thisDate.replace(hour=17))
+  overnightEnd = make_date_offset_aware(tomorrow.replace(hour=7))
   morrowStart = overnightEnd
   morrowEnd = overnightStart + oneDay
   qualfication_test = test_for_consecutive_hourly_windchill_forecasts
@@ -114,11 +115,20 @@ def extract_statuses(raw_data):
   # raise Exception(f"Function {func_name()} not yet implemented")
 
 
+@anvil.server.callable
+def make_date_offset_aware(datetime_obj):
+  timezone = ZoneInfo("America/New_York")
+  datetime_obj = datetime_obj.astimezone(timezone)
+  return datetime_obj
+
+
+@anvil.server.callable
 def transform_data(raw_data):
   periods = raw_data["properties"]["periods"]
   return [transform_period(period) for period in periods]
 
 
+@anvil.server.callable
 def test_for_consecutive_hourly_windchill_forecasts(transformed_data, start_dt, end_dt):
   test_data = [
     dict
@@ -140,6 +150,7 @@ def test_for_consecutive_hourly_windchill_forecasts(transformed_data, start_dt, 
   # raise Exception(f"Function {func_name()} not yet implemented")
 
 
+@anvil.server.callable
 def transform_period(period):
   newPeriod = dict()
   newPeriod["startTime"] = datetime.strptime(period["startTime"], "%Y-%m-%dT%H:%M:%S%z")
@@ -148,22 +159,28 @@ def transform_period(period):
   newPeriod["temperatureF"] = betterTemp
   newPeriod["windSpeedMPH"] = betterWindSpeed
   newPeriod["windChillF"] = calculateWindchill(betterTemp, betterWindSpeed)
+  return newPeriod
 
 
+@anvil.server.callable
 def calculate_next_forecast_dt(this_forecast_dt):
   next_forecast = this_forecast_dt.replace(day=(datetime.now().day + 1))
   return next_forecast
 
 
-def update_tables_with_daily_forecast_info(
-  location_row, next_forecast_dt, dailyForecastDict
-):
-  print(f'For {location_row["CountyName"]}...')
-  print(
-    f"  Next forecast datetime (to update Locations): {next_forecast_dt:%B %d, %I:%M %p}"
-  )
-  print("   Here's the dict that'll update 'daily_forecasts'")
-  print(dailyForecastDict)
+@anvil.server.callable
+@anvil.tables.in_transaction
+def update_tables_with_daily_forecast_info(dailyForecastDict):
+  app_tables.daily_forecasts.add_row(dailyForecastDict)
+  location_row = dailyForecastDict["locality"]
+  next_forecast_dt = location_row["NextForecastDue"]
+  location_row["NextForecastDue"] = calculate_next_forecast_dt(next_forecast_dt)
+  # print(f'For {location_row["CountyName"]}...')
+  # print(
+  #   f"  Next forecast datetime (to update Locations): {next_forecast_dt:%B %d, %I:%M %p}"
+  # )
+  # print("   Here's the dict that'll update 'daily_forecasts'")
+  # print(dailyForecastDict)
   # raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
 
 
@@ -192,6 +209,15 @@ def update_tables_with_daily_forecast_info(
 # import anvil.tables.query as q
 # from anvil.tables import app_tables
 # import anvil.server
+# from datetime import datetime, timedelta
+# import requests
+# import sys
+# from zoneinfo import ZoneInfo
+# from .Utilities import calculateWindchill
+# from .Utilities import log_event
+# from .Utilities import getCallingFunctionName as func_name
+# from .Utilities import graphForecast
 # locs = app_tables.locations.search()
 # alb = locs[0]
 # raw_data = alb["RawData"]
+# p1 = raw_data["properties"]["periods"][0]
