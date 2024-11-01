@@ -177,3 +177,16 @@ def update_tables_with_daily_forecast_info(
 # def test_transactions():
 #   for count in range(5):
 #     app_tables.test.add_row(Column1=f"test entry #{count}")
+
+def setupServerConsole():
+  import anvil.email
+  import anvil.users
+  import anvil.files
+  from anvil.files import data_files
+  import anvil.tables as tables
+  import anvil.tables.query as q
+  from anvil.tables import app_tables
+  import anvil.server
+  locs = app_tables.locations.search()
+  alb = locs[0]
+  
