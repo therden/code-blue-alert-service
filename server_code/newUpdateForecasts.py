@@ -41,6 +41,7 @@ def make_new_daily_forecast(location_row, raw_data=False):
   locationName = location_row["LocationName"]
   if not raw_data:
     raw_data = get_raw_data(location_row)
+  print(raw_data)
   if not raw_data:
     log_event(f"Raw forecast data for {locationName} was not retrieved.")
     return False
