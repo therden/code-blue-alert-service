@@ -28,6 +28,9 @@ db_schema:
     - admin_ui: {order: 3.375, width: 200}
       name: NextDay
       type: bool
+    - admin_ui: {order: 3.125, width: 200}
+      name: Graph
+      type: media
     server: full
     title: daily_forecasts
   event_log:

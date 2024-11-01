@@ -11,6 +11,7 @@ import requests
 import sys
 from zoneinfo import ZoneInfo
 from .Utilities import log_event
+from .Utilities import getCallingFunctionName as func_name
 
 
 # background task to check Locations["NextForecastDue"] once each minute
@@ -37,29 +38,26 @@ def make_new_daily_forecast(location_row):
   locationName = location_row["LocationName"]
   raw_data = get_raw_data(location_row)
   if not raw_data:
-    description = f"Raw forecast data for {locationName} was not retrieved."
-    log_event(description)
+    log_event(f"Raw forecast data for {locationName} was not retrieved.")
     return False
   if not raw_data_contains_hourly_forecasts(raw_data):
-    description = f"Raw data for {locationName} missing forecast data (periods)."
-    log_event(description)
+    log_event(f"Raw data for {locationName} missing forecast data (periods).")
     return False
   dailyForecastDict["RawData"] = raw_data
-  forecastMetadata = get_forecast_metadata(raw_data)
-  dailyForecastDict["DataRequested"]=forecastMetadata[0]
-  dailyForecastDict["NOAAupdate"]=forecastMetadata[1]
-  
+  forecastDates = get_forecast_dates(raw_data)
+  dailyForecastDict["DataRequested"] = forecastDates[0]
+  dailyForecastDict["NOAAupdate"] = forecastDates[1]
+
   transformed_data = transform_data(raw_data)
-  graph_image = generate_forecast_graph(transformed_data)
+  dailyForecastDict["Graph"] = generate_forecast_graph(transformed_data)
   api_request_dt, noaa_forecast_dt, overnight_status, morrow_status = extract_values(
     transformed_data
   )
   next_forecast_dt = calculate_next_forecast_dt(location["NextForecastDue"])
   try:
-    update_tables_with_daily_forecast_info()
+    update_tables_with_daily_forecast_info(next_forecast_dt, dailyForecastDict)
   except Exception:
-    pass
-    # log failure  #todo
+    log_event(f"Table updates for {locationName} forecast unsuccessful.")
 
 
 def get_raw_data(location_row):
@@ -79,20 +77,26 @@ def raw_data_contains_hourly_forecasts(raw_data, locationName):
   return result
 
 
-def get_forecast_metadata(raw_data):
+def get_forecast_dates(raw_data):
+  UpdateRequestDT = getDatetimeObj(raw_data["properties"]["generatedAt"])
+  NOAAforecastDT = getDatetimeObj(raw_data["properties"]["updateTime"])
+  return UpdateRequestDT, NOAAforecastDT
+
+
+def getDatetimeObj(datetime_str):
   formatStr = "%Y-%m-%dT%H:%M:%S%z"
-  UpdateRequestDT = datetime.strptime(raw_data["properties"]["generatedAt"], formatStr)
-  NOAAforecastDT = datetime.strptime(raw_data["properties"]["updateTime"], formatStr)
+  datetime_obj = datetime.strptime(datetime_str, formatStr)
   timezone = ZoneInfo("America/New_York")
-  return UpdateRequestDT.astimezone(timezone), NOAAforecastDT.astimezone(timezone)
+  datetime_obj = datetime_obj.astimezone(timezone)
+  return datetime_obj
 
 
 def transform_data(raw_data):
-  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
+  raise Exception(f"Function {func_name()} not yet implemented")
 
 
 def generate_forecast_graph(transformed_data):
-  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
+  raise Exception(f"Function {func_name()} not yet implemented")
 
 
 def extract_values(transformed_data):
@@ -100,7 +104,7 @@ def extract_values(transformed_data):
   # noaa_forecast_dt
   # overnight_status
   # morrow_status
-  raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
+  raise Exception(f"Function {func_name()} not yet implemented")
 
 
 def calculate_next_forecast_dt(this_forecast_dt):

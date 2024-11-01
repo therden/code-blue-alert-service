@@ -13,6 +13,7 @@ from matplotlib.dates import ConciseDateFormatter
 import matplotlib.ticker as ticker
 import matplotlib.dates as mdates
 import numpy as np
+import sys
 from zoneinfo import ZoneInfo
 
 APP_ORIGIN = anvil.server.get_app_origin()
@@ -218,6 +219,7 @@ def getLocations_and_ForecastDates():
     forecastdates.add(daily["DateOfForecast"])
   return locationrows, forecastdates
 
+
 @anvil.server.background_task
 @anvil.server.callable
 def findDuplicates():
@@ -229,10 +231,6 @@ def findDuplicates():
         found[0].delete()
   getDailies(prefix="END:")
 
-def getFunctionName():
-  import sys
-  return sys._getframe().f_code.co_name
 
-# def RaiseExceptionNotYetImplemented():
-#   raise Exception(f"{}")
-  
+def getCallingFunctionName():
+  return sys._getframe().f_back.f_code.co_name
