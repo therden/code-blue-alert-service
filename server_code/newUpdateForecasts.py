@@ -34,15 +34,17 @@ def checkForForecastsDue():
       # save new forecast data to daily_forecasts
       # update location["NextForecastDue"]
 
+
 @anvil.server.callable
-def make_new_daily_forecast(location_row):
-  dailyForecastDict = dict(RawData=None, DataRequested=None, NOAAupdate=None)
+def make_new_daily_forecast(location_row, raw_data=False):
+  dailyForecastDict = dict()
   locationName = location_row["LocationName"]
-  raw_data = get_raw_data(location_row)
+  if not raw_data:
+    raw_data = get_raw_data(location_row)
   if not raw_data:
     log_event(f"Raw forecast data for {locationName} was not retrieved.")
     return False
-  if not raw_data_contains_hourly_forecasts(raw_data, locationName):
+  if not raw_data_contains_hourly_forecasts(raw_data):
     log_event(f"Raw data for {locationName} missing forecast data (periods).")
     return False
   # dailyForecastDict["RawData"] = raw_data  # todo:  un-comment this!!!
@@ -57,7 +59,7 @@ def make_new_daily_forecast(location_row):
   next_forecast_dt = calculate_next_forecast_dt(location_row["NextForecastDue"])
   try:
     update_tables_with_daily_forecast_info(
-      location_row, dailyForecastDict, next_forecast_dt
+      location_row, next_forecast_dt, dailyForecastDict
     )
   except Exception:
     log_event(f"Table updates for {locationName} forecast unsuccessful.")
@@ -73,7 +75,7 @@ def get_raw_data(location_row):
     return ForecastJSON
 
 
-def raw_data_contains_hourly_forecasts(raw_data, locationName):
+def raw_data_contains_hourly_forecasts(raw_data):
   try:
     result = raw_data.get("properties", {}).get("periods")
   except:
@@ -153,10 +155,12 @@ def calculate_next_forecast_dt(this_forecast_dt):
 
 
 def update_tables_with_daily_forecast_info(
-  location_row, dailyForecastDict, next_forecast_dt
+  location_row, next_forecast_dt, dailyForecastDict
 ):
   print(f'For {location_row["CountyName"]}...')
-  print(f"  Next forecast datetime (to update Locations): {next_forecast_dt}")
+  print(
+    f"  Next forecast datetime (to update Locations): {next_forecast_dt:%B %d, %I:%M %p}"
+  )
   print("   Here's the dict that'll update 'daily_forecasts'")
   print(dailyForecastDict)
   # raise Exception(f"Function {sys._getframe().f_code.co_name} not yet implemented")
@@ -178,15 +182,15 @@ def update_tables_with_daily_forecast_info(
 #   for count in range(5):
 #     app_tables.test.add_row(Column1=f"test entry #{count}")
 
-def setupServerConsole():
-  import anvil.email
-  import anvil.users
-  import anvil.files
-  from anvil.files import data_files
-  import anvil.tables as tables
-  import anvil.tables.query as q
-  from anvil.tables import app_tables
-  import anvil.server
-  locs = app_tables.locations.search()
-  alb = locs[0]
-  
+# setupServerConsole():
+# import anvil.email
+# import anvil.users
+# import anvil.files
+# from anvil.files import data_files
+# import anvil.tables as tables
+# import anvil.tables.query as q
+# from anvil.tables import app_tables
+# import anvil.server
+# locs = app_tables.locations.search()
+# alb = locs[0]
+# raw_data = alb["RawData"]
