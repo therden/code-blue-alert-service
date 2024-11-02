@@ -235,13 +235,17 @@ def findDuplicates():
 def getCallingFunctionName():
   return sys._getframe().f_back.f_code.co_name
 
+
 @anvil.server.callable
-def import_fips():
+def import_fips_ids():
   import pandas as pd
-  with open(data_files['fips_NYScounties_CodeBlue2.csv']) as file:
-    df = pd.read_csv(file)
-  for d in df.to_dict(orient="records"):
+
+  with open(data_files["fips_NYScounties_CodeBlue2.csv"]) as file:
+    records = pd.read_csv(file).to_dict(orient="records")
+    # print(records)
+  for rec in records:
     # d is now a dict of {columnname -> value} for this row
-    # We use Python's **kwargs syntax to pass the whole dict as
-    # keyword arguments
-    app_tables.carriers.add_row(**d) 
+    loc_name = rec["county"]
+    row_to_update = app_tables.locations.get(CountyName=loc_name)
+    if row_to_update:
+      row_to_update.update(FIPS_id=rec["fips"])

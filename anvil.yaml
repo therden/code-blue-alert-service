@@ -118,6 +118,9 @@ db_schema:
     - admin_ui: {order: 11.25, width: 200}
       name: HourlyForecastURL
       type: string
+    - admin_ui: {width: 81}
+      name: FIPS_id
+      type: number
     server: full
     title: locations
   test:
