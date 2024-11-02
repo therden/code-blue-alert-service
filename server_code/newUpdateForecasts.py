@@ -28,11 +28,7 @@ def checkForForecastsDue():
     for location in forecasts_due:
       # launch background task for location
       anvil.server.launch_background_task("make_new_daily_forecast", location)
-      # evaluate rawdata's suitability
-      # transform rawdata for our purposes
-      # generate forecast graph
-      # save new forecast data to daily_forecasts
-      # update location["NextForecastDue"]
+
 
 
 @anvil.server.callable
@@ -41,7 +37,6 @@ def make_new_daily_forecast(location_row, raw_data=False):
   locationName = location_row["LocationName"]
   if not raw_data:
     raw_data = get_raw_data(location_row)
-  print(raw_data)
   if not raw_data:
     log_event(f"Raw forecast data for {locationName} was not retrieved.")
     return False
@@ -58,10 +53,11 @@ def make_new_daily_forecast(location_row, raw_data=False):
   dailyForecastDict["Overnight"] = overnight_status
   dailyForecastDict["NextDay"] = morrow_status
   dailyForecastDict["RawData"] = raw_data
-  try:
-    update_tables_with_daily_forecast_info(dailyForecastDict)
-  except Exception:
-    log_event(f"Table updates for {locationName} forecast unsuccessful.")
+  return dailyForecastDict
+  # try:     # todo
+  #   update_tables_with_daily_forecast_info(dailyForecastDict)
+  # except Exception:
+  #   log_event(f"Table updates for {locationName} forecast unsuccessful.")
 
 
 @anvil.server.callable
