@@ -236,16 +236,25 @@ def getCallingFunctionName():
   return sys._getframe().f_back.f_code.co_name
 
 
-@anvil.server.callable
-def import_fips_ids():
-  import pandas as pd
+# @anvil.server.callable
+# def import_fips_ids():
+#   import pandas as pd
 
-  with open(data_files["fips_NYScounties_CodeBlue2.csv"]) as file:
-    records = pd.read_csv(file).to_dict(orient="records")
-    # print(records)
-  for rec in records:
-    # d is now a dict of {columnname -> value} for this row
-    loc_name = rec["county"]
-    row_to_update = app_tables.locations.get(CountyName=loc_name)
-    if row_to_update:
-      row_to_update.update(FIPS_id=rec["fips"])
+#   with open(data_files["fips_NYScounties_CodeBlue2.csv"]) as file:
+#     records = pd.read_csv(file).to_dict(orient="records")
+#     # print(records)
+#   for rec in records:
+#     # d is now a dict of {columnname -> value} for this row
+#     loc_name = rec["county"]
+#     row_to_update = app_tables.locations.get(CountyName=loc_name)
+#     if row_to_update:
+#       row_to_update.update(FIPS_id=rec["fips"])
+
+@anvil.server.callable
+def pop_locations_YorN():
+  import random
+  locs = app_tables.locations.search()
+  for loc in locs:
+    loc['NextDay']=random.choice([True, False])
+    loc["Overnight"]=random.choice([True, False])
+    
