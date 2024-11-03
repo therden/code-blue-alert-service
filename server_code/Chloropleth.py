@@ -17,9 +17,8 @@ def make_nys_chloropleth():
     counties = json.load(fileobject)
   # df = pd.read_csv("/Users/tomhe/Repos/codeblue/fips_NYScounties_CodeBlue2.csv",
   #                   dtype={"fips": str})
-  df = pd.read_csv(data_files["fips_NYScounties_CodeBlue2.csv"], dtype={"fips": str})
+  df = pd.read_csv(data_files["fips_NYScounties_CodeBlue3.csv"], dtype={"fips": str})
   # df = df[(df["fips"]>"35999")&(df["fips"]<"37000")]
-
   fig = px.choropleth(
     df,
     geojson=counties,
@@ -30,7 +29,8 @@ def make_nys_chloropleth():
     hover_data={"fips": False, "county": True, "codeblue": True},
   )
   fig.update_geos(fitbounds="locations")
-  fig.show()
+  # fig.show()
+  return fig
 
 
 # from anvil.files import data_files
@@ -38,4 +38,4 @@ def make_nys_chloropleth():
 # import json
 # import pandas as pd
 # import plotly.express as px
-# df = pd.read_csv(data_files["fips_NYScounties_CodeBlue2.csv"], dtype={"fips": str})
+# df = pd.read_csv(data_files["fips_NYScounties_CodeBlue3.csv"], dtype={"fips": str})

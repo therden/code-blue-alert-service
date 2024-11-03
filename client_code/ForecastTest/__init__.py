@@ -1,5 +1,6 @@
 from ._anvil_designer import ForecastTestTemplate
 from anvil import *
+import plotly.graph_objects as go
 import anvil.users
 import anvil.server
 import anvil.tables as tables
@@ -16,4 +17,4 @@ class ForecastTest(ForecastTestTemplate):
     """This method is called when the button is clicked"""
     # self.image_1.source = anvil.server.call("test_plot")
     # self.image_1.source = anvil.server.call("get_sample_graph")
-    self.image_1.source = anvil.server.call("make_nys_chloropleth")
+    self.plot_1.figure = anvil.server.call("make_nys_chloropleth")

@@ -9,6 +9,10 @@ components:
     name: button_1
     properties: {text: Regenerate graph, visible: false}
     type: Button
+  - layout_properties: {full_width_row: true, grid_position: 'CPDAFO,YLOYLN'}
+    name: plot_1
+    properties: {height: '900', spacing_above: none, spacing_below: none}
+    type: Plot
   - layout_properties: {grid_position: 'LBIYHQ,OWQDPX'}
     name: image_1
     properties: {display_mode: shrink_to_fit, height: 358.39996337890625}

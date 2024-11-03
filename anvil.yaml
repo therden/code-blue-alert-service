@@ -50,7 +50,7 @@ db_schema:
     - admin_ui: {order: 0, width: 290}
       name: path
       type: string
-    - admin_ui: {width: 243}
+    - admin_ui: {order: 1, width: 533}
       name: file
       type: media
     - admin_ui: {width: 200}
