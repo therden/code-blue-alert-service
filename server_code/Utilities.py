@@ -203,37 +203,34 @@ def calculateWindchill(temperature=80, windspeed=0):
   return round(windchill, 1)
 
 
-@anvil.server.callable
-def getDailies(prefix="START: "):
-  dailies = app_tables.daily_forecasts.search()
-  print(f"{prefix} daily forecast records: {len(dailies)}")
-  return dailies
-
-
-def getLocations_and_ForecastDates():
-  dailies = getDailies()
-  locationrows = set()
-  forecastdates = set()
-  for daily in dailies:
-    locationrows.add(daily["locality"])
-    forecastdates.add(daily["DateOfForecast"])
-  return locationrows, forecastdates
-
-
-@anvil.server.background_task
-@anvil.server.callable
-def findDuplicates():
-  locations, dates = getLocations_and_ForecastDates()
-  for adate in dates:
-    for aloc in locations:
-      found = app_tables.daily_forecasts.search(DateOfForecast=adate, locality=aloc)
-      if len(found) > 1:
-        found[0].delete()
-  getDailies(prefix="END:")
-
-
 def getCallingFunctionName():
   return sys._getframe().f_back.f_code.co_name
+
+
+# @anvil.server.background_task
+# @anvil.server.callable
+# def findDuplicates():
+#   def getDailies(prefix="START: "):
+#     dailies = app_tables.daily_forecasts.search()
+#     print(f"{prefix} daily forecast records: {len(dailies)}")
+#     return dailies
+
+#   def getLocations_and_ForecastDates():
+#     dailies = getDailies()
+#     locationrows = set()
+#     forecastdates = set()
+#     for daily in dailies:
+#       locationrows.add(daily["locality"])
+#       forecastdates.add(daily["DateOfForecast"])
+#     return locationrows, forecastdates
+
+#   locations, dates = getLocations_and_ForecastDates()
+#   for adate in dates:
+#     for aloc in locations:
+#       found = app_tables.daily_forecasts.search(DateOfForecast=adate, locality=aloc)
+#       if len(found) > 1:
+#         found[0].delete()
+#   getDailies(prefix="END:")
 
 
 # @anvil.server.callable
@@ -250,11 +247,10 @@ def getCallingFunctionName():
 #     if row_to_update:
 #       row_to_update.update(FIPS_id=rec["fips"])
 
-@anvil.server.callable
-def pop_locations_YorN():
-  import random
-  locs = app_tables.locations.search()
-  for loc in locs:
-    loc['NextDay']=random.choice([True, False])
-    loc["Overnight"]=random.choice([True, False])
-    
+# @anvil.server.callable
+# def pop_locations_YorN():
+#   import random
+#   locs = app_tables.locations.search()
+#   for loc in locs:
+#     loc['NextDay']=random.choice([True, False])
+#     loc["Overnight"]=random.choice([True, False])

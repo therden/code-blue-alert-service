@@ -25,6 +25,7 @@ unique_ids:
   modules: {}
   scripts: {}
   server_modules:
+    Chloropleth: '1730647285707719504172142.3094'
     Forecasts: '1723759196838925266066576.2424'
     GeoCodeDistricts: '172374682601222846022158.789616'
     Graphs: 4GCUBSK5YYAEQFBYB3W2QACDAM2A6WEV
