@@ -16,7 +16,7 @@ components:
   - event_bindings: {click: plot_1_click, hover: plot_1_hover, unhover: plot_1_unhover}
     layout_properties: {full_width_row: true, grid_position: 'CPDAFO,YLOYLN'}
     name: plot_1
-    properties: {height: '900', interactive: true, spacing_above: none, spacing_below: none}
+    properties: {height: '900', interactive: true, spacing_above: none, spacing_below: none, visible: false}
     type: Plot
   - layout_properties: {grid_position: 'LBIYHQ,OWQDPX'}
     name: image_1
