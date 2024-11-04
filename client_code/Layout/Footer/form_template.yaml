@@ -8,7 +8,7 @@ components:
     event_bindings: {}
     layout_properties: {}
     name: rt_footer_left
-    properties: {align: left, content: ' {spaces}Copyright {current_year}', foreground: dimgray, role: null, spacing_above: large, spacing_below: small}
+    properties: {align: left, content: 'Copyright {current_year}', foreground: dimgray, role: null, spacing_above: large, spacing_below: small}
     type: RichText
   - components:
     - components: []
