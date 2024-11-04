@@ -18,3 +18,13 @@ class ForecastTest(ForecastTestTemplate):
     # self.image_1.source = anvil.server.call("test_plot")
     # self.image_1.source = anvil.server.call("get_sample_graph")
     self.plot_1.figure = anvil.server.call("make_nys_chloropleth")
+
+  # def plot_1_click(self, points, **event_args):
+  #   msg = f"Point: {points}"
+  #   # alert(msg)
+
+  # def plot_1_hover(self, points, **event_args):
+  #   self.label_2.text = f"Point: {points}"
+
+  # def plot_1_unhover(self, points, **event_args):
+  #   self.label_2.text = f"Point: xxx\nxxx"

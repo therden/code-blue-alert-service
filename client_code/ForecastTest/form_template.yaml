@@ -4,14 +4,19 @@ components:
     name: outlined_1
     properties: {role: outlined, text: This is a temporary placeholder page, visible: false}
     type: TextBox
+  - layout_properties: {grid_position: 'QQHUIR,SCKTVW UCHJVM,XRYQQX'}
+    name: label_2
+    properties: {visible: false}
+    type: Label
   - event_bindings: {click: button_1_click}
-    layout_properties: {grid_position: 'QQHUIR,SCKTVW'}
+    layout_properties: {grid_position: 'QQHUIR,SCKTVW EVETKD,IQZDNI'}
     name: button_1
     properties: {text: Regenerate graph, visible: false}
     type: Button
-  - layout_properties: {full_width_row: true, grid_position: 'CPDAFO,YLOYLN'}
+  - event_bindings: {click: plot_1_click, hover: plot_1_hover, unhover: plot_1_unhover}
+    layout_properties: {full_width_row: true, grid_position: 'CPDAFO,YLOYLN'}
     name: plot_1
-    properties: {height: '900', spacing_above: none, spacing_below: none}
+    properties: {height: '900', interactive: true, spacing_above: none, spacing_below: none}
     type: Plot
   - layout_properties: {grid_position: 'LBIYHQ,OWQDPX'}
     name: image_1

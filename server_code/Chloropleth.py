@@ -28,8 +28,16 @@ def make_nys_chloropleth():
     # category_orders={"continent": ["True", "False"]},
     hover_data={"fips": False, "county": True, "codeblue": True},
   )
-  fig.update_geos(fitbounds="locations")
+  fig.update_geos(
+    fitbounds="locations",
+    visible=False,
+  )
+  fig.update_layout(showlegend=False)
   # fig.show()
+  # with data_files.editing('chloropleth.png') as path:
+  #   with open(path, "w+") as f:
+  #     f.write(text)
+  # fig.write_image("my_figure.png")
   return fig
 
 
