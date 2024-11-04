@@ -71,11 +71,13 @@ def about_this_site_form(**p):
 def forecast_test(**p):
   return anvil.server.FormResponse("ForecastTest")
 
+
 @anvil.server.route("/for/nys")
 @anvil.server.route("/for/state")
 @anvil.server.route("/for/newyorkstate")
-def forecast_test(**p):
-  return anvil.server.FormResponse("ForecastTest")
+def forecast_NYS(**p):
+  return anvil.server.FormResponse("NYSForecast")
+
 
 @anvil.server.route("/for/:location_name")
 def serve_location_page(location_name, **p):

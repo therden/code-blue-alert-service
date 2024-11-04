@@ -1,31 +1,27 @@
 components:
+- layout_properties: {full_width_row: true, grid_position: 'JPBRFM,ZKWHFA', row_background: 'theme:On Primary'}
+  name: spacer_1
+  properties: {height: '1', spacing_above: none, spacing_below: none}
+  type: Spacer
 - components:
   - components: []
     event_bindings: {}
     layout_properties: {}
     name: rt_footer_left
-    properties: {align: left, content: ' {spaces}Copyright {current_year}', foreground: dimgray, role: null, spacing_above: large, spacing_below: none}
+    properties: {align: left, content: ' {spaces}Copyright {current_year}', foreground: dimgray, role: null, spacing_above: large, spacing_below: small}
     type: RichText
   - components:
     - components: []
       layout_properties: {}
       name: link_1
-      properties: {align: right, foreground: dimgray, icon: _/theme/458-final-grayscale.png, icon_align: left, italic: true, role: null, spacing_above: small, spacing_below: none, text: 'fourfiftyeight   ', url: about/fourfiftyeight}
+      properties: {align: right, foreground: dimgray, icon: _/theme/458-final-grayscale.png, icon_align: left, italic: true, role: null, spacing_above: small, spacing_below: none, text: 'fourfiftyeight  ', url: about/fourfiftyeight}
       type: Link
     name: rt_footer_rt
     properties: {align: right, spacing_below: none}
     type: RichText
   layout_properties: {full_width_row: true, grid_position: 'JAAPVI,SNENEB', row_background: ''}
   name: flow_panel_1
-  properties:
-    align: justify
-    background: theme:Primary Container
-    foreground: ''
-    gap: none
-    role: [left-pad-5px, right-pad-5px]
-    spacing_above: none
-    spacing_below: none
-    vertical_align: middle
+  properties: {align: justify, background: 'theme:Primary Container', foreground: '', gap: none, role: null, spacing_above: none, spacing_below: none, vertical_align: middle}
   type: FlowPanel
 container:
   properties: {col_widths: '{}', spacing_below: small}

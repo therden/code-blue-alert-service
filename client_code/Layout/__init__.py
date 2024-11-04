@@ -6,6 +6,8 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from .Footer import Footer
+
+# import datetime
 import anvil.js
 
 
@@ -25,6 +27,16 @@ class Layout(LayoutTemplate):
       spacing_below="None",
     )
     self.rt_title.data = {"site_logo": logo, "site_title": rt_title}
-    # self.content_panel.add_component(Footer)
-    self.content_panel.add_component(Footer())
-    # Any code you write here will run before the form opens.
+    self.add_component(Footer())
+    # current_year = datetime.datetime.today().year
+    # self.rt_form_footer_left.data = {"current_year": current_year}
+    # change color of link on mouseover/mouseoff
+    dom_node = anvil.js.get_dom_node(self.link_1)
+    dom_node.addEventListener("mouseover", self.mouseover_event)
+    dom_node.addEventListener("mouseout", self.mouseoff_event)
+
+  def mouseover_event(self, sender, **event_args):
+    self.link_1.foreground = "whitesmoke"
+
+  def mouseoff_event(self, sender, **event_args):
+    self.link_1.foreground = "dimgray"

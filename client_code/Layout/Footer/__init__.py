@@ -11,14 +11,15 @@ import anvil.js
 
 class Footer(FooterTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     current_year = datetime.datetime.today().year
-    self.rt_footer_left.data = {"current_year": current_year, "spaces": "   "}
+    # self.rt_footer_left.data = {"current_year": current_year, "spaces": "   "}
+    self.rt_footer_left.data = {"current_year": current_year}
     self.init_components(**properties)
+
+    # change color of link on mouseover/mouseoff
     dom_node = anvil.js.get_dom_node(self.link_1)
     dom_node.addEventListener("mouseover", self.mouseover_event)
     dom_node.addEventListener("mouseout", self.mouseoff_event)
-    # Any code you write here will run before the form opens.
 
   def mouseover_event(self, sender, **event_args):
     self.link_1.foreground = "whitesmoke"
