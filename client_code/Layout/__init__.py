@@ -27,4 +27,5 @@ class Layout(LayoutTemplate):
     self.add_component(Footer())
 
   def form_show(self, **event_args):
-    self.call_js("hideSidebar")
+    # self.call_js("hideSidebar")
+    pass
