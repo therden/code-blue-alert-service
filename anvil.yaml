@@ -132,6 +132,9 @@ db_schema:
     - admin_ui: {order: 1, width: 200}
       name: Blob
       type: media
+    - admin_ui: {order: 2, width: 200}
+      name: SimpleObj
+      type: simpleObject
     server: full
     title: media
   test:
