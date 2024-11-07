@@ -33,20 +33,26 @@ def make_nys_chloropleth():
   return fig
 
 
+@anvil.server.callable
 def convert_px_chloropleth_to_png(fig):
-  # fig.show()
-  # with data_files.editing('chloropleth.png') as path:
-  #   with open(path, "w+") as f:
-  #     f.write(text)
-  # fig.write_image("my_figure.png")
   png = fig.to_image()
-  return anvil.BlobMedia(content_type="bytes", content=[png])
+  return png
 
 
 @anvil.server.callable
 def get_png_of_chloropleth():
   fig = make_nys_chloropleth()
   return convert_px_chloropleth_to_png(fig)
+
+
+@anvil.server.callable
+def save_NYS_png_to_table(img=None, record_name=None):
+  blob = anvil.BlobMedia(content_type="bytes", content=[img])
+  record = app_tables.media.get(Name=record_name)
+  if record and blob:
+    record["Blob"] = blob
+  else:
+    raise ("Borked!")
 
 
 # from anvil.files import data_files

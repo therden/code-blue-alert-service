@@ -123,6 +123,17 @@ db_schema:
       type: number
     server: full
     title: locations
+  media:
+    client: none
+    columns:
+    - admin_ui: {order: 0, width: 200}
+      name: Name
+      type: string
+    - admin_ui: {order: 1, width: 200}
+      name: Blob
+      type: media
+    server: full
+    title: media
   test:
     client: none
     columns:
