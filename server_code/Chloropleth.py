@@ -12,6 +12,7 @@ import plotly.express as px
 import plotly.io as pio
 from datetime import datetime
 
+
 @anvil.server.callable
 def make_nys_chloropleth():
   with open(data_files["fips_nys_counties.json"], "rt") as fileobject:
@@ -35,8 +36,14 @@ def make_nys_chloropleth():
 
 @anvil.server.callable
 def convert_px_chloropleth_to_png(fig):
-  png = fig.to_image()
+  svg = fig.to_image(format="png", width=900)
   return png
+
+
+@anvil.server.callable
+def convert_px_chloropleth_to_svg(fig):
+  svg = fig.to_image(format="svg", width=900)
+  return svg
 
 
 @anvil.server.callable
@@ -59,8 +66,10 @@ def save_NYS_png_to_table(img=None, record_name=None):
 @anvil.server.callable
 def make_and_save_NYS_chloropleth_to_table(rec_name=None):
   fig = make_nys_chloropleth()
-  png = fig.to_image()
-  blob = anvil.BlobMedia(content_type="image/png", content=png, name=rec_name)
+  map_image = fig.to_image(format="svg", width=900)
+  blob = anvil.BlobMedia(
+    content_type="image/svg", content=map_image, name=f"{rec_name}.svg"
+  )
   rec = app_tables.media.get(Name=rec_name)
   rec["Blob"] = blob
 

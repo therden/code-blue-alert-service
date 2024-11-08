@@ -12,14 +12,27 @@ from datetime import datetime, timedelta
 class NYSForecast(NYSForecastTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    self.display_appropriate_State_map()
+    self.update_form_data()
 
-  def display_appropriate_State_map(self, **event_args):
-    if datetime.now().hour < 17:
-      row_name = "NYS_nextday_graph"
+  def update_form_data(self, **event_args):
+    current_hour = datetime.now().hour
+    if 5 < current_hour < 17:
+      row_name = "NYS_day"
     else:
-      row_name = "NYS_overnight_graph"
-    record = anvil.server.call("get_media_row", row_name)
-    self.state_map_img.source = record["Blob"]
-    # self.forecast_for_lbl.text = record["Updated"] + timedelta(days=1)
-    # self.generated_at_lbl.text = record["Updated"]
+      row_name = "NYS_night"
+    record = anvil.server.call("get_statemap_row", row_name)
+    self.statemap_img.source = record["Blob"]
+    forecast_dt = record["Updated"]
+    one_day = timedelta(days=1)
+    self.forecast_for_lbl.text = f"Forecast for: {forecast_dt + one_day:%B %d}"
+    self.generated_at_lbl.text = f"Forecast generated: {forecast_dt:%B %d, %I:%M %p}"
+
+  def timer_1_tick(self, **event_args):
+    current_hour = datetime.now().hour
+    current_min = datetime.now().minute
+    if current_hour in (4, 16) and current_min >= 45:
+      self.timer_1.interval = .75
+    if current_hour in (5, 17) and current_min == 0:
+      self.update_form_data()
+      self.timer_1.interval = 15
+

@@ -1,12 +1,17 @@
 components:
 - components:
-  - layout_properties: {grid_position: 'MUBBVY,FONEKG'}
-    name: heading_lbl
-    properties: {align: center, bold: true, text: Projected Code Blue status -- All Counties, visible: true}
-    type: Label
-  - layout_properties: {grid_position: 'LBIYHQ,OWQDPX'}
-    name: state_map_img
-    properties: {display_mode: shrink_to_fit, height: 358.39996337890625, visible: false}
+  - event_bindings: {tick: timer_1_tick}
+    layout_properties: {grid_position: 'JZXULR,LHLHWI'}
+    name: timer_1
+    properties: {interval: 1}
+    type: Timer
+  - layout_properties: {grid_position: 'JZXULR,ZYMJHG'}
+    name: rich_text_1
+    properties: {align: center, content: '### Projected **Code Blue Status** -- All Counties'}
+    type: RichText
+  - layout_properties: {full_width_row: true, grid_position: 'LBIYHQ,OWQDPX', row_background: ''}
+    name: statemap_img
+    properties: {border: black, display_mode: original_size, height: '800', source: '', vertical_align: center, visible: true}
     type: Image
   - layout_properties: {grid_position: 'ZVHZAO,JXMFIX'}
     name: forecast_for_lbl
@@ -14,7 +19,7 @@ components:
     type: Label
   - layout_properties: {grid_position: 'ZVHZAO,WLBKVP'}
     name: generated_at_lbl
-    properties: {text: ''}
+    properties: {align: right, text: ''}
     type: Label
   layout_properties: {slot: default}
   name: content_panel

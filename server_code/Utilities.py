@@ -257,5 +257,5 @@ def getCallingFunctionName():
 
 
 @anvil.server.callable
-def get_media_row(row_name):
+def get_statemap_row(row_name):
   return app_tables.media.get(Name=row_name)
