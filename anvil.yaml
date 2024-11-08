@@ -135,6 +135,9 @@ db_schema:
     - admin_ui: {order: 2, width: 200}
       name: SimpleObj
       type: simpleObject
+    - admin_ui: {order: 3, width: 200}
+      name: Updated
+      type: datetime
     server: full
     title: media
   test:

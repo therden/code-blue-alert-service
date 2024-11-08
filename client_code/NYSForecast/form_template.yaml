@@ -1,25 +1,24 @@
 components:
 - components:
-  - layout_properties: {grid_position: 'QQHUIR,SCWDAP'}
-    name: outlined_1
-    properties: {role: outlined, text: This is a temporary placeholder page, visible: false}
-    type: TextBox
-  - layout_properties: {grid_position: 'QQHUIR,SCKTVW'}
-    name: label_2
-    properties: {visible: false}
+  - layout_properties: {grid_position: 'MUBBVY,FONEKG'}
+    name: heading_lbl
+    properties: {align: center, bold: true, text: Projected Code Blue status -- All Counties, visible: true}
     type: Label
-  - event_bindings: {click: plot_1_click, hover: plot_1_hover, unhover: plot_1_unhover}
-    layout_properties: {full_width_row: true, grid_position: 'CPDAFO,YLOYLN'}
-    name: plot_1
-    properties: {height: '750', interactive: true, spacing_above: none, spacing_below: none, visible: true}
-    type: Plot
   - layout_properties: {grid_position: 'LBIYHQ,OWQDPX'}
-    name: image_1
+    name: state_map_img
     properties: {display_mode: shrink_to_fit, height: 358.39996337890625, visible: false}
     type: Image
+  - layout_properties: {grid_position: 'ZVHZAO,JXMFIX'}
+    name: forecast_for_lbl
+    properties: {}
+    type: Label
+  - layout_properties: {grid_position: 'ZVHZAO,WLBKVP'}
+    name: generated_at_lbl
+    properties: {text: ''}
+    type: Label
   layout_properties: {slot: default}
   name: content_panel
-  properties: {col_widths: '{"SCWDAP":45,"SCKTVW":15}'}
+  properties: {col_widths: '{}'}
   type: ColumnPanel
 - layout_properties: {slot: nav-right}
   name: navbar_links

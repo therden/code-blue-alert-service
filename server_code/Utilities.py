@@ -254,3 +254,8 @@ def getCallingFunctionName():
 #   for loc in locs:
 #     loc['NextDay']=random.choice([True, False])
 #     loc["Overnight"]=random.choice([True, False])
+
+
+@anvil.server.callable
+def get_media_row(row_name):
+  return app_tables.media.get(Name=row_name)
