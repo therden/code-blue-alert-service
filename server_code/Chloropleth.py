@@ -66,14 +66,14 @@ def save_NYS_png_to_table(img=None, record_name=None):
 @anvil.server.callable
 def make_and_save_NYS_chloropleth_to_table(rec_name=None):
   fig = make_nys_chloropleth()
-  # map_image = fig.to_image(format="svg", width=900)
-  # blob = anvil.BlobMedia(
-  #   content_type="image/svg", content=map_image, name=f"{rec_name}.svg"
-  # )
-  map_image = fig.to_image(format="png", width=900)
+  map_image = fig.to_image(format="svg", width=900)
   blob = anvil.BlobMedia(
-    content_type="image/png", content=map_image, name=f"{rec_name}.png"
+    content_type="image/svg", content=map_image, name=f"{rec_name}.svg"
   )
+  # map_image = fig.to_image(format="png", width=900)
+  # blob = anvil.BlobMedia(
+  #   content_type="image/png", content=map_image, name=f"{rec_name}.png"
+  # )
   rec = app_tables.media.get(Name=rec_name)
   rec["Blob"] = blob
 
