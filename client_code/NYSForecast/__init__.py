@@ -31,8 +31,7 @@ class NYSForecast(NYSForecastTemplate):
     current_hour = datetime.now().hour
     current_min = datetime.now().minute
     if current_hour in (4, 16) and current_min >= 45:
-      self.timer_1.interval = .75
+      self.timer_1.interval = 0.75
     if current_hour in (5, 17) and current_min == 0:
       self.update_form_data()
       self.timer_1.interval = 15
-
