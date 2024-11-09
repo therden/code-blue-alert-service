@@ -260,14 +260,18 @@ def getCallingFunctionName():
 def get_statemap_row(row_name):
   return app_tables.media.get(Name=row_name)
 
+
 @anvil.server.background_task
 @anvil.server.callable
 def daily_forecast_update_durations():
-  test_date = date(2024, 11, 8)
+  test_date = date(2024, 11, 9)
   delta = timedelta(days=-1)
   for x in range(30):
-    rows = app_tables.daily_forecasts.search(DateOfForecast=test_date)
-    print(
-      f"{test_date}: {max(rows, key=lambda x: x['DataRequested'])['DataRequested']-min(rows, key=lambda x: x['DataRequested'])['DataRequested']}"
-    )
-    test_date = test_date + delta
+    try:
+      test_date = test_date + delta
+      rows = app_tables.daily_forecasts.search(
+        tables.order_by("DataRequested"), DateOfForecast=test_date
+      )
+      print(f"{test_date}: {rows[56]['DataRequested']-rows[0]['DataRequested']}")
+    except Exception:
+      print(f"Error regarding date {test_date}")
