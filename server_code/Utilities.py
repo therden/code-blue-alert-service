@@ -7,7 +7,7 @@ import anvil.tables.query as q
 from anvil.tables import app_tables
 import anvil.server
 import anvil.mpl_util
-from datetime import datetime
+from datetime import date, datetime, timedelta
 import matplotlib.pyplot as plt
 from matplotlib.dates import ConciseDateFormatter
 import matplotlib.ticker as ticker
@@ -259,3 +259,15 @@ def getCallingFunctionName():
 @anvil.server.callable
 def get_statemap_row(row_name):
   return app_tables.media.get(Name=row_name)
+
+@anvil.server.background_task
+@anvil.server.callable
+def daily_forecast_update_durations():
+  test_date = date(2024, 11, 8)
+  delta = timedelta(days=-1)
+  for x in range(30):
+    rows = app_tables.daily_forecasts.search(DateOfForecast=test_date)
+    print(
+      f"{test_date}: {max(rows, key=lambda x: x['DataRequested'])['DataRequested']-min(rows, key=lambda x: x['DataRequested'])['DataRequested']}"
+    )
+    test_date = test_date + delta
