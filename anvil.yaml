@@ -88,7 +88,7 @@ db_schema:
     - admin_ui: {order: 4.5, width: 97}
       name: NormalizedName
       type: string
-    - admin_ui: {order: 4.75, width: 143}
+    - admin_ui: {order: 4.75, width: 162}
       name: DataRequested
       type: datetime
     - admin_ui: {order: 4.875, width: 143}
