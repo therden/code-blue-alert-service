@@ -88,10 +88,10 @@ db_schema:
     - admin_ui: {order: 4.5, width: 97}
       name: NormalizedName
       type: string
-    - admin_ui: {order: 4.75, width: 162}
+    - admin_ui: {order: 4.75, width: 163}
       name: DataRequested
       type: datetime
-    - admin_ui: {order: 4.875, width: 143}
+    - admin_ui: {order: 4.875, width: 169}
       name: NOAAupdate
       type: datetime
     - admin_ui: {order: 4.9375, width: 200}
@@ -109,7 +109,7 @@ db_schema:
     - admin_ui: {order: 4.8984375, width: 89}
       name: NextDay
       type: bool
-    - admin_ui: {order: 4.625, width: 135}
+    - admin_ui: {order: 4.625, width: 156}
       name: NextForecastDue
       type: datetime
     - admin_ui: {order: 4.6875, width: 200}
