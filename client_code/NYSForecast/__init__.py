@@ -18,15 +18,21 @@ class NYSForecast(NYSForecastTemplate):
     current_hour = datetime.now().hour
     if 5 < current_hour < 17:
       row_name = "NYS_day"
+      forecast_text = "Daytime"
+      days_delta = timedelta(days=1)
     else:
       row_name = "NYS_night"
+      forecast_text = "Overnight"
+      days_delta = timedelta(days=0)
     # record = anvil.server.call("get_statemap_row", row_name)
     # self.statemap_img.source = record['Blob']
     statemap = anvil.server.call("get_statemap", row_name)
     self.statemap_img.source = statemap[0]
     forecast_dt = statemap[1]
-    one_day = timedelta(days=1)
-    self.forecast_for_lbl.text = f"Forecast for: {forecast_dt + one_day:%B %d}"
+    self.header_rt.data = {
+      "forecast_for": f"{forecast_dt + days_delta:%B %d}",
+      "which": forecast_text,
+    }
     self.generated_at_lbl.text = f"Forecast generated: {forecast_dt:%B %d, %I:%M %p}"
 
   def timer_1_tick(self, **event_args):

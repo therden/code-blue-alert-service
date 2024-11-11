@@ -7,23 +7,15 @@ components:
     type: Timer
   - layout_properties: {grid_position: 'JZXULR,ZYMJHG'}
     name: header_rt
-    properties:
-      align: center
-      content: |-
-        ### **Code Blue Status**
-        #### All New York Counties
+    properties: {align: center, content: '#### **Forecast status for {forecast_for} {which}**'}
     type: RichText
   - layout_properties: {full_width_row: true, grid_position: 'LBIYHQ,OWQDPX', row_background: ''}
     name: statemap_img
-    properties: {border: black, display_mode: shrink_to_fit, height: '', source: '', vertical_align: center, visible: true}
+    properties: {border: black, display_mode: original_size, height: '', source: '', vertical_align: center, visible: true}
     type: Image
-  - layout_properties: {grid_position: 'ZVHZAO,JXMFIX'}
-    name: forecast_for_lbl
-    properties: {font_size: 11}
-    type: Label
   - layout_properties: {grid_position: 'ZVHZAO,WLBKVP'}
     name: generated_at_lbl
-    properties: {align: right, font_size: 11, text: ''}
+    properties: {align: left, font_size: 11, text: ''}
     type: Label
   layout_properties: {slot: default}
   name: content_panel
