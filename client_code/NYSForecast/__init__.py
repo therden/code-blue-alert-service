@@ -7,6 +7,7 @@ import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
 from datetime import datetime, timedelta
+import urllib.parse
 
 
 class NYSForecast(NYSForecastTemplate):
@@ -21,11 +22,17 @@ class NYSForecast(NYSForecastTemplate):
     else:
       row_name = "NYS_night"
     record = anvil.server.call("get_statemap_row", row_name)
-    self.statemap_img.source = record["Blob"]
+    self.statemap_img.source = self.encode_svg(record["Blob"])
     forecast_dt = record["Updated"]
     one_day = timedelta(days=1)
     self.forecast_for_lbl.text = f"Forecast for: {forecast_dt + one_day:%B %d}"
     self.generated_at_lbl.text = f"Forecast generated: {forecast_dt:%B %d, %I:%M %p}"
+
+  def encode_svg(svg_image):
+    bytes = svg_image.get_bytes()
+    string = str(bytes)[2:-1]
+    source = urllib.parse.quote(string)
+    return f"data:image/svg+xml;utf8,{source}"
 
   def timer_1_tick(self, **event_args):
     current_hour = datetime.now().hour
