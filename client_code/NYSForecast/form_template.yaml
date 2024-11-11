@@ -12,11 +12,10 @@ components:
       content: |-
         ### **Code Blue Status**
         #### All New York Counties
-        {{map}}
     type: RichText
   - layout_properties: {full_width_row: true, grid_position: 'LBIYHQ,OWQDPX', row_background: ''}
     name: statemap_img
-    properties: {border: black, display_mode: shrink_to_fit, height: '700', source: '', vertical_align: center, visible: false}
+    properties: {border: black, display_mode: shrink_to_fit, height: '', source: '', vertical_align: center, visible: true}
     type: Image
   - layout_properties: {grid_position: 'ZVHZAO,JXMFIX'}
     name: forecast_for_lbl

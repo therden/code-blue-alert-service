@@ -15,6 +15,7 @@ import matplotlib.dates as mdates
 import numpy as np
 import sys
 from zoneinfo import ZoneInfo
+import urllib.parse
 
 APP_ORIGIN = anvil.server.get_app_origin()
 
@@ -256,9 +257,20 @@ def getCallingFunctionName():
 #     loc["Overnight"]=random.choice([True, False])
 
 
+def encode_svg(svg_image):
+  bytes = svg_image.get_bytes()
+  string = str(bytes)[2:-1]
+  source = urllib.parse.quote(string)
+  return f"data:image/svg+xml;utf8,{source}"
+
+
 @anvil.server.callable
-def get_statemap_row(row_name):
-  return app_tables.media.get(Name=row_name)
+def get_statemap(row_name):
+  row = app_tables.media.get(Name=row_name)
+  updated_at = row['Updated']
+  svg_image = row["Blob"]
+  encoded_img = encode_svg(svg_image)
+  return encoded_img, updated_at
 
 
 @anvil.server.background_task
