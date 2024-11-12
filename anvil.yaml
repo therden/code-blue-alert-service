@@ -205,7 +205,7 @@ scheduled_tasks:
 - job_id: ADPGIVAE
   task_name: updateHourlyForecastURLs
   time_spec:
-    at: {hour: 5, minute: 15}
+    at: {hour: 3, minute: 58}
     every: day
     n: 1
 services:

@@ -125,11 +125,15 @@ def tempModifierForCodeBlueFillBetween(temp):
 @anvil.server.callable
 @anvil.server.background_task
 def graphForecast(hourlyForecastJSON, daysToGraph=1, tempAdjustment=0):
+  global lastPeriodEligible
+  lastPeriodEligible = False
+
   DAYS = daysToGraph
   HOURS = 24 * daysToGraph
   LOCAL_TZ = ZoneInfo("America/New_York")
 
   raw_forecasts_by_hour = hourlyForecastJSON["properties"]["periods"]
+
   keyForecastData = [
     getKeyForecastData(single_forecast, tempAdjustment)
     for single_forecast in raw_forecasts_by_hour[:HOURS]
@@ -267,7 +271,7 @@ def encode_svg(svg_image):
 @anvil.server.callable
 def get_statemap(row_name):
   row = app_tables.media.get(Name=row_name)
-  updated_at = row['Updated']
+  updated_at = row["Updated"]
   svg_image = row["Blob"]
   encoded_img = encode_svg(svg_image)
   return encoded_img, updated_at
