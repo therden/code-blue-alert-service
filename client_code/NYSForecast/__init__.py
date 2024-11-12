@@ -13,6 +13,7 @@ class NYSForecast(NYSForecastTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     self.update_form_data()
+    self.timer_1.interval = 720  # 12 minutes standard (changed for map updates)
     self.page_autorefreshed = False
 
   def update_form_data(self, **event_args):
@@ -44,10 +45,10 @@ class NYSForecast(NYSForecastTemplate):
       self.timer_1.interval = 60  # 1 minute -- exception (when map update is nearing)
       self.page_autorefreshed = False
     # if current_hour in (5, 17) and current_min >= 0 and not self.page_autorefreshed:
-    if current_hour in (6, 18) and current_min >= 8 and not self.page_autorefreshed:
+    if current_hour in (5, 17) and current_min >= 0 and not self.page_autorefreshed:
       self.timer_1.interval = 720  # 12 minutes standard (changed for map updates)
       self.update_form_data()
       self.page_autorefreshed = True
       Notification("This page has been updated!", title="Alert!", style="info")
-    if current_hour in (7, 18):
+    if current_hour in (6, 18):
       self.page_autorefreshed = False
