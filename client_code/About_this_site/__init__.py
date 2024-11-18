@@ -1,4 +1,4 @@
-from ._anvil_designer import About_Code_BlueTemplate
+from ._anvil_designer import About_this_siteTemplate
 from anvil import *
 import anvil.users
 import anvil.server
@@ -8,7 +8,7 @@ from anvil.tables import app_tables
 import anvil.js
 
 
-class About_Code_Blue(About_Code_BlueTemplate):
+class About_this_site(About_this_siteTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    # self.layout.rt_title.data["site_title"].content += "/about/codeblue"
+    # self.layout.rt_title.data["site_title"].content += "/about/this_site"

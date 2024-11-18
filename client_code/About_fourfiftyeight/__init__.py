@@ -1,15 +1,14 @@
-from ._anvil_designer import xAbout_wind_chillTemplate
+from ._anvil_designer import About_fourfiftyeightTemplate
 from anvil import *
 import anvil.users
 import anvil.server
 import anvil.tables as tables
 import anvil.tables.query as q
 from anvil.tables import app_tables
+import anvil.js
 
 
-class xAbout_wind_chill(xAbout_wind_chillTemplate):
+class About_fourfiftyeight(About_fourfiftyeightTemplate):
   def __init__(self, **properties):
-    # Set Form properties and Data Bindings.
     self.init_components(**properties)
-
-    # Any code you write here will run before the form opens.
+    # self.layout.rt_title.data["site_title"].content += "/about/fourfiftyeight"

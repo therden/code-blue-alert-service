@@ -1,0 +1,9 @@
+components_by_slot:
+  content_slot:
+  - layout_properties: {}
+    name: rich_text_1
+    properties:
+      content: "# About **wind chill**\n\n### \"Wind chill\" describes what the air temperature _feels like_ to the human skin due to the combination of actual lower temperatures and air blowing over exposed skin. \n\n### Any given air temperature will feel colder as air flow increases.  \n\n### This happens because the wind carries away the heat we naturally emit from our skin surfaces -- similar to when you blow on the surface of a cup of coffee or bowl of soup to cool it down.\n\n### The following links contain more information about wind chill's impact and how it historically has been and currently is calculated.\n- ### [https://www.weather.gov/safety/cold-wind-chill-chart](https://www.weather.gov/safety/cold-wind-chill-chart)\n- ### [https://www.weather.gov/ama/WindChill](https://www.weather.gov/ama/WindChill)\n- ### [https://en.wikipedia.org/wiki/Wind_chill](https://en.wikipedia.org/wiki/Wind_chill)\n"
+    type: RichText
+is_package: true
+layout: {type: 'form:Layout'}

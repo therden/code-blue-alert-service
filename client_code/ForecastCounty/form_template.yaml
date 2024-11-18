@@ -1,8 +1,9 @@
 components_by_slot:
   content_slot:
-  - layout_properties: {}
+  - components: []
+    layout_properties: {}
     name: rt_header
-    properties: {content: '  A Code Blue Alert **{in_effect}** in effect for the {for_date} overnight.', font: '', font_size: 24, spacing_above: medium}
+    properties: {content: '', font: '', font_size: 24, spacing_above: medium}
     type: RichText
   - layout_properties: {}
     name: image_1

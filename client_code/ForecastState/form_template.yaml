@@ -1,0 +1,17 @@
+components_by_slot:
+  content_slot:
+  - components:
+    - layout_properties: {slot: forecast_for}
+      name: timer_1
+      properties: {}
+      type: Timer
+    layout_properties: {}
+    name: rich_text_1
+    properties:
+      align: center
+      content: |-
+        ### **New York State** status
+        #### **for {forecast_for} {which}**
+    type: RichText
+is_package: true
+layout: {type: 'form:Layout'}

@@ -1,4 +1,4 @@
-from ._anvil_designer import NYSForecastTemplate
+from ._anvil_designer import xForecastStateFormTemplate
 from anvil import *
 import plotly.graph_objects as go
 import anvil.users
@@ -9,7 +9,7 @@ from anvil.tables import app_tables
 from datetime import datetime, timedelta
 
 
-class NYSForecast(NYSForecastTemplate):
+class xForecastStateForm(xForecastStateFormTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
     self.update_form_data()

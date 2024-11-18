@@ -76,7 +76,7 @@ def forecast_test(**p):
 @anvil.server.route("/for/state")
 @anvil.server.route("/for/newyorkstate")
 def forecast_NYS(**p):
-  return anvil.server.FormResponse("NYSForecast")
+  return anvil.server.FormResponse("ForecastState")
 
 
 @anvil.server.route("/for/:location_name")
@@ -84,7 +84,7 @@ def serve_location_page(location_name, **p):
   print(location_name)
   location_record = app_tables.locations.get(NormalizedName=location_name)
   if location_record:
-    return anvil.server.FormResponse("ForecastForm", location_record=location_record)
+    return anvil.server.FormResponse("ForecastCounty", location_record=location_record)
   else:
     HTMLerrorCode = 404
     HTMLerrorText = "'Not Found'"
