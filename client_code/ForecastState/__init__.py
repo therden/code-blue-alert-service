@@ -11,36 +11,44 @@ from datetime import datetime, timedelta
 class ForecastState(ForecastStateTemplate):
   def __init__(self, **properties):
     self.init_components(**properties)
-    self.update_form_data()
+    self.initial_display = True
+    self.current_display = ""
+    self.timer_1_tick()
 
-  def update_form_data(self, **event_args):
-    current_hour = datetime.now().hour
-    if 5 < current_hour < 17:
+  def update_is_needed(self):
+    if 5 < datetime.now().hour < 17:
+      if self.current_display != "Daytime":
+        return True
+    elif self.current_display != "Overnight":
+      return True
+    else:
+      return False
+
+  def update_form(self):
+    if self.current_display == "Daytime":
       row_name = "NYS_day"
-      forecast_text = "Daytime"
       days_delta = timedelta(days=1)
     else:
       row_name = "NYS_night"
-      forecast_text = "Overnight"
       days_delta = timedelta(days=0)
-    # record = anvil.server.call("get_statemap_row", row_name)
-    # self.statemap_img.source = record['Blob']
     statemap = anvil.server.call("get_statemap", row_name)
-    # self.statemap_img.source = statemap[0]
     forecast_dt = statemap[1]
+    forecast_for = forecast_dt + days_delta
     self.rich_text_1.data = {
-      "forecast_for": f"{forecast_dt + days_delta:%B %d}",
-      "which": forecast_text,
+      "forecast_for": f"{forecast_for:%B %d}",
+      "which": self.current_display,
     }
-    self.layout.content_panel.add_component(
-      Image(
-        source=statemap[0],
-        display_mode="original_size",
-        border="black",
-        spacing_above="small",
-        spacing_below="small",
-      )
-    )
-    self.layout.content_panel.add_component(
-      Label(align="Left", text=f"Forecast generated: {forecast_dt:%B %d, %I:%M %p}")
-    )
+    self.image_1.source = statemap[0]
+    self.label_1.text = f"Forecast generated: {forecast_dt:%B %d, %I:%M %p}"
+    if not self.initial_display:
+      self.initial_display = False
+      alert(f"This page was updated at {datetime.now():%B %d, %I:%M:%S %p}")
+
+  def timer_1_tick(self, **event_args):
+    check = self.update_is_needed()
+    if check:
+      if self.current_display != "Daytime":
+        self.current_display = "Daytime"
+      else:
+        self.current_display = "Overnight"
+      self.update_form()

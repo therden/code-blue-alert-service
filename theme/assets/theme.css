@@ -1,7 +1,7 @@
 /**
  This CSS implements the Material Design 3 look and feel for Anvil apps.
  **/
-
+/* 
 .anvil-right-pad-5px {
   padding-right: 15px;
   margin-right: 5px;
@@ -10,7 +10,7 @@
 .anvil-left-pad-5px {
   padding-left: 5px;
   margin-left: 5px;
-}
+} */
 
 /* Stop panel-cols cutting off drop shadows */
 .anvil-panel-col {

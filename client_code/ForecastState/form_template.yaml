@@ -1,10 +1,18 @@
 components_by_slot:
   content_slot:
   - components:
-    - layout_properties: {slot: forecast_for}
+    - event_bindings: {tick: timer_1_tick}
+      layout_properties: {slot: ''}
       name: timer_1
-      properties: {}
+      properties: {interval: 30}
       type: Timer
+    - layout_properties: {}
+      name: image_1
+      properties: {display_mode: fill_width, height: '', horizontal_align: center}
+      type: Image
+    - name: label_1
+      properties: {}
+      type: Label
     layout_properties: {}
     name: rich_text_1
     properties:
