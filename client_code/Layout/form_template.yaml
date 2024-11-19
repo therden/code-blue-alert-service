@@ -6,7 +6,8 @@ components:
     background: ''
     col_widths: '{}'
     spacing:
-      padding: [null, null, null, null]
+      margin: [null, '16', null, '16']
+      padding: ['0', '8', '0', '8']
     spacing_above: none
     spacing_below: none
   type: ColumnPanel
@@ -25,10 +26,10 @@ components:
   name: rt_title
   properties:
     content: '{site_logo}{site_title}'
-    font_size: 40
+    font_size: 30
     spacing:
-      margin: ['5', null, null, null]
-      padding: ['7', null, null, null]
+      margin: ['0', '0', null, null]
+      padding: ['0', null, '0', null]
     spacing_above: none
     spacing_below: none
   type: RichText

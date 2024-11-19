@@ -10,16 +10,23 @@ components_by_slot:
       name: image_1
       properties: {display_mode: fill_width, height: '', horizontal_align: center}
       type: Image
-    - name: label_1
-      properties: {}
+    - layout_properties: {}
+      name: label_1
+      properties:
+        spacing:
+          margin: ['10', null, '0', null]
+          padding: [null, null, '0', null]
       type: Label
     layout_properties: {}
     name: rich_text_1
     properties:
       align: center
       content: |-
-        ### **New York State** status
-        #### **for {forecast_for} {which}**
+        ## Statewide **Code Blue** status
+        ### for **{forecast_for} {which}**
+      spacing:
+        margin: ['0', null, '0', null]
+        padding: ['0', null, '0', null]
     type: RichText
 is_package: true
 layout: {type: 'form:Layout'}

@@ -18,8 +18,10 @@ class ForecastState(ForecastStateTemplate):
   def update_is_needed(self):
     if 5 < datetime.now().hour < 17:
       if self.current_display != "Daytime":
+        self.current_display = "Daytime"
         return True
     elif self.current_display != "Overnight":
+      self.current_display = "Overnight"
       return True
     else:
       return False
@@ -40,15 +42,11 @@ class ForecastState(ForecastStateTemplate):
     }
     self.image_1.source = statemap[0]
     self.label_1.text = f"Forecast generated: {forecast_dt:%B %d, %I:%M %p}"
-    if not self.initial_display:
+    if self.initial_display:
       self.initial_display = False
+    else:
       alert(f"This page was updated at {datetime.now():%B %d, %I:%M:%S %p}")
 
   def timer_1_tick(self, **event_args):
-    check = self.update_is_needed()
-    if check:
-      if self.current_display != "Daytime":
-        self.current_display = "Daytime"
-      else:
-        self.current_display = "Overnight"
+    if self.update_is_needed():
       self.update_form()
