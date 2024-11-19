@@ -8,16 +8,44 @@ components:
     event_bindings: {}
     layout_properties: {}
     name: rt_footer_left
-    properties: {align: left, content: 'Copyright {current_year}', foreground: dimgray, role: null, spacing_above: large, spacing_below: small}
+    properties:
+      align: left
+      content: Copyright {current_year}
+      foreground: dimgray
+      role: null
+      spacing:
+        margin: ['0', null, null, null]
+        padding: ['5', null, '0', null]
+      spacing_above: large
+      spacing_below: small
     type: RichText
   - components:
     - components: []
       layout_properties: {}
       name: link_1
-      properties: {align: right, foreground: dimgray, icon: _/theme/458-final-grayscale.png, icon_align: left, italic: true, role: null, spacing_above: small, spacing_below: none, text: 'fourfiftyeight  ', url: about/fourfiftyeight}
+      properties:
+        align: right
+        col_spacing: tiny
+        foreground: dimgray
+        icon: _/theme/458-final-grayscale.png
+        icon_align: left
+        italic: true
+        role: body
+        spacing:
+          margin: [null, null, '0', null]
+        spacing_above: none
+        spacing_below: none
+        text: 'fourfiftyeight  '
+        url: about/fourfiftyeight
       type: Link
+    layout_properties: {}
     name: rt_footer_rt
-    properties: {align: right, spacing_below: none}
+    properties:
+      align: right
+      spacing:
+        margin: ['0', null, '4', null]
+        padding: ['0', null, '0', null]
+      spacing_below: none
     type: RichText
   layout_properties: {full_width_row: true, grid_position: 'JAAPVI,SNENEB', row_background: ''}
   name: flow_panel_1

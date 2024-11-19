@@ -23,7 +23,10 @@ components_by_slot:
       - layout_properties: {grid_position: 'CMHEHU,PCFYYA'}
         name: rich_text_2
         properties:
-          content: "# About FOURFIFTYEIGHT LLC  \n\n### Registered in Albany, New York, but based in the beautiful Finger Lakes region of the state, we started our business with the purpose of helping organizations to more effectively serve their constituents through the use of internet-based services.\n\n### We can work with you to create websites, make both internal- and public-facing web-based applications, and automate data conversion and processing workflows.\n\n### Although the company was formed in the fall of 2024, our two principal members have more than 50 years of experience in public service administration between us.\n\n### We'd be pleased to hear from you and begin exploring how we might help you achieve your goals!"
+          content: "# About FOURFIFTYEIGHT LLC  \n\n### Registered in Albany, New York, but based in the beautiful Finger Lakes region of the state, our business purpose is helping organizations to more effectively serve their constituents using web-based services.\n\n### We can work with you to extend the utility of existing websites or create new ones, make both internal- and public-facing applications, and automate data conversion and processing workflows.\n\n### Although the company was formed in the fall of 2024, our two principal members have more than 50 years of experience in public service administration between us.\n\n### We'd be pleased to hear from you and begin exploring how we might help you achieve your goals!"
+          spacing:
+            margin: [null, null, '0', null]
+            padding: [null, null, '0', null]
         type: RichText
       layout_properties: {}
       name: column_panel_1
