@@ -12,8 +12,12 @@ import anvil.js
 class Footer(FooterTemplate):
   def __init__(self, **properties):
     current_year = datetime.datetime.today().year
+    icon = anvil.Image(
+      source="_/theme/458-final-grayscale.png",
+      height=10,
+    )
     # self.rt_footer_left.data = {"current_year": current_year, "spaces": "   "}
-    self.rt_footer_left.data = {"current_year": current_year}
+    self.rt_footer_left.data = {"current_year": current_year, "icon": icon}
     self.init_components(**properties)
 
     # change color of link on mouseover/mouseoff
@@ -25,4 +29,4 @@ class Footer(FooterTemplate):
     self.link_1.foreground = "whitesmoke"
 
   def mouseoff_event(self, sender, **event_args):
-    self.link_1.foreground = "dimgray"
+    self.link_1.foreground = "black"

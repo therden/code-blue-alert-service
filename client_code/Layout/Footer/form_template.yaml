@@ -4,13 +4,32 @@ components:
   properties: {height: '1', spacing_above: none, spacing_below: none}
   type: Spacer
 - components:
-  - components: []
+  - components:
+    - components: []
+      layout_properties: {slot: link}
+      name: link_1
+      properties:
+        align: left
+        bold: false
+        col_spacing: tiny
+        foreground: black
+        icon: ''
+        icon_align: right
+        italic: false
+        role: body
+        spacing:
+          margin: [null, null, '0', null]
+        spacing_above: none
+        spacing_below: none
+        text: fourfiftyeight LLC
+        url: about/fourfiftyeight
+      type: Link
     event_bindings: {}
     layout_properties: {}
     name: rt_footer_left
     properties:
       align: left
-      content: Copyright {current_year}
+      content: Copyright {icon} {link}  {current_year}. All rights reserved.
       foreground: dimgray
       role: null
       spacing:
@@ -19,25 +38,7 @@ components:
       spacing_above: large
       spacing_below: small
     type: RichText
-  - components:
-    - components: []
-      layout_properties: {}
-      name: link_1
-      properties:
-        align: right
-        col_spacing: tiny
-        foreground: dimgray
-        icon: _/theme/458-final-grayscale.png
-        icon_align: left
-        italic: true
-        role: body
-        spacing:
-          margin: [null, null, '0', null]
-        spacing_above: none
-        spacing_below: none
-        text: 'fourfiftyeight  '
-        url: about/fourfiftyeight
-      type: Link
+  - components: []
     layout_properties: {}
     name: rt_footer_rt
     properties:
