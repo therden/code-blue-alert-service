@@ -226,6 +226,6 @@ services:
 - client_config: {}
   server_config: {test_mode: true}
   source: /runtime/services/anvil/email.yml
-startup: {module: Home, type: form}
+startup: {module: ForecastState, type: form}
 startup_form: null
 uplink_visible: true
