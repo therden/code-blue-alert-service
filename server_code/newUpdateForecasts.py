@@ -104,9 +104,9 @@ def extract_statuses(raw_data):
   overnightEnd = make_date_offset_aware(tomorrow.replace(hour=7))
   morrowStart = overnightEnd
   morrowEnd = overnightStart + oneDay
-  qualfication_test = test_for_consecutive_hourly_windchill_forecasts
-  overnight_status = qualfication_test(transformedData, overnightStart, overnightEnd)
-  morrow_status = qualfication_test(transformedData, morrowStart, morrowEnd)
+  qualification_test = test_for_consecutive_hourly_windchill_forecasts
+  overnight_status = qualification_test(transformedData, overnightStart, overnightEnd)
+  morrow_status = qualification_test(transformedData, morrowStart, morrowEnd)
   return overnight_status, morrow_status
   # raise Exception(f"Function {func_name()} not yet implemented")
 

@@ -15,19 +15,20 @@ class ForecastCounty(ForecastCountyTemplate):
     self.record = properties["location_record"]
     # self.location = self.record["NormalizedName"]
     self.location = self.record["CountyName"]
-    self.forecast_for_date = f'{self.record["NOAAupdate"]:%b %d}'
-    self.generated_datetime = f'{self.record["DataRequested"]:%B %d, %I:%M %p}'
-    self.forecast_time = f'{self.record["NOAAupdate"]:%I:%M %p}'
+    self.forecast_for_date = f"{self.record['NOAAupdate']:%b %d}"
+    self.generated_datetime = f"{self.record['DataRequested']:%B %d, %I:%M %p}"
+    self.forecast_time = f"{self.record['NOAAupdate']:%I:%M %p}"
     self.updateForm()
 
   def set_alert_text_and_style(self):
-    if self.record["CodeBlueQualified"]:
+    # if self.record["CodeBlueQualified"]:
+    if self.record["Overnight"]:
       rt_background = "theme:Primary Container"
       if self.record["StrongForecastConsent"]:
-        self.rt_header.content = f"### Windchill temps for the {self.forecast_for_date} overnight WILL be low enough to trigger a Code Blue alert."
-      else:
         self.rt_header.content = f"### A Code Blue Alert **IS** in effect for the {self.forecast_for_date} overnight."
-        self.rt_header.content += f'\n### This Alert will remain in effect until **either** 7 AM on {(self.record["NOAAupdate"] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*.'
+        self.rt_header.content += f"\n### This Alert will remain in effect until **either** 7 AM on {(self.record['NOAAupdate'] + timedelta(days=1)):%b %d} **or** when Wind Chill temperatures exceed 32˚F -- whichever is *later*."
+      else:
+        self.rt_header.content = f"### Windchill temps for the {self.forecast_for_date} overnight WILL be low enough to trigger a Code Blue alert."
     else:  # wind chill temps insufficient to trigger Code Blue Alert
       rt_background = "lemonchiffon"
       if self.record["StrongForecastConsent"]:
